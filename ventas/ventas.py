@@ -1,8 +1,16 @@
+from constantes import *
+from estadisticas import *
+
+
 encabezados = ['Nro de Venta', 'Empleado', 'Cliente', 'Total']
 elementos = [
     ['1', 'Ezequiel Gonzalez', 'Juan Perez', 100], 
     ['2', 'Ezequiel Gonzalez', 'Pepe Alvarez', 130], 
-    ['3', 'Ezequiel Gonzalez', 'Pedro Lopez', 105]]
+    ['3', 'Ezequiel Gonzalez', 'Pedro Lopez', 105],
+    ['4', 'Juan Perez', 'Pedro Lopez', 1052]
+    ]
+    
+
 
 def mostrar_encabezados():
     for encabezado in encabezados:
@@ -57,7 +65,7 @@ def mostrar_ventas():
     mostrar_encabezados()
     mostrar_elementos()
 
-mostrar_ventas()
-eliminar_venta()
-mostrar_ventas()
+
+
+obtener_ventas_por_cada_vendedor(elementos)
 
