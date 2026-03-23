@@ -1,4 +1,4 @@
-git def agregar_empleado():
+def agregar_empleado():
     empleados=[]
     id_empleado=0
     while True:
