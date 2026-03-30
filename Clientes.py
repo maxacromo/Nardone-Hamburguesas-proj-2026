@@ -1,42 +1,14 @@
+from Clientes_Funciones import *
 import random, pprint
 
-def Persona_Relleno():
+def Persona_Relleno(): #Genera Personas no reales para que el sistema cargue con usuarios ya existen
     Persona_ID=[]
-    def Creador_Personas(cycle): #Esta funcion toma un nombre y un apellido de las listas para generar a una persona con un nombre aleatorio
-                                 #Además Carga a las personas a una lista q luego es pasada a otra lista en el llamado de función 
-        cont=0
-        Persona=[]
 
-        while cont != cycle:
-            Pila=["María","Ana","Lucia","Martina","Daniela","Julia","Luciana","Sofia", "Jose","Luis","Carlos","Juan","Martin","Julian","Esteban","Roberto"]
-            Apellidos=["González","Rodríguez","Gómez","Fernández","López","Díaz","Martínez","Pérez","Sánchez","Romero","García","Sosa","Benítez","Ramírez","Ruiz","Torres"]
-
-            Persona.append(Pila[random.randint(0,len(Pila)-1)]+" "+ Apellidos[random.randint(0,len(Apellidos)-1)])
-            cont+=1
-
-        return Persona
-
-    P_Random=random.randint(25,30)
+    P_Random=random.randint(5,10)
     Persona=Creador_Personas(P_Random) 
 
-    def Num_list():# Crea ID de Usuario
-        for i in range(len(Persona)):
-            nro=-1
-            flag=0
-            Check_ID=lambda x: False if x in Persona_ID else True
-            while flag==0 :
-                if Check_ID== False or nro==-1:
-                    nro=random.randint(100000,999999)
-                    Check_ID(nro)
-                else:
-                    Persona_ID.append(nro)
-                    flag=1
-
-    
-                    
-
     def Creador_Usuarios():
-        Num_list()
+        Num_list(Persona,Persona_ID)
         Usuarios=[]
         for i in range(len(Persona)):
             user=[(Persona_ID[i]),Persona[i]]
@@ -47,47 +19,20 @@ def Persona_Relleno():
     Usuarios= Creador_Usuarios()
     return Usuarios, Persona_ID
 
-def Gen_Name (Aux):#Se utiliza para 
-    while True:
-        Pila=input("Inserte el nombre de pila del Usuario:")
-        Apellido=input("Inserte el Apellido del Usuario:")
-        Nombre= Pila+" "+Apellido
-        print("Su nombre es ", Nombre, "? y/n", end=" ")
-        Confirm=input(":").strip()
-        print()
 
-        if Confirm == "yes" or Confirm == "y":
-            Aux.append(Nombre)
-            break
-
-        elif Confirm == "no" or Confirm == "n":
-            break
-
-        else:
-            print("Error, realice un ingreso valido")
-    return Aux
-
-def Search_User(Search):#Ubica las posciciones del id de los usuarios
-    cont=0
-    Result= Search in Usuarios[cont]
-    while Result == False and cont != len(Usuarios)-1:
-        cont +=1
-        Result= Search in Usuarios[cont]
-    return Result, cont
-
-def Crear_Cliente(Persona_ID): #Funcion que permite agregar usuarios
+def Crear_Cliente(Persona_ID,Usuarios): #Funcion que permite agregar usuarios
     Persona=[]
     Persona.extend(Usuarios)
     Hold=[]
     contador=len(Persona_ID)
-
-    while True:
+    Flag=0
+    while Flag ==0:
         Confirm=input("Quiere agregar un nuevo usuario? y/n:").strip()
         if Confirm == "yes" or Confirm == "y":
             Gen_Name(Hold)
 
         elif Confirm == "no" or Confirm == "n":
-            break
+            Flag=1
 
         else:
             print("Error, realice un ingreso valido")
@@ -116,45 +61,42 @@ def Read_Cliente(Usuarios): #Permite leer la matriz de clientes
        
 
 def Update_Cliente(Usuarios): #Permite cambiar nombres de usuario pero si a alguien se le ocurre algun valor mas se le puede agregar
-    Flags=[]
-    while 0 not in Flags:
-        Flags.clear()
+    Flag=0
+    while Flag == 0:
         print()
         print("1) Modificar Nombre de Usuario")
-        print("2) Salir")
+        print("2) Modificar ID de Usuario")
+        print("3) Salir")
         Check= input(":")
         
         if Check=="1":
-            print("Ingrese el ID del usuario cuyo nombre quiere modificar, o Ingrese -1 para salir", end=" ")
-            Search=int(input(":"))
-            if Search ==-1:
-                pass
-            Result,cont=Search_User(Search)
-
-
-            if Result ==True:
-                while 1 not in Flags:
-                    print("Quiere cambiarle el nombre al usuario",Usuarios[cont],"y/n",end=" ")
-                    Check= input(":").strip()
-                    if Check=="y":
-                        Hold=[]
-                        print("A que quiere cambiar el nombre?")
-                        Gen_Name(Hold)
-                        Change=Hold[0]
-                        Usuarios[cont][1]=Change
-                        Flags.append(1)
+            Check,cont=Verificacion_Mod_Usuario(Usuarios)
+            if Check=="y":
+                print("A que quiere cambiar el nombre?")
+                Change=""
+                Gen_Name(Change)
+                Usuarios[cont][1]=Change
             
-                    elif Check =="n":
-                        Flags.append(1)
-                    else:
-                        print("Error,ingrese un input valido")
-                    
+            elif Check =="n":
+                Check="1"
+                pass
             else:
-                print("Ese ID no esta en la base de datos")
-                    
+                print("Error,ingrese un input valido")
         
         elif Check=="2":
-            Flags.append(0)
+            Check,cont=Verificacion_Mod_Usuario(Usuarios)
+            if Check=="y":
+                Change=int(input("Ingrese el nuevo ID del usuario:"))
+                Usuarios[cont][0]=Change
+            
+            elif Check =="n":
+                Check="1"
+                pass
+            else:
+                print("Error,ingrese un input valido")
+        
+        elif Check=="3":
+            Flag=1
 
         else:
             print(" No <3")
@@ -167,29 +109,15 @@ def Destruir_Cliente(Usuarios):# Permite Borrar clientes
         Flags.clear()
         Check=input("Quiere Borrar un cliente? y/n:")
         if Check=="y":
-            print("Ingrese el ID del usuario cuyo nombre quiere modificar, o Ingrese -1 para salir:", end=" ")
-            Search=int(input(":"))
-            if Search ==-1:
+            Check,cont=Verificacion_Mod_Usuario(Usuarios)
+            if Check == "y":
+                Usuarios.pop(cont)
+            
+            elif Check =="n":
+                Check="1"
                 pass
             else:
-                Result,cont=Search_User(Search)
-
-                if Result ==True:
-                    while 1 not in Flags:
-                        print("Quiere borrar al usuario",Usuarios[cont],"y/n")
-                        Check= input(":").strip()
-                        if Check=="y":
-                            Usuarios.pop(cont)
-                            Flags.append(1)
-                
-                        elif Check =="n":
-                            Flags.append(1)
-                            
-                        else:
-                            print("Error,ingrese un input valido")
-
-                else:
-                    print("Ese ID no esta en la base de datos")
+                print("Error,ingrese un input valido")
 
         elif Check=="n":
             Flags.append(0)
@@ -204,7 +132,6 @@ Usuarios,Persona_ID =Persona_Relleno()
 
 while True:
     print()
-    print()
     print("Bienvenido!")
     print("Seleccione una opcion:")
     print("1) Crear Usuario")
@@ -214,7 +141,7 @@ while True:
     print("5) Salir")
     Check= input(":")
     if Check=="1":
-        Usuarios = Crear_Cliente(Persona_ID)
+        Usuarios = Crear_Cliente(Persona_ID,Usuarios)
     
     elif Check =="2":
         Read_Cliente(Usuarios)
