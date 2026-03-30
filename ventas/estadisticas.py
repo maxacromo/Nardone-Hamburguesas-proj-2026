@@ -16,7 +16,7 @@ o menor venta, el estudiante con mejor o peor promedio, etc.).
 
 """
 
-from constantes import *
+from .constantes import *
 
 def obtener_menor_venta(ventas):
     min = ventas[0]
@@ -34,7 +34,7 @@ def obtener_mayor_venta(ventas):
 
     return max
 
-def obtener_ventas_por_vendedor(ventas, vendedor):
+def contar_ventas_por_vendedor(ventas, vendedor):
     cont = 0
     for v in ventas:
         if vendedor == v[VENDEDOR]:
@@ -55,6 +55,23 @@ def obtener_ventas_por_cada_vendedor(ventas):
         for v in ventas:
             if v[VENDEDOR] == vendedor:
                 print(v)
+
+def obtener_articulo_mas_vendido(ventas):
+    cantidades = {}
+
+    for venta in ventas:
+        for articulo in venta[ARTICULOS]:
+            cantidades[articulo[0]] = cantidades.get(articulo[0], 0) + articulo[1]
+
+    if not cantidades:
+        print("No hay artículos vendidos.")
+        return
+    
+    articulo = max(cantidades, key=cantidades.get)
+    print("Cantidades:", cantidades)
+    print("Artículo más vendido:", articulo)
+    print("Cantidad total de unidades vendidas:", cantidades[articulo])
+
 
 def obtener_cant_total_ventas(ventas):
     return len(ventas)
