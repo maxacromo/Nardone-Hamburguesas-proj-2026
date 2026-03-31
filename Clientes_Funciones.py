@@ -4,12 +4,14 @@ def Creador_Personas(cycle): #Esta funcion toma un nombre y un apellido de las l
                                  #Además Carga a las personas a una lista q luego es pasada a otra lista en el llamado de función 
         cont=0
         Persona=[]
+        Random_Names=lambda: random.choice(Pila) + " " + random.choice(Apellidos)
 
         while cont != cycle:
             Pila=["María","Ana","Lucia","Martina","Daniela","Julia","Luciana","Sofia", "Jose","Luis","Carlos","Juan","Martin","Julian","Esteban","Roberto"]
             Apellidos=["González","Rodríguez","Gómez","Fernández","López","Díaz","Martínez","Pérez","Sánchez","Romero","García","Sosa","Benítez","Ramírez","Ruiz","Torres"]
 
-            Persona.append(Pila[random.randint(0,len(Pila)-1)]+" "+ Apellidos[random.randint(0,len(Apellidos)-1)])
+        
+            Persona.append(Random_Names())
             cont+=1
 
         return Persona
@@ -38,7 +40,7 @@ def Gen_Name (Aux):#Se utiliza para el input de nombres de parte de los usuarios
         print()
 
         if Confirm == "yes" or Confirm == "y":
-            Aux.append(Nombre)
+            Aux=Nombre
             Flag=1
 
         elif Confirm == "no" or Confirm == "n":
@@ -49,25 +51,27 @@ def Gen_Name (Aux):#Se utiliza para el input de nombres de parte de los usuarios
     return Aux
 
 def Search_User(Search,Usuarios):#Ubica las posciciones del id de los usuarios
-    cont=0
-    Result= Search in Usuarios[cont]
-    while Result == False and cont != len(Usuarios)-1:
-        cont +=1
-        Result= Search in Usuarios[cont]
-    return Result, cont
+    print(Usuarios[Search])
+    if Search in Usuarios:
+        print("Found")
+        Result=Usuarios[Search]
+        return Result
+    else:
+        Result="Not Found"
+        return Result
+
 
 def Verificacion_Mod_Usuario(Usuarios):
     print("Ingrese el ID del usuario que quiere modificar, o Ingrese -1 para salir", end=" ")
     Search=int(input(":"))
     if Search ==-1:
         return "n",0
-    Result,cont=Search_User(Search,Usuarios)
+    Result=Search_User(Search,Usuarios)
 
-    if Result ==True:
-        print("Quiere modificar al usuario",Usuarios[cont],"y/n",end=" ")
-        Check= input(":").strip()
-        return Check,cont
+    if Result=="Not Found":
+         print("Ese ID no esta en la base de datos")
 
-                    
     else:
-        print("Ese ID no esta en la base de datos")
+        print("Quiere modificar al usuario",Search,Result,"y/n",end=" ")
+        Check= input(":").strip()
+        return Check, Search

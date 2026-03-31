@@ -9,10 +9,9 @@ def Persona_Relleno(): #Genera Personas no reales para que el sistema cargue con
 
     def Creador_Usuarios():
         Num_list(Persona,Persona_ID)
-        Usuarios=[]
+        Usuarios={}
         for i in range(len(Persona)):
-            user=[(Persona_ID[i]),Persona[i]]
-            Usuarios.append(user)
+            Usuarios[Persona_ID[i]]=Persona[i]
         return Usuarios
     
 
@@ -21,24 +20,27 @@ def Persona_Relleno(): #Genera Personas no reales para que el sistema cargue con
 
 
 def Crear_Cliente(Persona_ID,Usuarios): #Funcion que permite agregar usuarios
-    Persona=[]
-    Persona.extend(Usuarios)
-    Hold=[]
-    contador=len(Persona_ID)
+    Aux={}
+    Hold=""
     Flag=0
-    while Flag ==0:
+    while Flag !=1:
+        Flag=0
         Confirm=input("Quiere agregar un nuevo usuario? y/n:").strip()
         if Confirm == "yes" or Confirm == "y":
-            Gen_Name(Hold)
+            Hold=Gen_Name(Hold)
 
         elif Confirm == "no" or Confirm == "n":
             Flag=1
 
         else:
             print("Error, realice un ingreso valido")
+            Flag=2
+            
 
 
-    for i in range(len(Hold)):
+        if Flag==1 or Flag==2:
+            pass
+        else:
             nro=-1
             flag=0
             while flag==0:
@@ -47,12 +49,11 @@ def Crear_Cliente(Persona_ID,Usuarios): #Funcion que permite agregar usuarios
                 else:
                     Persona_ID.append(nro)
                     flag=1
-    
-    for i in range(len (Hold)):
-        Aux=[Persona_ID[i+contador],Hold[i]]
-        Persona.append(Aux) #Une los ids con los nombres
+            contador=len(Persona_ID)
+            Aux[Persona_ID[contador-1]]=Hold
+            Usuarios.update(Aux)
 
-    return Persona
+
  
 
 def Read_Cliente(Usuarios): #Permite leer la matriz de clientes
@@ -65,17 +66,16 @@ def Update_Cliente(Usuarios): #Permite cambiar nombres de usuario pero si a algu
     while Flag == 0:
         print()
         print("1) Modificar Nombre de Usuario")
-        print("2) Modificar ID de Usuario")
-        print("3) Salir")
+        print("2) Salir")
         Check= input(":")
         
         if Check=="1":
-            Check,cont=Verificacion_Mod_Usuario(Usuarios)
+            Check,Search=Verificacion_Mod_Usuario(Usuarios)
             if Check=="y":
                 print("A que quiere cambiar el nombre?")
                 Change=""
-                Gen_Name(Change)
-                Usuarios[cont][1]=Change
+                Change=Gen_Name(Change)
+                Usuarios[Search]=Change
             
             elif Check =="n":
                 Check="1"
@@ -84,22 +84,10 @@ def Update_Cliente(Usuarios): #Permite cambiar nombres de usuario pero si a algu
                 print("Error,ingrese un input valido")
         
         elif Check=="2":
-            Check,cont=Verificacion_Mod_Usuario(Usuarios)
-            if Check=="y":
-                Change=int(input("Ingrese el nuevo ID del usuario:"))
-                Usuarios[cont][0]=Change
-            
-            elif Check =="n":
-                Check="1"
-                pass
-            else:
-                print("Error,ingrese un input valido")
-        
-        elif Check=="3":
             Flag=1
 
         else:
-            print(" No <3")
+            print("Error,ingrese un input valido")
 
     return Usuarios
 
@@ -109,9 +97,9 @@ def Destruir_Cliente(Usuarios):# Permite Borrar clientes
         Flags.clear()
         Check=input("Quiere Borrar un cliente? y/n:")
         if Check=="y":
-            Check,cont=Verificacion_Mod_Usuario(Usuarios)
+            Check,Search=Verificacion_Mod_Usuario(Usuarios)
             if Check == "y":
-                Usuarios.pop(cont)
+                Usuarios.pop(Search)
             
             elif Check =="n":
                 Check="1"
@@ -141,13 +129,13 @@ while True:
     print("5) Salir")
     Check= input(":")
     if Check=="1":
-        Usuarios = Crear_Cliente(Persona_ID,Usuarios)
+        Crear_Cliente(Persona_ID,Usuarios)
     
     elif Check =="2":
         Read_Cliente(Usuarios)
     
     elif Check=="3":
-        Usuarios = Update_Cliente(Usuarios)
+        Update_Cliente(Usuarios)
     
     elif Check=="4":
         Usuarios = Destruir_Cliente(Usuarios)
@@ -155,4 +143,4 @@ while True:
         print("Bye!")
         break
     else :
-        print("Nop :3") 
+        print("Error,ingrese un input valido") 
