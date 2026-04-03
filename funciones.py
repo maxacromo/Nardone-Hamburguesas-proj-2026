@@ -1,4 +1,14 @@
+import os
 
+def limpiar_pantalla():
+    if os.name == "nt":  # Windows
+        #Es una funcion de python que ejecuta comandos del sistema operativo.
+        os.system("cls")#Le pasamos el comando y lo ejectua en la shell
+    else: #Liempia la pantalla Linux y Mac
+        os.system("clear")
+#---------------------------------------------------------------
+#MENU QUE VISUALIZA EL ADMINISTRADOR 
+#---------------------------------------------------------------
 def menu_admin(empleados, atributo_empleados):
     while True:
         print("1.Listar Usuarios ")
@@ -12,13 +22,18 @@ def menu_admin(empleados, atributo_empleados):
         if opcion=="1":
             print("Listar Usuarios")
             mostrar_empleados(empleados, atributo_empleados)
+            input("Presione enter para continuar...")
+            limpiar_pantalla()
         elif opcion=="2":
             print("Crear usuarios")
             agregar_empleado(empleados)
-
+            input("Presione enter para continuar...")
+            limpiar_pantalla()
         elif opcion=="3":
             print("Modificar usuario")
             modificar_usuario(empleados,atributo_empleados)
+            input("Presione enter para continuar...")
+            limpiar_pantalla()
         elif opcion=="4":
             print("Ver ventas")
         elif opcion=="5":
@@ -29,8 +44,9 @@ def menu_admin(empleados, atributo_empleados):
         else:
             print("Opcion no valida")
 
-        
+#---------------------------------------------------------------  
 # Funciones para la gestión de empleados
+#---------------------------------------------------------------
 
 def agregar_empleado(empleados):
     while True:
@@ -64,11 +80,11 @@ def agregar_empleado(empleados):
                 print("El nombre de usuario no puede contener números o caracteres especiales.")
         #Validación del rol
         while not rol_user.isdigit():
-            rol_user=input("Ingrese el rol del usuario 1-admin o 2-user: ").strip()
+            rol_user=input("Ingrese el rol del usuario 1-admin o 2-empleado: ").strip()
             if rol_user=="":
                 print("El rol no puede estar vacío.")
             elif rol_user not in ["1","2"]:#valida que el rol ingresado sea 1 o 2
-                print("Rol no válido. Ingrese 1 para admin o 2 para user.")
+                print("Rol no válido. Ingrese 1 para admin o 2 para empleado.")
         if  rol_user=="1":
             rol_user="admin"
         else:
@@ -110,6 +126,7 @@ def modificar_usuario(empleados,atributo_empleados):
             if opcion=="1":
                 nuevo_nombre=input("Ingrese el nuevo nombre: ").strip()
                 empleado[1]=nuevo_nombre
+                
             elif opcion=="2":
                 nuevo_apellido=input("Ingrese el nuevo apellido: ").strip()
                 empleado[2]=nuevo_apellido
@@ -117,11 +134,12 @@ def modificar_usuario(empleados,atributo_empleados):
                 nuevo_usuario=input("Ingrese el nuevo usuario: ").strip()
                 empleado[3]=nuevo_usuario
             elif opcion=="4":
-                nuevo_rol=input("Ingrese el nuevo rol: ")
+                nuevo_rol=input("Ingrese el nuevo rol: ").strip()
                 empleado[4]=nuevo_rol
             else:
                 print("Opcion invalida")
-            return
+            return print("Modificado con exito \n",empleado)
+
     print("Empleado no encontrado")
     
 
