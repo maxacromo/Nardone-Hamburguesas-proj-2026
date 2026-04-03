@@ -11,9 +11,12 @@ def limpiar_pantalla():
 #---------------------------------------------------------------
 def menu_admin(empleados, atributo_empleados):
     while True:
+        limpiar_pantalla()
         print("1.Listar Usuarios ")
         print("2.Crear usuarios")
         print("3.Modificar usuario")
+        ##############################################
+        #EZE acá esta ventas
         print("4.Ver ventas ")
         print("5.Ver estadisticas")
         print("6.Salir")
@@ -22,17 +25,18 @@ def menu_admin(empleados, atributo_empleados):
         if opcion=="1":
             print("Listar Usuarios")
             mostrar_empleados(empleados, atributo_empleados)
-            input("Presione enter para continuar...")
+            input("Presione enter para volver al menu ")
             limpiar_pantalla()
         elif opcion=="2":
+            limpiar_pantalla()
             print("Crear usuarios")
             agregar_empleado(empleados)
-            input("Presione enter para continuar...")
+            input("Presione enter para volver al menu")
             limpiar_pantalla()
         elif opcion=="3":
             print("Modificar usuario")
             modificar_usuario(empleados,atributo_empleados)
-            input("Presione enter para continuar...")
+            input("Presione enter para volver al menu.")
             limpiar_pantalla()
         elif opcion=="4":
             print("Ver ventas")
@@ -126,7 +130,7 @@ def modificar_usuario(empleados,atributo_empleados):
             if opcion=="1":
                 nuevo_nombre=input("Ingrese el nuevo nombre: ").strip()
                 empleado[1]=nuevo_nombre
-                
+
             elif opcion=="2":
                 nuevo_apellido=input("Ingrese el nuevo apellido: ").strip()
                 empleado[2]=nuevo_apellido
