@@ -1,5 +1,5 @@
 import os
-
+from constantes import ID,NOMBRE,APELLIDO,USUARIO, ROL,PASSWORD
 def limpiar_pantalla():
     if os.name == "nt":  # Windows
         #Es una funcion de python que ejecuta comandos del sistema operativo.
@@ -20,7 +20,7 @@ def dibujar_borde(titulo, ancho=60):
  
 def validar_usuario(empleados,usuario,contra, atributo_empleados):
     for empleado in empleados:
-        if empleado[3]==usuario and empleado[5]==contra:
+        if empleado[USUARIO]==usuario and empleado[PASSWORD]==contra:
             if empleado[4]=="admin":
                 submenu_admin(empleados, atributo_empleados)
             else:
@@ -204,7 +204,7 @@ def agregar_empleado(empleados):
             elif not contra.isalnum():#valida que la contraseña solo contenga letras y números
                 print("La contraseña no puede contener caracteres especiales.")
 
-        nuevo_id = max(empleado[0] for empleado in empleados) + 1
+        nuevo_id = max(empleado[ID] for empleado in empleados) + 1
         empleados.append([nuevo_id,nombre,apellido,user_name,rol_user,contra])#agrega una nueva fila a la matriz de empleados con los datos ingresados
         salida=str(input("Para finalizar la carga de usuarios presione X o enter para seguir: ")).lower()
         if salida =="x":
@@ -230,7 +230,7 @@ def modificar_usuario(empleados,atributo_empleados):
     mostrar_empleados(empleados,atributo_empleados)
     id_buscado = int(input("Ingrese el ID del empleado a modificar: "))
     for empleado in empleados:
-        if empleado[0] == id_buscado:
+        if empleado[ID] == id_buscado:
             print(empleado)
             print("Ingrese el numero del atributo que desea modificar: ")
             print("1.Nombre")
@@ -240,17 +240,17 @@ def modificar_usuario(empleados,atributo_empleados):
             opcion=input("Ingrese el numero de la opción: ")
             if opcion=="1":
                 nuevo_nombre=input("Ingrese el nuevo nombre: ").strip()
-                empleado[1]=nuevo_nombre
+                empleado[NOMBRE]=nuevo_nombre
 
             elif opcion=="2":
                 nuevo_apellido=input("Ingrese el nuevo apellido: ").strip()
-                empleado[2]=nuevo_apellido
+                empleado[APELLIDO]=nuevo_apellido
             elif opcion=="3":
                 nuevo_usuario=input("Ingrese el nuevo usuario: ").strip()
-                empleado[3]=nuevo_usuario
+                empleado[USUARIO]=nuevo_usuario
             elif opcion=="4":
                 nuevo_rol=input("Ingrese el nuevo rol: ").strip()
-                empleado[4]=nuevo_rol
+                empleado[ROL]=nuevo_rol
             else:
                 print("Opcion invalida")
             return print("Modificado con exito \n",empleado)
