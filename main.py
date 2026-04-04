@@ -1,11 +1,9 @@
-from funciones import menu_admin,limpiar_pantalla
+from funciones import menu_principal
 from usuarios import empleados, atributo_empleados
 
 def main():
     print("Bienvenidos al sistema de administración")
-    menu_admin(empleados, atributo_empleados)
-    
+    menu_principal(empleados, atributo_empleados)
 
 if __name__ == "__main__":
     main()
-    
