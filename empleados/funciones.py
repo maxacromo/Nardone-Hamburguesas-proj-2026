@@ -1,5 +1,5 @@
 import os
-from constantes import ID,NOMBRE,APELLIDO,USUARIO, ROL,PASSWORD
+from .constantes import ID,NOMBRE,APELLIDO,USUARIO, ROL,PASSWORD
 def limpiar_pantalla():
     if os.name == "nt":  # Windows
         #Es una funcion de python que ejecuta comandos del sistema operativo.
@@ -95,11 +95,11 @@ def submenu_admin(empleados, atributo_empleados):
         print("3.Modificar usuario")
         ##############################################
         #EZE acá esta ventas
-        print("4.Ver ventas ")
+        print("4.Módulo de ventas")
         print("5.Ver estadisticas")
         print("6.Salir")
         opcion=input("Ingrese el numero de opcion : ")
-    
+        limpiar_pantalla()
         if opcion=="1":
             print("Listar Usuarios")
             mostrar_empleados(empleados, atributo_empleados)
@@ -153,63 +153,86 @@ def submenu_empleado():
 #---------------------------------------------------------------  
 # Funciones para la gestión de empleados
 #---------------------------------------------------------------
+def validacion_letras(mensaje, campo):
+    while True:
+        valor = input(mensaje).strip()
+        if valor == "":
+            print(f"El {campo} no puede estar vacío.")
+        elif not valor.isalpha():
+            print(f"El {campo} no puede contener números o caracteres especiales.")
+        else:
+            return valor
 
+#---------------------------------------------------------------
+#VALIDA QUE EL USUARIO INGRESADO CUMPLA CON LOS REQUISITOS DE LONGITUD Y CARACTERES
+#---------------------------------------------------------------
+def validacion_usuario(mensaje):
+    while True:
+        usuario=input(mensaje).strip()
+        if usuario=="":
+            print("El nombre de usuario no puede estar vacio.")
+        elif len(usuario)<5 or len(usuario)>8:
+            print("El nombre de usuario debe tener entre 5 y 8 caracteres.")
+        elif not usuario.isalnum():
+            print("El nombre de usuario no puede contener caracteres especiales.")
+        elif usuario.isnumeric():
+            print("El nombre de usuario no puede contener solo números.")
+        elif usuario.isalpha():
+            print("El nombre de usuario no puede contener solo letras.")    
+        else:
+            return usuario
+        
+#---------------------------------------------------------------
+#VALIDA QUE LA CONTRASEÑA CUMPLA CON LOS REQUISITOS DE LONGITUD Y CARACTERES
+#- --------------------------------------------------------------
+def validacion_password(mensaje):
+    while True:
+        password=input(mensaje).strip()
+        if password =="":
+            print("La contraseña no puede estar vacia")
+        elif password.isalpha():
+            print("La contraseña no puede tener solo letras")
+        elif password.isnumeric():
+            print("La contraseña no puede contener solo numeros")
+        else:
+            return password
+        
+#---------------------------------------------------------------
+#VALIDA QUE EL ROL INGRESADO SEA VALIDO
+#---------------------------------------------------------------
+
+def validacion_rol(mensaje):
+    while True:
+        rol=input(mensaje).strip()
+        if rol=="":
+            print("El rol no puede encontrarse vacio")
+        elif rol not in ["1","2"]:#valida que el rol ingresado sea 1 o 2
+            print("Rol no válido. Ingrese 1 para admin o 2 para empleado.")
+        else:
+            return "admin" if rol=="1" else "empleado"
+
+#---------------------------------------------------------------
+#Funcion para obtener el nuevo ID para un empleado, sumando 1 al ID mas alto existente en la lista de empleados.
+#----------------------------------------------------------------
+def obtener_id(empleados):
+    nuevo_id = max(empleado[ID] for empleado in empleados) + 1
+    return nuevo_id
+#----------------------------------------------------------------
+#Llamo todas las funciones para generar al nuevo empleado. 
+#---------------------------------------------------------------
 def agregar_empleado(empleados):
     while True:
-        #Reinicia variables en cada alta de empleado
-        nombre=""
-        apellido=""
-        user_name=""
-        rol_user=""
-        #Validación del nombre
-        while not nombre.isalpha():
-            nombre=input("Ingrese el nombre del empleado: ").strip()
-            if nombre=="":
-                print("El nombre no puede estar vacío.")
-            elif not  nombre.isalpha():
-                print("El nombre no puede contener números o caracteres especiales.")
-        #Validación del apellido
-        while not apellido.isalpha():
-            apellido=input("Ingrese el apellido :").strip()
-            if apellido=="":
-                print("El apellido no puede estar vacío.")
-            elif not apellido.isalpha():
-                print("Apellido no puede contener números o caracteres especiales.")
-        #Validación del nombre de usuario
-        while not user_name.isalpha() :
-            user_name=input("Ingrese el usuario: ").strip()
-            if user_name=="":
-                print("El nombre de usuario no puede estar vacío.")
-            elif len(user_name) <4 or len(user_name) > 8:#valida rango de caracteres
-                print("El nombre de usuario debe tener entre 4 y 8 caracteres.")
-            elif not user_name.isalpha():#valida que el nombre de usuario solo contenga letras
-                print("El nombre de usuario no puede contener números o caracteres especiales.")
-        #Validación del rol
-        while not rol_user.isdigit():
-            rol_user=input("Ingrese el rol del usuario 1-admin o 2-empleado: ").strip()
-            if rol_user=="":
-                print("El rol no puede estar vacío.")
-            elif rol_user not in ["1","2"]:#valida que el rol ingresado sea 1 o 2
-                print("Rol no válido. Ingrese 1 para admin o 2 para empleado.")
-        if  rol_user=="1":
-            rol_user="admin"
-        else:
-            rol_user="empleado"
-        while not contra.isalnum():
-            contra=input("Ingrese la contraseña: ").strip()
-            if contra=="":
-                print("La contraseña no puede estar vacía.")
-            elif len(contra) < 6 or len(contra) > 12:#valida rango de caracteres
-                print("La contraseña debe tener entre 6 y 12 caracteres.")
-            elif not contra.isalnum():#valida que la contraseña solo contenga letras y números
-                print("La contraseña no puede contener caracteres especiales.")
-
-        nuevo_id = max(empleado[ID] for empleado in empleados) + 1
-        empleados.append([nuevo_id,nombre,apellido,user_name,rol_user,contra])#agrega una nueva fila a la matriz de empleados con los datos ingresados
+        nombre=validacion_letras("Ingrese el nombre del empleado: ","nombre")
+        apellido=validacion_letras("Ingrese el apellido del empleado: ","apellido")
+        user=validacion_usuario("Ingrese el nombre de usuario: ")
+        password=validacion_password("Ingrese la contraseña: ")     
+        rol=validacion_rol("Ingrese el rol del usuario 1-admin o 2-empleado: ")
+        nuevo_id=obtener_id(empleados)  
+        empleados.append([nuevo_id,nombre,apellido,user,rol,password])#agrega una nueva fila a la matriz de empleados con los datos ingresados
         salida=str(input("Para finalizar la carga de usuarios presione X o enter para seguir: ")).lower()
-        if salida =="x":
-            break
-    return empleados
+        if salida=="x":
+            return 
+     
 #---------------------------------------------------------------
 # Función para mostrar la lista de empleados
 #---------------------------------------------------------------

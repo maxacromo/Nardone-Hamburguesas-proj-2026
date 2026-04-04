@@ -5,3 +5,4 @@ empleados = [
     [4, "Sofia", "Lopez", "slopez", "empleado","xd246"]
 ]
 atributo_empleados=["Id_empleado","Nombre","Apellido","usuario","Rol","Contraseña"]
+
