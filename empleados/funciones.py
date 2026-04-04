@@ -1,5 +1,5 @@
 import os
-from .constantes import ID,NOMBRE,APELLIDO,USUARIO, ROL,PASSWORD
+from .constantes import ID,NOMBRE,APELLIDO,USUARIO, ROL,PASSWORD,ESTADO
 def limpiar_pantalla():
     if os.name == "nt":  # Windows
         #Es una funcion de python que ejecuta comandos del sistema operativo.
@@ -20,11 +20,16 @@ def dibujar_borde(titulo, ancho=60):
  
 def validar_usuario(empleados,usuario,contra, atributo_empleados):
     for empleado in empleados:
+
         if empleado[USUARIO]==usuario and empleado[PASSWORD]==contra:
-            if empleado[4]=="admin":
+            if empleado[ESTADO]=="Activo" and empleado[ROL]=="admin":
                 submenu_admin(empleados, atributo_empleados)
-            else:
+            elif empleado[ESTADO]=="Activo" and empleado[ROL]=="empleado":
                 submenu_empleado()
+            else:
+                print("El usuario ingresado " \
+                " se encuentra Inactivo, debe comunicarse con el admisnitrador.")
+                input("Presione entender para volver al menu principal")
             return
         print("Inicio de sesion fallido.")
     input("Presione Enter para continuar...")
@@ -190,6 +195,8 @@ def validacion_password(mensaje):
         password=input(mensaje).strip()
         if password =="":
             print("La contraseña no puede estar vacia")
+        elif len(password)<5 or len(password) >10:
+            print("La contraseña debe contener entre 5 y 10 caractes")
         elif password.isalpha():
             print("La contraseña no puede tener solo letras")
         elif password.isnumeric():
@@ -218,6 +225,14 @@ def obtener_id(empleados):
     nuevo_id = max(empleado[ID] for empleado in empleados) + 1
     return nuevo_id
 #----------------------------------------------------------------
+#VALIDACION DE ESTADO DEL USUARIO
+#----------------------------------------------------------------
+
+
+
+
+
+#----------------------------------------------------------------
 #Llamo todas las funciones para generar al nuevo empleado. 
 #---------------------------------------------------------------
 def agregar_empleado(empleados):
@@ -227,8 +242,9 @@ def agregar_empleado(empleados):
         user=validacion_usuario("Ingrese el nombre de usuario: ")
         password=validacion_password("Ingrese la contraseña: ")     
         rol=validacion_rol("Ingrese el rol del usuario 1-admin o 2-empleado: ")
-        nuevo_id=obtener_id(empleados)  
-        empleados.append([nuevo_id,nombre,apellido,user,rol,password])#agrega una nueva fila a la matriz de empleados con los datos ingresados
+        nuevo_id=obtener_id(empleados)
+        estado="Activo"  
+        empleados.append([nuevo_id,nombre,apellido,user,rol,password,estado])#agrega una nueva fila a la matriz de empleados con los datos ingresados
         salida=str(input("Para finalizar la carga de usuarios presione X o enter para seguir: ")).lower()
         if salida=="x":
             return 
@@ -259,28 +275,52 @@ def modificar_usuario(empleados,atributo_empleados):
             print("1.Nombre")
             print("2.Apellido")
             print("3.Usuario")
-            print("4.Rol")  
+            print("4.Rol")
+            print("5.Contraseña")
+            print("6.Estado del usuario")
             opcion=input("Ingrese el numero de la opción: ")
             if opcion=="1":
-                nuevo_nombre=input("Ingrese el nuevo nombre: ").strip()
+                nuevo_nombre=validacion_letras("Ingrese el nuevo nombre ", "nombre")
                 empleado[NOMBRE]=nuevo_nombre
 
             elif opcion=="2":
-                nuevo_apellido=input("Ingrese el nuevo apellido: ").strip()
+                nuevo_apellido=validacion_letras("Ingrese el nuevo apellido ", "apellido")
                 empleado[APELLIDO]=nuevo_apellido
             elif opcion=="3":
-                nuevo_usuario=input("Ingrese el nuevo usuario: ").strip()
+                nuevo_usuario=validacion_usuario("Ingrese el nuevo usuario: ")
                 empleado[USUARIO]=nuevo_usuario
             elif opcion=="4":
-                nuevo_rol=input("Ingrese el nuevo rol: ").strip()
+                nuevo_rol=validacion_rol("Ingrese el nuevo  rol asignado ,  1 para admin o 2 para empleado: ")
                 empleado[ROL]=nuevo_rol
+            elif opcion=="5":
+                nueva_pass=validacion_password("Ingrese la nueva contraseña: ")
+                empleado[PASSWORD]=nueva_pass
+            elif opcion=="6":
+                estado_actualizado=modificar_estado(empleados)
+                empleado[ESTADO]=estado_actualizado
             else:
                 print("Opcion invalida")
             return print("Modificado con exito \n",empleado)
 
     print("Empleado no encontrado")
+#-----------------------------------------------------------
+"""
+Se toma la decisión de no eliminar ningun usuario dado que generaria una inconsistencia en el sistema.
+La idea de poner un "Estado de usuario " es para poder garantizar la seguridad del ingreso, solo si el usuario
+se encuentra "activo" podra iniciar sesión 
+"""
+#-----------------------------------------------------------
     
-
+def modificar_estado(empleados):
+    while True:
+        nuevo_estado=input("Ingrese el nuevo estado. 1 activo y 2 para Inactivo: ").strip()
+        if nuevo_estado=="":
+            print("Estado no puede estar vacio")
+        elif nuevo_estado=="1":
+            nuevo_estado="Activo"
+        else:
+            nuevo_estado="Inactivo"
+        return nuevo_estado 
 
     
             
