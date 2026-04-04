@@ -314,13 +314,7 @@ se encuentra "activo" podra iniciar sesión
 def modificar_estado(empleados):
     while True:
         nuevo_estado=input("Ingrese el nuevo estado. 1 activo y 2 para Inactivo: ").strip()
-        if nuevo_estado=="":
-            print("Estado no puede estar vacio")
-        elif nuevo_estado=="1":
-            nuevo_estado="Activo"
+        if nuevo_estado not in ["1","2"]:
+            print("Opcion no valida, ingrese 1 para activo o 2 para inactivo")
         else:
-            nuevo_estado="Inactivo"
-        return nuevo_estado 
-
-    
-            
+            return "Activo" if nuevo_estado=="1" else "Inactivo"
