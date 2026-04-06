@@ -25,14 +25,16 @@ def comprar(productos):
 
         cantidad=int(input("cantidad: "))
 
+        encontrado= False
+
 
         for p in productos:
             if p[0]==codigo:
                 total=p[2]*cantidad
                 carrito.append([p[1], p[2], cantidad, total])
-                break
+                encontrado= True
 
-        else:
+        if not encontrado:
             print("ese producto no esta")
 
     return carrito 
