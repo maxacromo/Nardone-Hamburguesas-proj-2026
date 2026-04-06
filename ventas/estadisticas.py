@@ -1,22 +1,12 @@
-"""
-Cálculo de promedio general y por categoría (por ejemplo: promedio de ventas, notas, reservas, etc.).
-- Porcentajes relativos de categorías sobre el total general (por ejemplo: porcentaje
-de usuarios activos, productos más vendidos, reservas realizadas, etc.).
-- Resumen estadístico simple: total, promedio, valor máximo, valor mínimo y conteos
-específicos.
-
-- Otras estadísticas que el grupo considere pertinentes en función de la temática elegida.
-Importante: Las funcionalidades estadísticas podrán ampliarse en la segunda entrega.
-
-Terminado:
-- Identificación de valores máximos y mínimos en los registros (por ejemplo: la mayor
-o menor venta, el estudiante con mejor o peor promedio, etc.).
-- Conteo de registros totales y discriminados según categorías específicas.
-- Conteo de registros totales y discriminados según categorías específicas.
-
-"""
-
 from .constantes import *
+
+AZUL     = "\033[34m"
+RESET = "\033[0m"
+
+ancho_standard = 100
+
+def mostrar_linea_divisoria(ancho_total):
+    print(f"{AZUL}{'-'*ancho_total}{RESET}")
 
 def obtener_menor_venta(ventas):
     min = ventas[0]
@@ -34,31 +24,28 @@ def obtener_mayor_venta(ventas):
 
     return max
 
-def contar_ventas_por_vendedor(ventas, vendedor):
-    cont = 0
-    for v in ventas:
-        if vendedor == v[VENDEDOR]:
-            cont +=1
-
-    return cont
-
 def obtener_ventas_por_cada_vendedor(ventas):
+    ventas_activas = list(filter(lambda x: x[ACTIVO] is True, ventas))
     vendedores = []
 
-    for v in ventas:
+    mostrar_linea_divisoria(ancho_standard)
+    for v in ventas_activas:
         if v[VENDEDOR] not in vendedores:
             vendedores.append(v[VENDEDOR])
 
     for vendedor in vendedores:
         print("Ventas de", vendedor)
-
-        for v in ventas:
+        for v in ventas_activas:
             if v[VENDEDOR] == vendedor:
                 print(v)
+
+    mostrar_linea_divisoria(ancho_standard)
+
 
 def obtener_articulo_mas_vendido(ventas):
     cantidades = {}
 
+    mostrar_linea_divisoria(ancho_standard)
     for venta in ventas:
         for articulo in venta[ARTICULOS]:
             cantidades[articulo[0]] = cantidades.get(articulo[0], 0) + articulo[1]
@@ -71,7 +58,14 @@ def obtener_articulo_mas_vendido(ventas):
     print("Cantidades:", cantidades)
     print("Artículo más vendido:", articulo)
     print("Cantidad total de unidades vendidas:", cantidades[articulo])
+    mostrar_linea_divisoria(ancho_standard)
+
 
 
 def obtener_cant_total_ventas(ventas):
-    return len(ventas)
+    ventas_activas = list(filter(lambda x: x[ACTIVO] is True, ventas))
+    mostrar_linea_divisoria(ancho_standard)
+    print("La cantidad de ventas total es: ", len(ventas_activas))
+    mostrar_linea_divisoria(ancho_standard)
+
+    return

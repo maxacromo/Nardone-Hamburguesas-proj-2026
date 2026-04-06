@@ -1,61 +1,74 @@
-# Programa principal
-RESET = "\033[0m"
-BOLD  = "\033[1m"
-# Colores
-ROJO     = "\033[31m"
-VERDE    = "\033[32m"
-AMARILLO = "\033[33m"
-AZUL     = "\033[34m"
-CYAN     = "\033[36m"
-BLANCO   = "\033[37m"
-# Combinados
-BOLD_AZUL   = "\033[1;34m"
-BOLD_CYAN   = "\033[1;36m"
-BOLD_VERDE  = "\033[1;32m"
-BOLD_ROJO   = "\033[1;31m"
-BOLD_AMARILLO = "\033[1;33m"
 
-def mostrar_menu():
+from ventas.ventas import mostrar_ventas, crear_venta, actualizar_venta, eliminar_venta, obtener_venta, elementos
+from ventas.estadisticas import obtener_ventas_por_cada_vendedor, obtener_articulo_mas_vendido, obtener_cant_total_ventas
+
+ancho_menu = 100
+def mostrar_menu_ventas():
 
     while True:
-        opciones = 4
+        opciones = 5
         print()
-        print("---------------------------")
+        print("-"*ancho_menu)
         print("MENÚ PRINCIPAL > MENÚ DE VENTAS")
-        print("---------------------------")
+        print("-"*ancho_menu)
         print("[1] Visualizar Ventas")
         print("[2] Crear Venta")
         print("[3] Editar Venta")
         print("[4] Eliminar Venta")
-        print("---------------------------")
+        print("[5] Buscar Venta por ID")
+        print("-"*ancho_menu)
         print("[0] Volver al menú anterior")
-        print("---------------------------")
+        print("-"*ancho_menu)
         print()
 
         opcion = input("Seleccione una opción: ")
-        if opcion in [str(i) for i in range(0, opciones + 1)]: # Sólo continua si se elije una opcion de menú válida
-            break
-        else:
+        if opcion not in [str(i) for i in range(0, opciones + 1)]: # Sólo continua si se elije una opcion de menú válida
             input("Opción inválida. Presione ENTER para volver a seleccionar.")
-    print()
+        print()
 
-def mostrar_productos(encabezados, elementos):
-    ancho_total = 140
+        if opcion == "0": # Opción salir del submenú
+            break # No salimos del programa, volvemos al menú anterior
+        elif opcion == "1":
+            mostrar_ventas()
+        elif opcion == "2":
+            crear_venta()
+        elif opcion == "3":
+            actualizar_venta()
+        elif opcion == "4":
+            eliminar_venta()
+        elif opcion == "5":
+            obtener_venta()
 
-    print(f"{BOLD}{encabezados[0]:<8}{encabezados[1]:<25}{encabezados[2]:<25}{encabezados[3]:>10}{encabezados[4]:>15}{encabezados[5]:>25}{RESET}")
-    print(f"{AZUL}{'-'*ancho_total}{RESET}")
+def mostrar_menu_estadisticas():
 
-    for venta in elementos:
+    while True:
+        opciones = 5
+        print()
+        print("-"*ancho_menu)
+        print("MENÚ PRINCIPAL > MENÚ DE ESTADISTICAS")
+        print("-"*ancho_menu)
+        print("[1] Obtener ventas de cada vendedor")
+        print("[2] Obtener el articulo mas vendido")
+        print("[3] Ver la cantidad total de ventas")
+        print("-"*ancho_menu)
+        print("[0] Volver al menú anterior")
+        print("-"*ancho_menu)
+        print()
 
-        articulos_str = ", ".join([f"{cod}({cant})" for cod, cant in venta[5]])
+        opcion = input("Seleccione una opción: ")
+        if opcion not in [str(i) for i in range(0, opciones + 1)]: # Sólo continua si se elije una opcion de menú válida
+            input("Opción inválida. Presione ENTER para volver a seleccionar.")
+        print()
 
-        print(
-            f'{AMARILLO}{venta[0]:<8}{RESET}'
-            f'{venta[1]:<25}'
-            f'{venta[2]:<25}'
-            f'{venta[3]:>10.2f}'
-            f'{venta[4]:>15}'
-            f'{CYAN}{articulos_str:>25}{RESET}'
-        )
+        if opcion == "0": # Opción salir del submenú
+            break # No salimos del programa, volvemos al menú anterior
+        elif opcion == "1":
+            obtener_ventas_por_cada_vendedor(elementos)
+        elif opcion == "2":
+            obtener_articulo_mas_vendido(elementos)
+        elif opcion == "3":
+            obtener_cant_total_ventas(elementos)
 
-    print(f"{AZUL}{'-'*ancho_total}{RESET}")            
+
+
+      
