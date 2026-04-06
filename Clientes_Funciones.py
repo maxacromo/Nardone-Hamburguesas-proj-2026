@@ -29,12 +29,32 @@ def Num_list(Persona,Persona_ID):# Crea ID de Usuario para las personas de relle
                     Persona_ID.append(nro)
                     flag=1
 
-def Gen_Name (Aux):#Se utiliza para el input de nombres de parte de los usuarios
+def Gen_FullName (Fullname):#Se utiliza para el input de nombres de parte de los usuarioss
     Flag=0
     while Flag==0:
-        Pila=input("Inserte el nombre de pila del Usuario:")
-        Apellido=input("Inserte el Apellido del Usuario:")
+        Pila=input("Inserte el nombre de pila del cliente:")
+        Apellido=input("Inserte el Apellido del cliente:")
         Nombre= Pila+" "+Apellido
+        print("Su nombre es ", Nombre, "? y/n", end=" ")
+        Confirm=input(":").strip()
+        print()
+
+        if Confirm == "yes" or Confirm == "y":
+            Fullname=Nombre
+            Flag=1
+
+        elif Confirm == "no" or Confirm == "n":
+            Flag=1
+
+        else:
+            print("Error, realice un ingreso valido")
+    return Fullname
+
+def Gen_Nombre (Aux,Result):#Se utiliza para el input de nombres de parte de los Cliente
+    Flag=0
+    while Flag==0:
+        Pila=input("Inserte el nombre de pila del cliente:")
+        Nombre= Pila + " " + Result.split(" ",1)[1]
         print("Su nombre es ", Nombre, "? y/n", end=" ")
         Confirm=input(":").strip()
         print()
@@ -44,34 +64,62 @@ def Gen_Name (Aux):#Se utiliza para el input de nombres de parte de los usuarios
             Flag=1
 
         elif Confirm == "no" or Confirm == "n":
+            Aux=Result
             Flag=1
 
         else:
             print("Error, realice un ingreso valido")
     return Aux
 
-def Search_User(Search,Usuarios):#Ubica las posciciones del id de los usuarios
-    print(Usuarios[Search])
-    if Search in Usuarios:
+def Gen_Apellido (Aux,Result):#Se utiliza para el input de nombres de parte de los Cliente
+    Flag=0
+    while Flag==0:
+        Apellido=input("Inserte el apellido del cliente:")
+        Nombre= Result.split(" ",1)[0] + " " + Apellido
+        print("Su nombre es ", Nombre, "? y/n", end=" ")
+        Confirm=input(":").strip()
+        print()
+
+        if Confirm == "yes" or Confirm == "y":
+            Aux=Nombre
+            Flag=1
+
+        elif Confirm == "no" or Confirm == "n":
+            Aux=Result
+            Flag=1
+
+        else:
+            print("Error, realice un ingreso valido")
+    return Aux 
+
+
+def Search_User(Search,Cliente):#Ubica las posciciones del id de los Cliente
+    print(Cliente[Search])
+    if Search in Cliente:
         print("Found")
-        Result=Usuarios[Search]
+        Result=Cliente[Search]
         return Result
     else:
         Result="Not Found"
         return Result
 
 
-def Verificacion_Mod_Usuario(Usuarios):
-    print("Ingrese el ID del usuario que quiere modificar, o Ingrese -1 para salir", end=" ")
-    Search=int(input(":"))
-    if Search ==-1:
-        return "n",0
-    Result=Search_User(Search,Usuarios)
-
-    if Result=="Not Found":
-         print("Ese ID no esta en la base de datos")
-
+def Verificacion_Mod_Usuario(Cliente):
+    print("Ingrese el ID del cliente que quiere modificar, o Ingrese -1 para salir", end=" ")
+    Search=input(":")
+    if not Search.isdigit():
+        print("Error, ingrese un numero")
+        return "n",0,0
     else:
-        print("Quiere modificar al usuario",Search,Result,"y/n",end=" ")
-        Check= input(":").strip()
-        return Check, Search
+        Search=int(Search)
+        if Search ==-1:
+            return "n",0,0
+        Result=Search_User(Search,Cliente)
+
+        if Result=="Not Found":
+            print("Ese ID no esta en la base de datos")
+
+        else:
+            print("Quiere modificar al cliente",Search,Result,"y/n",end=" ")
+            Check= input(":").strip()
+            return Check, Search, Result
