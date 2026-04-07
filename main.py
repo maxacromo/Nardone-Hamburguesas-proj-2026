@@ -1,9 +1,5 @@
-from empleados.funciones import menu_principal
-from empleados.usuarios import empleados, atributo_empleados
+from ventas.menu_ventas import *
+from ventas.ventas import *
 
-def main():
-    print("Bienvenidos al sistema de administración")
-    menu_principal(empleados, atributo_empleados)
-
-if __name__ == "__main__":
-    main()
+#mostrar_menu_ventas()
+mostrar_menu_estadisticas()
