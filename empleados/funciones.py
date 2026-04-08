@@ -102,7 +102,9 @@ def submenu_admin(empleados, atributo_empleados):
         #EZE acá esta ventas
         print("4.Módulo de ventas")
         print("5.Ver estadisticas")
-        print("6.Salir")
+        print("6.Clientes")
+        print("7.Stock")
+        print("8.Salir")
         opcion=input("Ingrese el numero de opcion : ")
         limpiar_pantalla()
         if opcion=="1":
@@ -125,7 +127,7 @@ def submenu_admin(empleados, atributo_empleados):
             print("Ver ventas")
         elif opcion=="5":
             print("Ver estadisticas")
-        elif opcion=="6":
+        elif opcion=="8":
             print("Salir")
             break
         else:
