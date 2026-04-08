@@ -1,4 +1,4 @@
-import os
+import os , re
 from .constantes import ID,NOMBRE,APELLIDO,USUARIO, ROL,PASSWORD,ESTADO
 def limpiar_pantalla():
     if os.name == "nt":  # Windows
@@ -161,31 +161,28 @@ def submenu_empleado():
 # Funciones para la gestión de empleados
 #---------------------------------------------------------------
 def validacion_letras(mensaje, campo):
+    entrada_permitida= r'^[A-Za-zÁÉÍÓÚáéíóúÑñ]+(?:[ -][A-Za-zÁÉÍÓÚáéíóúÑñ]+)*$'
     while True:
-        valor = input(mensaje).strip()
-        if valor == "":
+        data_usuario = input(mensaje).strip()
+        
+        if data_usuario == "":
             print(f"El {campo} no puede estar vacío.")
-        elif not valor.isalpha():
-            print(f"El {campo} no puede contener números o caracteres especiales.")
+        elif not re.fullmatch(entrada_permitida, data_usuario):
+            print(f"El {campo} solo puede contener letrasy espacios.")
         else:
-            return valor
+            return data_usuario
 
 #---------------------------------------------------------------
 #VALIDA QUE EL USUARIO INGRESADO CUMPLA CON LOS REQUISITOS DE LONGITUD Y CARACTERES
 #---------------------------------------------------------------
 def validacion_usuario(mensaje):
+    entrada_permitida= r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,8}$'
     while True:
-        usuario=input(mensaje).strip()
-        if usuario=="":
-            print("El nombre de usuario no puede estar vacio.")
-        elif len(usuario)<5 or len(usuario)>8:
+        usuario = input(mensaje).strip()
+        if usuario == "":
+            print("El nombre de usuario no puede estar vacío.")
+        elif not re.fullmatch(entrada_permitida, usuario):
             print("El nombre de usuario debe tener entre 5 y 8 caracteres.")
-        elif not usuario.isalnum():
-            print("El nombre de usuario no puede contener caracteres especiales.")
-        elif usuario.isnumeric():
-            print("El nombre de usuario no puede contener solo números.")
-        elif usuario.isalpha():
-            print("El nombre de usuario no puede contener solo letras.")    
         else:
             return usuario
         
@@ -193,18 +190,16 @@ def validacion_usuario(mensaje):
 #VALIDA QUE LA CONTRASEÑA CUMPLA CON LOS REQUISITOS DE LONGITUD Y CARACTERES
 #- --------------------------------------------------------------
 def validacion_password(mensaje):
+    entrada_permitida= r'^(?=.*[A-Za-z])(?=.*\d).{5,8}$'
     while True:
-        password=input(mensaje).strip()
-        if password =="":
-            print("La contraseña no puede estar vacia")
-        elif len(password)<5 or len(password) >10:
-            print("La contraseña debe contener entre 5 y 10 caractes")
-        elif password.isalpha():
-            print("La contraseña no puede tener solo letras")
-        elif password.isnumeric():
-            print("La contraseña no puede contener solo numeros")
+        password = input(mensaje).strip()
+        if password == "":
+            print("La contraseña no puede estar vacía.")
+        elif not re.fullmatch(entrada_permitida, password):
+            print("La contraseña debe tener entre 5 y 10 caracteres y contener al menos una letra y un número.")
         else:
             return password
+
         
 #---------------------------------------------------------------
 #VALIDA QUE EL ROL INGRESADO SEA VALIDO
@@ -262,6 +257,18 @@ def mostrar_empleados(empleados,atributo_empleados):
         for dato in empleado:#recorre cada valor dentro de esa fila.
             print(f"{dato:<15}", end=" ")#esto hace que se impriman uno a lado del otro, en controla el final del print.")
         print()
+#---------------------------------------------------------------
+#Funcion para pedir ID 
+#---------------------------------------------------------------
+def solicitar_id(mensaje):
+    while True:
+        id=input(mensaje).strip()
+        if id=="":
+            print("El ID no puede encontrarse vacio")
+        elif not id.isdigit():
+            print("El ID debe ser un número entero.")
+        else:
+            return id
 
 #---------------------------------------------------------------
 # Función para modificar el nombre de usuario de un empleado
@@ -269,7 +276,7 @@ def mostrar_empleados(empleados,atributo_empleados):
 
 def modificar_usuario(empleados,atributo_empleados):
     mostrar_empleados(empleados,atributo_empleados)
-    id_buscado = int(input("Ingrese el ID del empleado a modificar: "))
+    id_buscado = solicitar_id("Ingrese el ID del empleado a modificar: ")
     for empleado in empleados:
         if empleado[ID] == id_buscado:
             print(empleado)
@@ -280,7 +287,7 @@ def modificar_usuario(empleados,atributo_empleados):
             print("4.Rol")
             print("5.Contraseña")
             print("6.Estado del usuario")
-            opcion=input("Ingrese el numero de la opción: ")
+            opcion=solicitar_id("Ingrese el numero de la opción: ")
             if opcion=="1":
                 nuevo_nombre=validacion_letras("Ingrese el nuevo nombre ", "nombre")
                 empleado[NOMBRE]=nuevo_nombre
