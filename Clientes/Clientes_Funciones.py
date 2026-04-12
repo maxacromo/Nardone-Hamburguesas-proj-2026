@@ -34,11 +34,11 @@ def Gen_FullName (Result):#Se utiliza para el input de nombres de parte de los u
         Apellido=input("Inserte el Apellido del cliente:")
         Nombre= Pila+" "+Apellido
         print("Su nombre es ", Nombre, "? y/n", end=" ")
-        Confirm=input(":").strip()
+        Confirm=input(":").strip().lower()
         print()
 
         if Confirm == "yes" or Confirm == "y":
-            Result[0]=Nombre
+            Result=Nombre
             Flag=1
 
         elif Confirm == "no" or Confirm == "n":
@@ -56,8 +56,10 @@ def Gen_Nombre (Result):#Se utiliza para el input de nombres de parte de los Cli
         Apellido=Result[0].split(" ",1)[1]
         Nombre= Pila + " " + Apellido
         print("Su nombre es ", Nombre, "? y/n", end=" ")
-        Confirm=input(":").strip()
+        Confirm=input(":").strip().lower()
         print()
+        input("Presione enter para volver al menu previo.")
+        limpiar_pantalla()
 
         if Confirm == "yes" or Confirm == "y":
             Result[0]=Nombre
@@ -105,10 +107,13 @@ def Verificacion_Mod_Usuario(Cliente):
     print("Ingrese el ID del cliente que quiere modificar, o Ingrese -1 para salir", end=" ")
     Search=input(":")
     if Search =="-1":
+        input("Presione enter para volver al menu previo.")
         limpiar_pantalla()
         return "n",0,0
     elif not Search.isnumeric():
         print("Error, ingrese un numero")
+        input("Presione enter para volver al menu previo.")
+        limpiar_pantalla()
         return "n",0,0
     else:
         Search=int(Search)
@@ -116,6 +121,8 @@ def Verificacion_Mod_Usuario(Cliente):
 
         if Result=="Not Found":
             print("Ese ID no esta en la base de datos")
+            input("Presione enter para volver al menu previo.")
+            limpiar_pantalla()
             return "n",0,0
         
         elif Result[2]=="IN":
@@ -124,7 +131,7 @@ def Verificacion_Mod_Usuario(Cliente):
 
         else:
             print("Quiere modificar al cliente",Search,Result,"y/n",end=" ")
-            Check= input(":").strip()
+            Check= input(":").strip().lower()
             return Check, Search, Result
 
 def limpiar_pantalla():

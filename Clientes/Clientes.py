@@ -22,25 +22,32 @@ def Persona_Relleno(): #Genera Personas no reales para que el sistema cargue con
 
 
 def Crear_Cliente(Persona_ID,Cliente,Mail_List): #Funcion que permite agregar Cliente
-    Hold=""
+    Hold="1"
     Flag=0
     while Flag !=1:
         Aux={}
         Persona=[]
         Flag=0
-        Confirm=input("Quiere agregar un nuevo cliente? y/n:").strip()
+        Confirm=input("Quiere agregar un nuevo cliente? y/n:").strip().lower()
         if Confirm == "yes" or Confirm == "y":
             Hold=Gen_FullName(Hold)
-            Pila=Hold.split(" ",1)[0]
-            Apellido=Hold.split(" ",1)[1]
+            if Hold =="1":
+                input("Presione enter para volver al menu previo.")
+                limpiar_pantalla()
+                pass
+            else:
+                Pila=Hold.split(" ",1)[0]
+                Apellido=Hold.split(" ",1)[1]
 
-            Mail=Gen_Mail(Mail_List,Pila,Apellido)
-            Persona.extend([Hold,Mail,"A"])
+                Mail=Gen_Mail(Mail_List,Pila,Apellido)
+                Persona.extend([Hold,Mail,"A"])
 
-            Num_list(Persona_ID)
-            contador=len(Persona_ID)
-            Aux[Persona_ID[contador-1]]=Persona
-            Cliente.update(Aux)
+                Num_list(Persona_ID)
+                contador=len(Persona_ID)
+                Aux[Persona_ID[contador-1]]=Persona
+                Cliente.update(Aux)
+                input("Presione enter para volver al menu previo.")
+                limpiar_pantalla()
 
         elif Confirm == "no" or Confirm == "n":
             input("Presione enter para volver al menu previo.")
@@ -69,6 +76,7 @@ def Update_Cliente(Cliente): #Permite cambiar nombres de usuario pero si a algui
         print("3) Modificar Nombre y Apellido de Cliente")
         print("4) Salir")
         Check= input(":")
+        limpiar_pantalla()
         
         if Check=="1":
             Check,Search,Result=Verificacion_Mod_Usuario(Cliente)
@@ -79,8 +87,6 @@ def Update_Cliente(Cliente): #Permite cambiar nombres de usuario pero si a algui
             
             elif Check =="n":
                 Check="1"
-                input("Presione enter para volver al menu previo.")
-                limpiar_pantalla()
                 pass
             else:
                 limpiar_pantalla()
@@ -95,8 +101,6 @@ def Update_Cliente(Cliente): #Permite cambiar nombres de usuario pero si a algui
             
             elif Check =="n":
                 Check="1"
-                input("Presione enter para volver al menu previo.")
-                limpiar_pantalla()
                 pass
             else:
                 limpiar_pantalla()
@@ -111,8 +115,6 @@ def Update_Cliente(Cliente): #Permite cambiar nombres de usuario pero si a algui
             
             elif Check =="n":
                 Check="1"
-                input("Presione enter para volver al menu previo.")
-                limpiar_pantalla()
                 pass
             else:
                 limpiar_pantalla()
@@ -136,6 +138,7 @@ def Destruir_Cliente(Cliente):# Permite Borrar clientes
         print("2)Reactivar Cuenta")
         print("3)Salir")
         Check=input(":")
+        limpiar_pantalla()
         if Check=="1":
             Check,Search,Result=Verificacion_Mod_Usuario(Cliente)
             if Check == "y":
@@ -153,21 +156,27 @@ def Destruir_Cliente(Cliente):# Permite Borrar clientes
             print("Ingrese el ID del cliente que quiere modificar, o Ingrese -1 para salir", end=" ")
             Search=input(":")
             if Search =="-1":
+                input("Presione enter para volver al menu previo.")
                 limpiar_pantalla()
-                return "n",0,0
+                
             elif not Search.isnumeric():
                 print("Error, ingrese un numero")
-                return "n",0,0
+                input("Presione enter para volver al menu previo.")
+                limpiar_pantalla()
+                Check="n"
+                
             else:
                 Search=int(Search)
                 Result=Search_User(Search,Cliente)
 
                 if Result=="Not Found":
                     print("Ese ID no esta en la base de datos")
-                    return "n",0,0
+                    input("Presione enter para volver al menu previo.")
+                    limpiar_pantalla()
+                    Check= "n"
                 else:
                     print("Quiere modificar al cliente",Search,Result,"y/n",end=" ")
-                    Check= input(":").strip()
+                    Check= input(":").strip().lower()
                     
             if Check == "y":
                 Cliente[Search][2]="A"
@@ -187,8 +196,8 @@ def Destruir_Cliente(Cliente):# Permite Borrar clientes
             limpiar_pantalla()
 
         else:
-            limpiar_pantalla()
-            print("Error,ingrese un input valido")
+            print("Error,ingrese un input valido")  
+            
 
     return Cliente
 
