@@ -7,7 +7,6 @@ def mostrar_menu_ventas():
 
     while True:
         opciones = 5
-        print()
         print("-"*ancho_menu)
         print("MENÚ PRINCIPAL > MENÚ DE VENTAS")
         print("-"*ancho_menu)
@@ -43,7 +42,6 @@ def mostrar_menu_estadisticas():
 
     while True:
         opciones = 5
-        print()
         print("-"*ancho_menu)
         print("MENÚ PRINCIPAL > MENÚ DE ESTADISTICAS")
         print("-"*ancho_menu)

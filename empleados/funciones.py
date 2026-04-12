@@ -1,5 +1,11 @@
 import os , re
-from .constantes import ID,NOMBRE,APELLIDO,USUARIO, ROL,PASSWORD,ESTADO
+from .constantes import ID,NOMBRE,APELLIDO,USUARIO,ROL,PASSWORD,ESTADO
+from .usuarios import empleados, atributo_empleados
+from ventas.menu_ventas import *
+from Clientes.Clientes import mostrar_menu_clientes
+
+ancho_menu = 100
+
 def limpiar_pantalla():
     if os.name == "nt":  # Windows
         #Es una funcion de python que ejecuta comandos del sistema operativo.
@@ -18,7 +24,7 @@ def dibujar_borde(titulo, ancho=60):
 
  ###################VALIDACION DE USUARIOS########################
  
-def validar_usuario(empleados,usuario,contra, atributo_empleados):
+def validar_usuario(empleados, usuario, contra, atributo_empleados):
     for empleado in empleados:
 
         if empleado[USUARIO]==usuario and empleado[PASSWORD]==contra:
@@ -28,10 +34,10 @@ def validar_usuario(empleados,usuario,contra, atributo_empleados):
                 submenu_empleado()
             else:
                 print("El usuario ingresado " \
-                " se encuentra Inactivo, debe comunicarse con el admisnitrador.")
+                " se encuentra Inactivo, debe comunicarse con el administrador.")
                 input("Presione entender para volver al menu principal")
             return
-        print("Inicio de sesion fallido.")
+    print("Inicio de sesion fallido.")
     input("Presione Enter para continuar...")
 
 
@@ -62,14 +68,14 @@ def registro():
 def menu_principal(empleados, atributo_empleados):
     while True:
         limpiar_pantalla()
-        dibujar_borde(" HAMBURGESAS ", 40)
-        print("  1. Iniciar sesión")
-        print("  2. Registrarse")
-        print("  3. Ver créditos")
-        print("  4. Salir")
+        dibujar_borde("HAMBURGUESERIA", 40)
+        print("[1] Iniciar sesión")
+        print("[2] Registrarse")
+        print("[3] Ver créditos")
+        print("[0] Salir")
         print()
         
-        opcion = input("  → Elige una opción (1-4): ").strip()
+        opcion = input("→ Elige una opción (1-3): ").strip()
 
         #opcion de menu
         if opcion == "1":
@@ -79,13 +85,13 @@ def menu_principal(empleados, atributo_empleados):
         elif opcion == "3":
             limpiar_pantalla()
             dibujar_borde(" CRÉDITOS ", 40)
-            print("  Hecho por Hernan el Crack")
-            input("\n  Presiona Enter para volver...")
-        elif opcion == "4":
-            print("\n  Nos vemos nene, cuidate")
+            print("Hecho por: Hernan Castro, Gonzales Ezequiel , Zalles Kenaya, Santiago Elcano, Thiago Guarino, Máximo Masi")
+            input("Presiona Enter para volver...")
+        elif opcion == "0":
+            print("Finalizando.")
             break
         else:
-            print("  Opción inválida... intenta de nuevo")
+            print("Opción inválida... intenta de nuevo")
 ## --------------------------------------------------------------
 
 
@@ -95,16 +101,20 @@ def menu_principal(empleados, atributo_empleados):
 def submenu_admin(empleados, atributo_empleados):
     while True:
         limpiar_pantalla()
-        print("1.Listar Usuarios ")
-        print("2.Crear usuarios")
-        print("3.Modificar usuario")
-        ##############################################
-        #EZE acá esta ventas
-        print("4.Módulo de ventas")
-        print("5.Ver estadisticas")
-        print("6.Clientes")
-        print("7.Stock")
-        print("8.Salir")
+        print("-"*ancho_menu)
+        print("MENÚ PRINCIPAL")
+        print("-"*ancho_menu)
+        print("[1] Listar Usuarios ")
+        print("[2] Crear usuarios")
+        print("[3] Modificar usuario")
+        print("[4] Módulo de ventas")
+        print("[5] Módulo de estadisticas")
+        print("[6] Clientes")
+        print("[7] Stock")
+        print("-"*ancho_menu)
+        print("[0] Salir")
+        print("-"*ancho_menu)
+        print()
         opcion=input("Ingrese el numero de opcion : ")
         limpiar_pantalla()
         if opcion=="1":
@@ -124,10 +134,12 @@ def submenu_admin(empleados, atributo_empleados):
             input("Presione enter para volver al menu.")
             limpiar_pantalla()
         elif opcion=="4":
-            print("Ver ventas")
+            mostrar_menu_ventas()
         elif opcion=="5":
-            print("Ver estadisticas")
-        elif opcion=="8":
+            mostrar_menu_estadisticas()
+        elif opcion=="6":
+            mostrar_menu_clientes()
+        elif opcion=="0":
             print("Salir")
             break
         else:
@@ -327,3 +339,7 @@ def modificar_estado(empleados):
             print("Opcion no valida, ingrese 1 para activo o 2 para inactivo")
         else:
             return "Activo" if nuevo_estado=="1" else "Inactivo"
+        
+def mostrar_menu_principal():
+    menu_principal(empleados, atributo_empleados)
+        

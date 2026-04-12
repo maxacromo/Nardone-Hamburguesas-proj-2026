@@ -1,5 +1,3 @@
-from ventas.menu_ventas import *
-from ventas.ventas import *
+from empleados.funciones import mostrar_menu_principal
 
-#mostrar_menu_ventas()
-mostrar_menu_estadisticas()
+mostrar_menu_principal()

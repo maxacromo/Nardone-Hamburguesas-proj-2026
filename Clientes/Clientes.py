@@ -1,5 +1,6 @@
 from Clientes.Clientes_Funciones import *
 import random, pprint
+ancho_menu = 100
 
 def Persona_Relleno(): #Genera Personas no reales para que el sistema cargue con Cliente ya existen
     Persona_ID=[]
@@ -191,38 +192,42 @@ def Destruir_Cliente(Cliente):# Permite Borrar clientes
 
     return Cliente
 
+def mostrar_menu_clientes():
+    Cliente,Persona_ID,Mail_List =Persona_Relleno()
+    limpiar_pantalla()
+    while True:
+        print("-"*ancho_menu)
+        print("MENÚ PRINCIPAL > MENÚ DE CLIENTES")
+        print("-"*ancho_menu)
+        print("Seleccione una opcion:")
+        print("[1] Crear Cliente")
+        print("[2] Leer Cliente")
+        print("[3] Modificar Cliente")
+        print("[4] Borrar Cliente")
+        print("-"*ancho_menu)
+        print("[0] Salir")
+        print("-"*ancho_menu)
 
-Cliente,Persona_ID,Mail_List =Persona_Relleno()
-limpiar_pantalla()
-while True:
-    print()
-    print("Bienvenido!")
-    print("Seleccione una opcion:")
-    print("1) Crear Cliente")
-    print("2) Leer Cliente")
-    print("3) Modificar Cliente")
-    print("4) Borrar Cliente")
-    print("5) Salir")
-    Check= input(":")
-    if Check=="1":
-        limpiar_pantalla()
-        Crear_Cliente(Persona_ID,Cliente,Mail_List)
-    
-    elif Check =="2":
-        limpiar_pantalla()
-        Read_Cliente(Cliente)
-    
-    elif Check=="3":
-        limpiar_pantalla()
-        Update_Cliente(Cliente)
-    
-    elif Check=="4":
-        limpiar_pantalla()
-        Destruir_Cliente(Cliente)
-    elif Check=="5":
-        print("Bye!")
-        Cleanup(Cliente,Persona_ID)
-        break
-    else :
-        limpiar_pantalla()
-        print("Error,ingrese un input valido") 
+        Check= input(":")
+        if Check=="1":
+            limpiar_pantalla()
+            Crear_Cliente(Persona_ID,Cliente,Mail_List)
+
+        elif Check =="2":
+            limpiar_pantalla()
+            Read_Cliente(Cliente)
+
+        elif Check=="3":
+            limpiar_pantalla()
+            Update_Cliente(Cliente)
+
+        elif Check=="4":
+            limpiar_pantalla()
+            Destruir_Cliente(Cliente)
+        elif Check=="0":
+            print("Bye!")
+            Cleanup(Cliente,Persona_ID)
+            break
+        else :
+            limpiar_pantalla()
+            print("Error,ingrese un input valido")
