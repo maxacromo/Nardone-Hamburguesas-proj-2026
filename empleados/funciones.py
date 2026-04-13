@@ -3,6 +3,7 @@ from .constantes import ID,NOMBRE,APELLIDO,USUARIO,ROL,PASSWORD,ESTADO
 from .usuarios import empleados, atributo_empleados
 from ventas.menu_ventas import *
 from Clientes.Clientes import mostrar_menu_clientes
+from stock.Stock import mostrar_adm_stock
 
 ancho_menu = 100
 
@@ -107,10 +108,10 @@ def submenu_admin(empleados, atributo_empleados):
         print("[1] Listar Usuarios ")
         print("[2] Crear usuarios")
         print("[3] Modificar usuario")
-        print("[4] Módulo de ventas")
-        print("[5] Módulo de estadisticas")
-        print("[6] Clientes")
-        print("[7] Stock")
+        print("[4] Módulo de Ventas")
+        print("[5] Módulo de Estadisticas")
+        print("[6] Módulo de Clientes")
+        print("[7] Módulo de Stock")
         print("-"*ancho_menu)
         print("[0] Salir")
         print("-"*ancho_menu)
@@ -139,6 +140,8 @@ def submenu_admin(empleados, atributo_empleados):
             mostrar_menu_estadisticas()
         elif opcion=="6":
             mostrar_menu_clientes()
+        elif opcion == "7":
+            mostrar_adm_stock()
         elif opcion=="0":
             print("Salir")
             break
