@@ -1,18 +1,49 @@
 def crear_productos():
-    productos= [
-        [1, "hamburguesadoble con cheddar", 15000],
-        [2, "hamburguesadoble con cheddar y panceta", 17000],
-        [3, "papas sasonadas con cheddar", 8000],
-        [4, "nuggest de pollo(10 unidades)", 10000],
-        [5, "gaseosa/agua", 4000]
-    ]
+    productos = []
+
+    n = int(input("¿Cuántos productos querés cargar?: "))
+
+    for i in range(n):
+        print(f"\nProducto {i+1}")
+
+    
+        codigo = i + 1
+
+        
+        while True:
+            descripcion = input("Descripción: ")
+            if descripcion.strip() != "":
+                break
+            print("Error: la descripción no puede estar vacía")
+
+        
+        while True:
+            try:
+                precio = int(input("Precio: "))
+                if precio > 0:
+                    break
+                else:
+                    print("Error: el precio debe ser mayor a 0")
+            except:
+                print("Error: ingresá un número válido")
+
+      
+        producto = [codigo, descripcion, precio]
+        productos.append(producto)
+
     return productos
+
 
 def mostrar_productos(productos):
     print("\nLista de productos:")
-    for p in productos:
-        print(f"{p[0]} - {p[1]} - ${p[2]}")
+    print("-" * 40)
+    print(f"{'COD':<5}{'DESCRIPCIÓN':<25}{'PRECIO':>10}")
+    print("-" * 40)
 
+    for p in productos:
+        print(f"{p[0]:<5}{p[1]:<25}${p[2]:>9}")
+
+    print("-" * 40)
 
 def comprar(productos):
     carrito= []
@@ -50,8 +81,27 @@ def mostrar_carrito(carrito):
 
     print(f"\nTOTAL: ${total_final}")
 
+
+
+def eliminar_producto(productos):
+    codigo = int(input("Ingrese código de producto a eliminar: "))
+
+    for i in range(len(productos)):
+        if productos[i][0] == codigo:
+            productos.pop(i)
+            print("Producto eliminado")
+            return
+    
+    print("Producto no encontrado")
+
+
+
 productos= crear_productos()
 mostrar_productos(productos)
+#eliminar_producto(productos)
+#mostrar_productos(productos)
 
 carrito=comprar(productos)
 mostrar_carrito(carrito)
+
+
