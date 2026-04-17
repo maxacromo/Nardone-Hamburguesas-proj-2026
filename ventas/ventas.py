@@ -31,7 +31,7 @@ elementos = [
     ['8', 'Maria Lopez', 'Ana Torres', 450, '05-03-2026', [['A005', 1], ['A001', 2]], True],
     ['9', 'Lucas Fernandez', 'Juan Perez', 1200, '10-03-2026', [['A011', 2], ['A012', 1]], True],
     ['10', 'Lucas Fernandez', 'Sofia Gomez', 750, '10-03-2026', [['A007', 1], ['A003', 2]], True],
-    ['11', 'Ezequiel Gonzalez', 'Lucia Martinez', 320, '12-03-2026', [['A002', 2], ['A006', 1]], True],
+    ['11', 'Kenaya Zalles', 'Lucia Martinez', 320, '12-03-2026', [['A002', 2], ['A006', 1]], True],
     ['12', 'Juan Perez', 'Diego Suarez', 980, '15-03-2026', [['A009', 2], ['A001', 3]], True],
     ['13', 'Maria Lopez', 'Valentina Ruiz', 1500, '16-03-2026', [['A010', 1], ['A011', 2]], True],
     ['14', 'Lucas Fernandez', 'Martin Acosta', 670, '18-03-2026', [['A004', 2], ['A008', 1]], True],

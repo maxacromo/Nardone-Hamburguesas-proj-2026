@@ -27,27 +27,36 @@ def dibujar_borde(titulo, ancho=60):
  
 def validar_usuario(empleados, usuario, contra, atributo_empleados):
     for empleado in empleados:
-
-        if empleado[USUARIO]==usuario and empleado[PASSWORD]==contra:
-            if empleado[ESTADO]=="Activo" and empleado[ROL]=="admin":
+        if empleado[USUARIO] == usuario and empleado[PASSWORD] == contra:
+            if empleado[ESTADO] == "Activo" and empleado[ROL] == "admin":
                 submenu_admin(empleados, atributo_empleados)
-            elif empleado[ESTADO]=="Activo" and empleado[ROL]=="empleado":
+            elif empleado[ESTADO] == "Activo" and empleado[ROL] == "empleado":
                 submenu_empleado()
             else:
-                print("El usuario ingresado " \
-                " se encuentra Inactivo, debe comunicarse con el administrador.")
-                input("Presione entender para volver al menu principal")
-            return
-    print("Inicio de sesion fallido.")
-    input("Presione Enter para continuar...")
+                print("El usuario ingresado se encuentra inactivo, debe comunicarse con el administrador.")
+                input("Presione Enter para volver al menú principal")
+            return True
 
+    return False
 
 def login(empleados, atributo_empleados):
-    limpiar_pantalla()
-    dibujar_borde(" INICIAR SESIÓN ", 40)
-    usuario = input("  Usuario: ").strip()
-    contra = input("  Contraseña: ").strip()  
-    validar_usuario(empleados,usuario,contra, atributo_empleados)
+    sesion = 0
+
+    while sesion < 3:
+        limpiar_pantalla()
+        dibujar_borde(" INICIAR SESIÓN ", 40)
+        usuario = input("  Usuario: ").strip()
+        contra = input("  Contraseña: ").strip()
+
+        if validar_usuario(empleados, usuario, contra, atributo_empleados):
+            return
+
+        sesion += 1
+        print("Usuario o contraseña incorrectos.")
+        print(f"Quedan {3 - sesion} intentos.")
+        input("Presione Enter para continuar...")
+    print("Has excedido el número de intentos. Volviendo al menú principal.")
+    input("Presione Enter para continuar...")
 
 #---------------------------------------------------------------
 #REGISTRO USUARIOS
@@ -179,11 +188,10 @@ def validacion_letras(mensaje, campo):
     entrada_permitida= r'^[A-Za-zÁÉÍÓÚáéíóúÑñ]+(?:[ -][A-Za-zÁÉÍÓÚáéíóúÑñ]+)*$'
     while True:
         data_usuario = input(mensaje).strip()
-        
-        if data_usuario == "":
+        if data_usuario == " ":
             print(f"El {campo} no puede estar vacío.")
-        elif not re.fullmatch(entrada_permitida, data_usuario):
-            print(f"El {campo} solo puede contener letrasy espacios.")
+        elif not re.match(entrada_permitida, data_usuario):
+            print(f"El {campo} solo puede contener letras y espacios.")
         else:
             return data_usuario
 
@@ -194,9 +202,9 @@ def validacion_usuario(mensaje):
     entrada_permitida= r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,8}$'
     while True:
         usuario = input(mensaje).strip()
-        if usuario == "":
+        if usuario == " ":
             print("El nombre de usuario no puede estar vacío.")
-        elif not re.fullmatch(entrada_permitida, usuario):
+        elif not re.match(entrada_permitida, usuario):
             print("El nombre de usuario debe tener entre 5 y 8 caracteres.")
         else:
             return usuario
@@ -208,10 +216,10 @@ def validacion_password(mensaje):
     entrada_permitida= r'^(?=.*[A-Za-z])(?=.*\d).{5,8}$'
     while True:
         password = input(mensaje).strip()
-        if password == "":
+        if password == " ":
             print("La contraseña no puede estar vacía.")
-        elif not re.fullmatch(entrada_permitida, password):
-            print("La contraseña debe tener entre 5 y 10 caracteres y contener al menos una letra y un número.")
+        elif not re.match(entrada_permitida, password):
+            print("La contraseña debe tener entre 5 y 8 caracteres con al menos un número.")
         else:
             return password
 
@@ -278,12 +286,12 @@ def mostrar_empleados(empleados,atributo_empleados):
 def solicitar_id(mensaje):
     while True:
         id=input(mensaje).strip()
-        if id=="":
+        if id==" ":
             print("El ID no puede encontrarse vacio")
         elif not id.isdigit():
             print("El ID debe ser un número entero.")
         else:
-            return id
+            return int(id)
 
 #---------------------------------------------------------------
 # Función para modificar el nombre de usuario de un empleado
@@ -302,7 +310,7 @@ def modificar_usuario(empleados,atributo_empleados):
             print("4.Rol")
             print("5.Contraseña")
             print("6.Estado del usuario")
-            opcion=solicitar_id("Ingrese el numero de la opción: ")
+            opcion=input("Ingrese el numero de la opción: ")
             if opcion=="1":
                 nuevo_nombre=validacion_letras("Ingrese el nuevo nombre ", "nombre")
                 empleado[NOMBRE]=nuevo_nombre
