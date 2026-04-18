@@ -1,79 +1,53 @@
 def crear_productos():
-    productos = []
+    combo1 = {"pan", "carne"}
+    combo2 = {"pan", "carne", "queso"}
+    combo3 = {"pan", "carne", "queso", "lechuga", "tomate"}
+    combo4 = {"pan", "carne", "queso", "bacon"}
 
-    n = int(input("¿Cuántos productos querés cargar?: "))
-
-    for i in range(n):
-        print(f"\nProducto {i+1}")
-
-    
-        codigo = i + 1
-
-        
-        while True:
-            descripcion = input("Descripción: ")
-            if descripcion.strip() != "":
-                break
-            print("Error: la descripción no puede estar vacía")
-
-        
-        while True:
-            try:
-                precio = int(input("Precio: "))
-                if precio > 0:
-                    break
-                else:
-                    print("Error: el precio debe ser mayor a 0")
-            except:
-                print("Error: ingresá un número válido")
-
-      
-        producto = [codigo, descripcion, precio]
-        productos.append(producto)
+    productos = [
+        (1, "Hamburguesa simple", 8000, combo1),
+        (2, "Hamburguesa con queso", 10000, combo2),
+        (3, "Hamburguesa completa", 12000, combo3),
+        (4, "Hamburguesa bacon", 14000, combo4)
+    ]
 
     return productos
 
-
 def mostrar_productos(productos):
-    print("\nLista de productos:")
-    print("-" * 40)
-    print(f"{'COD':<5}{'DESCRIPCIÓN':<25}{'PRECIO':>10}")
-    print("-" * 40)
+    print("\nLista de productos:\n")
 
     for p in productos:
-        print(f"{p[0]:<5}{p[1]:<25}${p[2]:>9}")
-
-    print("-" * 40)
+        ingredientes = ", ".join(p[3])
+        print(f"{p[0]} - {p[1]} - ${p[2]}")
+        print(f"   Ingredientes: {ingredientes}")
 
 def comprar(productos):
-    carrito= []
+    carrito = []
 
     while True:
-        codigo=int(input(" ingrese codigo de pruducto (0 par terminar)"))
+        codigo = int(input("\nIngrese código (0 para terminar): "))
 
-        if codigo==0:
+        if codigo == 0:
             break
 
-        cantidad=int(input("cantidad: "))
+        cantidad = int(input("Cantidad: "))
 
-        encontrado= False
-
+        encontrado = False
 
         for p in productos:
-            if p[0]==codigo:
-                total=p[2]*cantidad
+            if p[0] == codigo:
+                total = p[2] * cantidad
                 carrito.append([p[1], p[2], cantidad, total])
-                encontrado= True
+                encontrado = True
 
         if not encontrado:
-            print("ese producto no esta")
+            print("Producto no encontrado")
 
-    return carrito 
-            
+    return carrito
 
 def mostrar_carrito(carrito):
-    print("\nCarrito de compra")
-    total_final= 0 
+    print("\nCarrito:\n")
+    total_final = 0
 
     for item in carrito:
         print(f"{item[0]} - ${item[1]} x {item[2]} = ${item[3]}")
@@ -82,26 +56,18 @@ def mostrar_carrito(carrito):
     print(f"\nTOTAL: ${total_final}")
 
 
-
 def eliminar_producto(productos):
     codigo = int(input("Ingrese código de producto a eliminar: "))
 
-    for i in range(len(productos)):
-        if productos[i][0] == codigo:
-            productos.pop(i)
-            print("Producto eliminado")
-            return
-    
-    print("Producto no encontrado")
+    producto_a_eliminar = None
 
+    for p in productos:
+        if p[0] == codigo:
+            producto_a_eliminar = p
 
-
-productos= crear_productos()
-mostrar_productos(productos)
-#eliminar_producto(productos)
-#mostrar_productos(productos)
-
-carrito=comprar(productos)
-mostrar_carrito(carrito)
-
+    if producto_a_eliminar:
+        productos.remove(producto_a_eliminar)
+        print("Producto eliminado")
+    else:
+        print("Producto no encontrado")
 
