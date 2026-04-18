@@ -1,5 +1,5 @@
 import os , re
-from .constantes import ID_USUARIO,NOMBRE,APELLIDO,USUARIO,ROL,PASSWORD,ESTADO
+from .constantes import ID_EMPLEADO,NOMBRE,APELLIDO,USUARIO,ROL,PASSWORD,ESTADO
 from .usuarios import empleados, atributo_empleados
 from ventas.menu_ventas import *
 from Clientes.Clientes import mostrar_menu_clientes
@@ -242,7 +242,7 @@ def validacion_rol(mensaje):
 #Funcion para obtener el nuevo ID para un empleado, sumando 1 al ID mas alto existente en la lista de empleados.
 #----------------------------------------------------------------
 def obtener_id(empleados):
-    nuevo_id = max(empleado[ID_USUARIO] for empleado in empleados) + 1
+    nuevo_id = max(empleado[ID_EMPLEADO] for empleado in empleados) + 1
     return nuevo_id
 #----------------------------------------------------------------
 #VALIDACION DE ESTADO DEL USUARIO
@@ -301,7 +301,7 @@ def modificar_usuario(empleados,atributo_empleados):
     mostrar_empleados(empleados,atributo_empleados)
     id_buscado = solicitar_id("Ingrese el ID del empleado a modificar: ")
     for empleado in empleados:
-        if empleado[ID_USUARIO] == id_buscado:
+        if empleado[ID_EMPLEADO] == id_buscado:
             print(empleado)
             print("Ingrese el numero del atributo que desea modificar: ")
             print("1.Nombre")
