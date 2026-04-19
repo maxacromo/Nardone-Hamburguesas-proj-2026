@@ -205,7 +205,7 @@ def validacion_usuario(mensaje):
         if usuario == " ":
             print("El nombre de usuario no puede estar vacío.")
         elif not re.match(entrada_permitida, usuario):
-            print("El nombre de usuario debe tener entre 5 y 8 caracteres.")
+            print("El nombre de usuario debe contener letras y números.")
         else:
             return usuario
         
