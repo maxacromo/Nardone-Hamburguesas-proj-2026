@@ -1,4 +1,7 @@
 from .constantes import *
+from productos.productos import comprar, mostrar_productos, mostrar_carrito
+from empleados.utils import obtener_nombre_apellido
+import re
 
 # Programa principal
 RESET = "\033[0m"
@@ -21,26 +24,26 @@ ancho_standard = 100
 
 encabezados = ['Id', 'Empleado', 'Cliente', 'Total', 'Fecha' ,'Articulos y Cantidad']
 elementos = [
-    ['1', 'Ezequiel Gonzalez', 'Juan Perez', 100, '31-01-2026', [['A001', 1], ['A002', 2]], True],
-    ['2', 'Ezequiel Gonzalez', 'Pepe Alvarez', 130, '02-02-2026', [['A003', 1], ['A004', 1]], True],
-    ['3', 'Ezequiel Gonzalez', 'Pedro Lopez', 105, '06-02-2026', [['A001', 1], ['A005', 1]], True],
-    ['4', 'Juan Perez', 'Pedro Lopez', 1052, '01-03-2026', [['A006', 2], ['A007', 3]], True],
-    ['5', 'Juan Perez', 'Pedro Lopez', 2050, '01-03-2026', [['A008', 1], ['A009', 5]], True],
-    ['6', 'Juan Perez', 'Pedro Lopez', 500, '01-03-2026', [['A002', 4], ['A010', 1]], True],
-    ['7', 'Maria Lopez', 'Carlos Diaz', 890, '05-03-2026', [['A003', 2], ['A004', 3]], True],
-    ['8', 'Maria Lopez', 'Ana Torres', 450, '05-03-2026', [['A005', 1], ['A001', 2]], True],
-    ['9', 'Lucas Fernandez', 'Juan Perez', 1200, '10-03-2026', [['A011', 2], ['A012', 1]], True],
-    ['10', 'Lucas Fernandez', 'Sofia Gomez', 750, '10-03-2026', [['A007', 1], ['A003', 2]], True],
-    ['11', 'Kenaya Zalles', 'Lucia Martinez', 320, '12-03-2026', [['A002', 2], ['A006', 1]], True],
-    ['12', 'Juan Perez', 'Diego Suarez', 980, '15-03-2026', [['A009', 2], ['A001', 3]], True],
-    ['13', 'Maria Lopez', 'Valentina Ruiz', 1500, '16-03-2026', [['A010', 1], ['A011', 2]], True],
-    ['14', 'Lucas Fernandez', 'Martin Acosta', 670, '18-03-2026', [['A004', 2], ['A008', 1]], True],
-    ['15', 'Ezequiel Gonzalez', 'Camila Benitez', 430, '20-03-2026', [['A003', 1], ['A005', 2]], True],
-    ['16', 'Juan Perez', 'Fernando Silva', 2500, '22-03-2026', [['A012', 4], ['A006', 2]], True],
-    ['17', 'Maria Lopez', 'Pedro Lopez', 300, '22-03-2026', [['A001', 1], ['A007', 1]], True],
-    ['18', 'Lucas Fernandez', 'Juan Perez', 1100, '25-03-2026', [['A009', 2], ['A010', 2]], True],
-    ['19', 'Ezequiel Gonzalez', 'Pepe Alvarez', 870, '27-03-2026', [['A002', 3], ['A011', 1]], True],
-    ['20', 'Juan Perez', 'Carlos Diaz', 1990, '28-03-2026', [['A008', 2], ['A012', 3], ['A005', 5]], True]
+    ['1', 'Ezequiel Gonzalez', 'Juan Perez', 100, '31-01-2026', [[3, 1], [1, 2]], True],
+    ['2', 'Ezequiel Gonzalez', 'Pepe Alvarez', 130, '02-02-2026', [[4, 1], [2, 1]], True],
+    ['3', 'Ezequiel Gonzalez', 'Pedro Lopez', 105, '06-02-2026', [[1, 1], [3, 1]], True],
+    ['4', 'Juan Perez', 'Pedro Lopez', 1052, '01-03-2026', [[2, 2], [4, 3]], True],
+    ['5', 'Juan Perez', 'Pedro Lopez', 2050, '01-03-2026', [[1, 1], [3, 5]], True],
+    ['6', 'Juan Perez', 'Pedro Lopez', 500, '01-03-2026', [[4, 4], [2, 1]], True],
+    ['7', 'Maria Lopez', 'Carlos Diaz', 890, '05-03-2026', [[3, 2], [1, 3]], True],
+    ['8', 'Maria Lopez', 'Ana Torres', 450, '05-03-2026', [[2, 1], [4, 2]], True],
+    ['9', 'Lucas Fernandez', 'Juan Perez', 1200, '10-03-2026', [[1, 2], [3, 1]], True],
+    ['10', 'Lucas Fernandez', 'Sofia Gomez', 750, '10-03-2026', [[4, 1], [2, 2]], True],
+    ['11', 'Kenaya Zalles', 'Lucia Martinez', 320, '12-03-2026', [[3, 2], [1, 1]], True],
+    ['12', 'Juan Perez', 'Diego Suarez', 980, '15-03-2026', [[2, 2], [4, 3]], True],
+    ['13', 'Maria Lopez', 'Valentina Ruiz', 1500, '16-03-2026', [[1, 1], [3, 2]], True],
+    ['14', 'Lucas Fernandez', 'Martin Acosta', 670, '18-03-2026', [[4, 2], [2, 1]], True],
+    ['15', 'Ezequiel Gonzalez', 'Camila Benitez', 430, '20-03-2026', [[3, 1], [1, 2]], True],
+    ['16', 'Juan Perez', 'Fernando Silva', 2500, '22-03-2026', [[2, 4], [4, 2]], True],
+    ['17', 'Maria Lopez', 'Pedro Lopez', 300, '22-03-2026', [[1, 1], [3, 1]], True],
+    ['18', 'Lucas Fernandez', 'Juan Perez', 1100, '25-03-2026', [[4, 2], [2, 2]], True],
+    ['19', 'Ezequiel Gonzalez', 'Pepe Alvarez', 870, '27-03-2026', [[3, 3], [1, 1]], True],
+    ['20', 'Juan Perez', 'Carlos Diaz', 1990, '28-03-2026', [[2, 2], [4, 3], [1, 5]], True]
 ]
 
 def mostrar_linea_divisoria(ancho_total):
@@ -75,18 +78,43 @@ def ingresar_productos_venta():
             ingreso = input("Opción inválida. Ingrese 1 para continuar o 0 para finalizar: ")
     
     return productos
-    
-def crear_venta():
-    
+
+def obtener_productos_carrito(carrito):
+    """
+    Convierte el carrito del formato
+    [nombre, precio_unit, cantidad, subtotal, codigo_producto]
+    en la lista de artículos de la venta: [[codigo_producto, cantidad], ...].
+    """
+    if not carrito:
+        return []
+    resultado = []
+    for item in carrito:
+        if len(item) < 5:
+            continue
+        codigo, cantidad = item[4], item[2]
+        resultado.append([codigo, cantidad])
+    return resultado
+
+
+def crear_venta(usuario):
+
     mostrar_linea_divisoria(ancho_standard)
     print('Creacion de nueva venta')
-    mostrar_linea_divisoria(ancho_standard)
-    nombre_empleado = input("Ingrese el nombre del empleado: ")
-    nombre_cliente = input("Ingrese el nombre del cliente: ")
-    total_venta = float(input("Ingrese el total de la venta: "))
-    fecha_venta = input("Ingrese la fecha en formato dd-MM-aaaa: ")
-    productos = ingresar_productos_venta()
-    venta = [calcular_id(), nombre_empleado, nombre_cliente, total_venta, fecha_venta, productos, True]
+    mostrar_productos()
+    carrito, total_final = comprar()
+    mostrar_carrito(carrito)
+    productos = obtener_productos_carrito(carrito)
+    nombre_cliente = input("Ingrese el nombre del cliente o Enter para saltear: ")
+
+    patron_fecha = r"^(0[1-9]|[12]\d|3[01])-(0[1-9]|1[0-2])-\d{4}$"
+    while True:
+        fecha_venta = input("Ingrese la fecha en formato dd-MM-aaaa: ")
+        if re.match(patron_fecha, fecha_venta):
+            break
+        print("Fecha inválida. Asegúrese de usar el formato dd-MM-aaaa (ej: 25-03-2025)")
+
+    nombre = obtener_nombre_apellido(usuario)
+    venta = [calcular_id(), nombre, nombre_cliente, total_final, fecha_venta, productos, True]
     elementos.append(venta)
     mostrar_linea_divisoria(ancho_standard)
     print(f"Venta creada con Id: {AMARILLO}{venta[ID]}")

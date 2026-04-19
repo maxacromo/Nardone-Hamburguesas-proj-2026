@@ -3,7 +3,7 @@ from .constantes import ID_EMPLEADO,NOMBRE,APELLIDO,USUARIO,ROL,PASSWORD,ESTADO
 from .usuarios import empleados, atributo_empleados
 from ventas.menu_ventas import *
 from Clientes.Clientes import mostrar_menu_clientes
-from stock.Stock import mostrar_adm_stock
+from stock.Main_stock import menu
 
 ancho_menu = 100
 
@@ -28,13 +28,18 @@ def dibujar_borde(titulo, ancho=60):
 def validar_usuario(empleados, usuario, contra, atributo_empleados):
     for empleado in empleados:
         if empleado[USUARIO] == usuario and empleado[PASSWORD] == contra:
-            if empleado[ESTADO] == "Activo" and empleado[ROL] == "admin":
-                submenu_admin(empleados, atributo_empleados)
-            elif empleado[ESTADO] == "Activo" and empleado[ROL] == "empleado":
-                submenu_empleado()
-            else:
+            if empleado[ESTADO] != "Activo":
                 print("El usuario ingresado se encuentra inactivo, debe comunicarse con el administrador.")
                 input("Presione Enter para volver al menú principal")
+                return False
+            if empleado[ROL] == "admin":
+                submenu_admin(empleados, atributo_empleados, usuario)
+            elif empleado[ROL] == "empleado":
+                submenu_empleado(usuario)
+            else:
+                print("Rol no reconocido.")
+                input("Presione Enter para volver al menú principal")
+                return False
             return True
 
     return False
@@ -108,7 +113,7 @@ def menu_principal(empleados, atributo_empleados):
 #---------------------------------------------------------------
 #MENU QUE VISUALIZA EL ADMINISTRADOR 
 #---------------------------------------------------------------
-def submenu_admin(empleados, atributo_empleados):
+def submenu_admin(empleados, atributo_empleados, usuario_sesion):
     while True:
         limpiar_pantalla()
         print("-"*ancho_menu)
@@ -144,13 +149,13 @@ def submenu_admin(empleados, atributo_empleados):
             input("Presione enter para volver al menu.")
             limpiar_pantalla()
         elif opcion=="4":
-            mostrar_menu_ventas()
+            mostrar_menu_ventas(usuario_sesion)
         elif opcion=="5":
             mostrar_menu_estadisticas()
         elif opcion=="6":
             mostrar_menu_clientes()
         elif opcion == "7":
-            mostrar_adm_stock()
+            menu()
         elif opcion=="0":
             print("Salir")
             break
@@ -159,7 +164,7 @@ def submenu_admin(empleados, atributo_empleados):
 #---------------------------------------------------------------
 #SUBMENU QUE VISUALIZA EL EMPLEADO
 #---------------------------------------------------------------
-def submenu_empleado():
+def submenu_empleado(usuario_sesion):
     while True:
         limpiar_pantalla()
         print("1.Crear venta")
@@ -353,4 +358,7 @@ def modificar_estado(empleados):
         
 def mostrar_menu_principal():
     menu_principal(empleados, atributo_empleados)
+
+
+
         

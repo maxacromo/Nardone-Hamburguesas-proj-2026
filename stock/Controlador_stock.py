@@ -1,39 +1,26 @@
-ancho_menu = 100
+from stock.modelo_stock import stock
 
-stock= [
-    ["Hamburguesa", 500],
-    ["Queso", 300],
-    ["Tomate", 100],
-    ["Lechuga",100],
-    ["Pan", 1000],
-    ["Cebolla", 100]
-]
-
-def inicio_stock():
-    print("-"*ancho_menu)
-    print("MENÚ PRINCIPAL > ADMINISTRACION DE STOCK")
-    print("-"*ancho_menu)
-    print("[1] Añadir nuevo ingrediente")
-    print("[2] Borrar ingrediente")
-    print("[3] Modificar stock de un ingrediente")
-    print("[4] Listar ingredientes")
-    print("[5] Buscar ingrediente en stock")
-    print("-"*ancho_menu)
-    print("[0] Salir")
-    print("-"*ancho_menu)
-    
-    
 def anadir_ingrediente(stock):
     nombre= input("Ingrese el nombre del nuevo ingrediente:").strip()
     while nombre == "":
         nombre= input("El nombre no puede estar vacio. Ingrese el nombre del nuevo ingrediente:").strip()
+    while not nombre.replace(" ", "").isalpha():
+        print("El nombre ingresado no es una palabra")
+        nombre= input("Ingrese el nombre del nuevo ingrediente:").strip()
+        
     for ingrediente in stock:
         if ingrediente[0].lower() == nombre.lower():
             print("El ingrediente ya esta cargado.")
             return
-    cantidad= int(input("Ingrese la cantidad de stock del nuevo ingrediente: "))
-    while cantidad <= 0:
-        cantidad= int(input("Se tiene que ingresar un stock mayor a 0. Ingrese la cantidad de stock del nuevo ingrediente:"))
+    while True:
+        cantidad_str = input("Ingrese la cantidad de stock del nuevo ingrediente: ")
+        if not cantidad_str.isdigit():
+            print("El valor ingresado no es un numero entero")
+        elif int(cantidad_str) < 0:
+            print("Se tiene que ingresar un stock positivo.")
+        else:
+            cantidad = int(cantidad_str)
+            break
     ingrediente= [nombre, cantidad]
     stock.append(ingrediente)
     print("El nuevo ingrediente ha sido agregado.")
@@ -43,7 +30,7 @@ def borrar_ingrediente(stock):
     while nombre == "":
         nombre= input("El nombre no puede estar vacio. Ingrese el nombre del nuevo ingrediente:").strip()
     for ingrediente in stock:
-        if ingrediente[0] == nombre:
+        if ingrediente[0].lower() == nombre.lower():
             stock.remove(ingrediente)
             print("Ingrediente Eliminado")
             return
@@ -54,12 +41,20 @@ def modificar_ingrediente(stock):
     nombre= input("Ingrese el nombre del ingrediente que desea modificar el stock: ").strip()
     while nombre == "":
         nombre= input("El nombre no puede estar vacio.Ingrese el nombre del ingrediente que desea modificar el stock: ").strip()
+
     for ingrediente in stock:
         if ingrediente[0].lower() == nombre.lower():
-            nuevo_stock= int(input("Ingrese el nuevo stock:"))
-            while nuevo_stock < 0:
-                nuevo_stock= int(input("El stock debe ser mayor que cero. Ingrese el nuevo stock:"))
+            while True:
+                cantidad_str = input("Ingrese la cantidad de stock del nuevo ingrediente: ")
+                if not cantidad_str.isdigit():
+                    print("El valor ingresado no es un numero entero")
+                elif int(cantidad_str) <= 0:
+                    print("Se tiene que ingresar un stock mayor a 0.")
+                else:
+                    nuevo_stock = int(cantidad_str)
+                    break
             ingrediente[1]= nuevo_stock
+            print("El stock se actualizo")
             return
     print("No se encontro el ingrediente")
         
@@ -75,8 +70,10 @@ def buscar_por_nombre(stock):
     for ingrediente in stock:
         if ingrediente[0].lower() == nombre.lower():
             print(f"{ingrediente[0]}: {ingrediente[1]}")
-            return 
-        
+            return
+    print("No se encontro el producto")
+    return 
+
 def adm_stock(stock):
     opcion= ''
     while opcion != "0":
@@ -94,6 +91,5 @@ def adm_stock(stock):
             buscar_por_nombre(stock)
         elif opcion == "0":
             break #Futuro return al menu
-
-def mostrar_adm_stock():
-    adm_stock(stock)
+        else: 
+            print("Opcion invalida")

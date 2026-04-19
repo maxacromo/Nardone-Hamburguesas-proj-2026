@@ -1,4 +1,4 @@
-from productos import crear_productos, mostrar_productos, comprar, mostrar_carrito, eliminar_producto
+from productos.productos import crear_productos, mostrar_productos, comprar, mostrar_carrito, eliminar_producto
 
 def menu():
     productos = crear_productos()
@@ -16,7 +16,7 @@ def menu():
             mostrar_productos(productos)
 
         elif opcion == "2":
-            carrito = comprar(productos)
+            carrito, total_final = comprar()
             mostrar_carrito(carrito)
 
         elif opcion == "3":
@@ -31,7 +31,7 @@ def menu():
 
 productos = crear_productos()
 mostrar_productos(productos)
-carrito = comprar(productos)
+carrito, total_final = comprar()
 
 
 
