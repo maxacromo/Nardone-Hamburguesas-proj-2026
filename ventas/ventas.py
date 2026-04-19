@@ -1,5 +1,5 @@
 from .constantes import *
-from productos.productos import comprar, mostrar_productos, mostrar_carrito
+from productos.productos import comprar, mostrar_productos, mostrar_carrito, mostrar_productos
 from empleados.utils import obtener_nombre_apellido
 import re
 
@@ -58,7 +58,7 @@ def mostrar_venta(venta):
     print(f"Cliente: {AMARILLO}{venta[CLIENTE]}{RESET}")
     print(f"Total: {AMARILLO}${venta[TOTAL_VENTA]}{RESET}")
     print(f"Fecha: {AMARILLO}{venta[FECHA]}{RESET}")
-    print(f"Articulos: {AMARILLO}{formatear_articulos(venta[ARTICULOS])}{RESET}")
+    mostrar_productos(venta[ARTICULOS])
 
 
 # Para calcular el Id, obtengo el Id del ultimo elemento de la lista de Ventas, y le sumo 1
@@ -168,7 +168,14 @@ def actualizar_venta():
     venta[VENDEDOR] = input("Ingrese el nombre del empleado: ")
     venta[CLIENTE] = input("Ingrese el nombre del cliente: ")
     venta[TOTAL_VENTA] = float(input("Ingrese el total de la venta: "))
-    venta[FECHA] = input("Ingrese la fecha en formato dd-MM-aaaa: ")
+
+    patron_fecha = r"^(0[1-9]|[12]\d|3[01])-(0[1-9]|1[0-2])-\d{4}$"
+    while True:
+        fecha_venta = input("Ingrese la fecha en formato dd-MM-aaaa: ")
+        if re.match(patron_fecha, fecha_venta):
+            break
+        print("Fecha inválida. Asegúrese de usar el formato dd-MM-aaaa (ej: 25-03-2025)")
+
     venta[ARTICULOS] = ingresar_productos_venta()
     mostrar_linea_divisoria(ancho_standard)
     print('Venta actualizada:')

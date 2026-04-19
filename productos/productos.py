@@ -55,6 +55,36 @@ def mostrar_productos(lista=None):
     linea_divisoria()
 
 
+def mostrar_productos(elementos):
+    encabezados = ["Codigo", "Nombre", "Precio", "Cantidad", "Ingredientes"]
+
+    print()
+    print(f"{BOLD}Productos{RESET}")
+    print(
+        f"{BOLD}"
+        f"{encabezados[0]:<8} | "
+        f"{encabezados[1]:<26} | "
+        f"{encabezados[2]:<13} | "
+        f"{encabezados[3]:<10} | "
+        f"{encabezados[4]:<44}"
+        f"{RESET}"
+    )
+    linea_divisoria()
+
+    for id, cant in elementos:
+        producto = next((p for p in productos if p[0] == id), None)
+        if producto is None:
+            print(f"Producto con id {id} no encontrado")
+            continue
+        print(
+            f"{AMARILLO}{str(producto[0]):<8}{RESET} | "
+            f"{(str(producto[1])[:23] + '...') if len(str(producto[1])) > 26 else str(producto[1]):<26} | "
+            f"{('$' + format(float(producto[2]), '.2f')):<13} | "
+            f"{str(cant):<10} | "
+            f"{CYAN}{(lambda s: s[:41] + '...' if len(s) > 44 else s)(', '.join(sorted(producto[3]))):<44}{RESET}"
+        )
+
+
 def comprar():
     carrito = []
     total_final = 0.0
@@ -111,9 +141,9 @@ def mostrar_carrito(carrito):
             nombre_str = nombre_str[:29] + "..."
         print(
             f"{AMARILLO}{nombre_str:<32}{RESET} | "
-            f"${float(p_unit):>10.2f} | "
+            f"${float(p_unit):>11} | "
             f"{int(cant):>6} | "
-            f"{CYAN}${float(sub):>10.2f}{RESET}"
+            f"{CYAN}${float(sub):>11}{RESET}"
         )
         total_final += float(sub)
 
