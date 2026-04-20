@@ -28,7 +28,6 @@ def linea_divisoria():
 def crear_productos():
     return list(productos)
 
-
 def mostrar_productos(lista=None):
     encabezados = ["Codigo", "Nombre", "Precio", "Ingredientes"]
 
@@ -55,7 +54,7 @@ def mostrar_productos(lista=None):
     linea_divisoria()
 
 
-def mostrar_productos(elementos):
+def mostrar_productos_seleccionados(elementos):
     encabezados = ["Codigo", "Nombre", "Precio", "Cantidad", "Ingredientes"]
 
     print()
