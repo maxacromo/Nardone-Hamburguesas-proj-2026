@@ -64,7 +64,7 @@ def listar_stock(stock):
         print(f"{ingrediente[0]}: {ingrediente[1]}")
         
 def buscar_por_nombre(stock):
-    nombre= input("Ingrese el ingrediente que desea buscar: ").strip()
+    nombre= input("Ingrese el nombre del ingrediente que desea buscar: ").strip()
     while nombre == "":
         nombre= input("El nombre no puede estar vacio. Ingrese el ingrediente que desea buscar: ").strip()
     for ingrediente in stock:
