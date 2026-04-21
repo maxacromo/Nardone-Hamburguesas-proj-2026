@@ -8,7 +8,7 @@ def inicio_stock():
     print("[2] Borrar ingrediente")
     print("[3] Modificar stock de un ingrediente")
     print("[4] Listar ingredientes")
-    print("[5] Buscar ingrediente en stock")
+    print("[5] Buscar ingrediente por nombre en stock")
     print("-"*ancho_menu)
     print("[0] Salir")
     print("-"*ancho_menu)
