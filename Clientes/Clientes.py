@@ -5,7 +5,7 @@ ancho_menu = 100
 def Persona_Relleno(): #Genera Personas no reales para que el sistema cargue con Cliente ya existen
     Persona_ID=[]
     Mail_List=[]
-    Cliente={}
+    Cliente={"ID DE CLIENTE":["NOMBRE","CORREO","ACTIVIDAD"]}
     cycle=random.randint(5,10)
     cont=0
     while cont != cycle:
@@ -62,7 +62,11 @@ def Crear_Cliente(Persona_ID,Cliente,Mail_List): #Funcion que permite agregar Cl
 
 def Read_Cliente(Cliente): #Permite leer la matriz de clientes
                             #Para interfaz si quieren sacar el pretty print y poner otra cosa, no se va a romper
-    pprint.pprint(Cliente)
+    for key,value in Cliente.items():
+        print(f"{key:<17}", end=" ")
+        for i in range(len(value)) :
+            print(f"{value[i]:<17}", end=" ")
+        print("\n")
     input("Presione enter para volver al menu previo.")
     limpiar_pantalla()
        
