@@ -4,6 +4,7 @@ from .usuarios import empleados, atributo_empleados
 from ventas.menu_ventas import *
 from Clientes.Clientes import mostrar_menu_clientes
 from stock.Main_stock import menu
+from .colores import *
 
 ancho_menu = 100
 
@@ -136,18 +137,18 @@ def submenu_admin(empleados, atributo_empleados, usuario_sesion):
         opcion=input("Ingrese el numero de opcion : ")
         limpiar_pantalla()
         if opcion=="1":
-            print("Listar Usuarios")
+            print(f"{FONDO_CELESTE}{BLANCO} Listar Usuarios {RESET}")
             mostrar_empleados(empleados, atributo_empleados)
             input("Presione enter para volver al menu ")
             limpiar_pantalla()
         elif opcion=="2":
             limpiar_pantalla()
-            print("Crear usuarios")
+            print(f"{FONDO_CELESTE}{BLANCO} Crear usuarios {RESET}")
             agregar_empleado(empleados)
             input("Presione enter para volver al menu")
             limpiar_pantalla()
         elif opcion=="3":
-            print("Modificar usuario")
+            print(f"{FONDO_CELESTE}{BLANCO} Modificar usuario {RESET}")
             modificar_usuario(empleados,atributo_empleados)
             input("Presione enter para volver al menu.")
             limpiar_pantalla()
@@ -287,13 +288,29 @@ def agregar_empleado(empleados):
 # Función para mostrar la lista de empleados
 #---------------------------------------------------------------
 def mostrar_empleados(empleados,atributo_empleados):
+    # Imprimir encabezados en color CYAN
     for atributo in atributo_empleados:
-        print(f"{atributo:<15}", end=" ")#esto hace que se impriman uno a lado del otro, en controla el final del print.
-    print("\n")
-    for empleado  in empleados:#recorre cada fila (empleado)
-        for dato in empleado:#recorre cada valor dentro de esa fila.
-            print(f"{dato:<15}", end=" ")#esto hace que se impriman uno a lado del otro, en controla el final del print.")
+        print(f"{CYAN}{NEGRITA}{atributo:<15}{RESET}", end=" ")
+    print()
+    print("-" * 105) # Linea divisoria del encabezado
+    
+    for empleado in empleados:
+        for i, dato in enumerate(empleado):
+            # Aplicamos colores dependiendo del texto
+            if i == 0:
+                print(f"{ROSA}{str(dato):<15}{RESET}", end=" ")
+            elif str(dato) == "Inactivo":
+                print(f"{ROJO}{str(dato):<15}{RESET}", end=" ")
+            elif str(dato) == "Activo":
+                print(f"{VERDE}{str(dato):<15}{RESET}", end=" ")
+            elif str(dato) == "admin":
+                print(f"{NARANJA}{str(dato):<15}{RESET}", end=" ")
+            elif str(dato) == "empleado":
+                print(f"{AZUL}{str(dato):<15}{RESET}", end=" ")
+            else:
+                print(f"{str(dato):<15}", end=" ")
         print()
+        print("-" * 105) # Linea divisoria entre empleados
 #---------------------------------------------------------------
 #Funcion para pedir ID 
 #---------------------------------------------------------------
@@ -317,7 +334,7 @@ def modificar_usuario(empleados,atributo_empleados):
     for empleado in empleados:
         if empleado[ID_EMPLEADO] == id_buscado:
             print(empleado)
-            print("Ingrese el numero del atributo que desea modificar: ")
+            print(f"{FONDO_CELESTE}{BLANCO} Ingrese el numero del atributo que desea modificar: {RESET}")
             print("1.Nombre")
             print("2.Apellido")
             print("3.Usuario")
@@ -359,7 +376,7 @@ se encuentra "activo" podra iniciar sesión
     
 def modificar_estado(empleados):
     while True:
-        nuevo_estado=input("Ingrese el nuevo estado. 1 activo y 2 para Inactivo: ").strip()
+        nuevo_estado=input(f"Ingrese el nuevo estado. 1 {VERDE}activo{RESET} y 2 para {ROJO}Inactivo{RESET}: ").strip()
         if nuevo_estado not in ["1","2"]:
             print("Opcion no valida, ingrese 1 para activo o 2 para inactivo")
         else:

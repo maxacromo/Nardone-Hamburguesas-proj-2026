@@ -1,7 +1,7 @@
 empleados = [
     [1, "Juan", "Perez", "jperez", "admin","pepe123","Activo"],
     [2, "Ana", "Gomez", "agomez", "admin","nada123","Inactivo"],
-    [3, "Luis", "Martinez", "lmartinez", "empleado","xd123","Acivo"],
+    [3, "Luis", "Martinez", "lmartinez", "empleado","xd123","Activo"],
     [4, "Sofia", "Lopez", "slopez", "empleado","xd246","Activo"],
     [5, "Ezequiel", "Gonzalez", "egonzalez", "admin", "admin", "Activo"],
     [6, "Kenaya" , "Zalles", "kzalles", "admin", "kz123", "Activo"],
