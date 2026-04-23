@@ -128,7 +128,7 @@ def submenu_admin(empleados, atributo_empleados, usuario_sesion):
         print("[4] Módulo de Ventas")
         print("[5] Módulo de Estadisticas")
         print("[6] Módulo de Clientes")
-        print("[7] Módulo de Stock")
+        print("[7] Administracion de Stock")
         print("-"*ancho_menu)
         print("[0] Salir")
         print("-"*ancho_menu)
@@ -170,20 +170,26 @@ def submenu_admin(empleados, atributo_empleados, usuario_sesion):
 def submenu_empleado(usuario_sesion):
     while True:
         limpiar_pantalla()
-        print("1.Crear venta")
-        print("2.Modificar venta")
-        print("3.Ver ventas realizadas ")
-        print("4.Salir")
+        print("-"*ancho_menu)
+        print("MENÚ PRINCIPAL")
+        print("-"*ancho_menu)
+        print("[1] Crear venta")
+        print("[2] Módulo de Estadisticas")
+        print("[3] Visualizar ventas")
+        print("-"*ancho_menu)
+        print("[0] Salir")
+        print("-"*ancho_menu)
+
         opcion=input("Ingrese el número de opción: ").strip()
         if opcion=="":
             print("La opción no puede encontrarse vacía")
         elif opcion =="1":
-            print("Crear venta")
+            mostrar_creacion_ventas_menu(usuario_sesion)
         elif opcion=="2":
-            print("Modificar venta")
+            mostrar_menu_estadisticas()
         elif opcion=="3":
-            print("Ver ventas realizadas")      
-        elif opcion=="4":
+            mostrar_ventas_menu()    
+        elif opcion=="0":
             print("Salir")
             break
 

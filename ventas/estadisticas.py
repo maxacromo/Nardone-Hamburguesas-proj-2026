@@ -1,5 +1,5 @@
 from .constantes import *
-from productos.productos import mostrar_productos
+from productos.productos import mostrar_productos_seleccionados
 
 # Programa principal
 RESET = "\033[0m"
@@ -97,7 +97,7 @@ def obtener_articulo_mas_vendido(ventas):
         return
     
     articulo = max(cantidades, key=cantidades.get)
-    mostrar_productos([[articulo, cantidades[articulo]]])
+    mostrar_productos_seleccionados([[articulo, cantidades[articulo]]])
     mostrar_linea_divisoria(ancho_standard)
 
 

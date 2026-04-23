@@ -67,6 +67,12 @@ def mostrar_menu_estadisticas():
         elif opcion == "3":
             obtener_cant_total_ventas(elementos)
 
+def mostrar_ventas_menu():
+    mostrar_ventas()
+
+def mostrar_creacion_ventas_menu(empleado_logueado):
+    crear_venta(empleado_logueado)
+
 
 
       
