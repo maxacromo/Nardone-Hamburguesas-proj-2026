@@ -31,7 +31,7 @@ def validar_usuario(empleados, usuario, contra, atributo_empleados):
             if empleado[ESTADO] != "Activo":
                 print("El usuario ingresado se encuentra inactivo, debe comunicarse con el administrador.")
                 input("Presione Enter para volver al menú principal")
-                return False
+                return "INACTIVO"
             if empleado[ROL] == "admin":
                 submenu_admin(empleados, atributo_empleados, usuario)
             elif empleado[ROL] == "empleado":
@@ -53,7 +53,10 @@ def login(empleados, atributo_empleados):
         usuario = input("  Usuario: ").strip()
         contra = input("  Contraseña: ").strip()
 
-        if validar_usuario(empleados, usuario, contra, atributo_empleados):
+        resultado_validacion = validar_usuario(empleados, usuario, contra, atributo_empleados)
+        if resultado_validacion == "INACTIVO":
+            return
+        elif resultado_validacion == True:
             return
 
         sesion += 1
