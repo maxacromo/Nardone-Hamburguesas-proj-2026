@@ -1,5 +1,5 @@
 from .constantes import *
-from productos.productos import comprar, mostrar_productos, mostrar_carrito, mostrar_productos
+from productos.productos import comprar, mostrar_productos, mostrar_carrito, mostrar_productos, mostrar_productos_de_venta, crear_productos
 from empleados.utils import obtener_nombre_apellido
 import re
 
@@ -58,7 +58,7 @@ def mostrar_venta(venta):
     print(f"Cliente: {AMARILLO}{venta[CLIENTE]}{RESET}")
     print(f"Total: {AMARILLO}${venta[TOTAL_VENTA]}{RESET}")
     print(f"Fecha: {AMARILLO}{venta[FECHA]}{RESET}")
-    mostrar_productos(venta[ARTICULOS])
+    mostrar_productos_de_venta(venta[ARTICULOS])
 
 
 # Para calcular el Id, obtengo el Id del ultimo elemento de la lista de Ventas, y le sumo 1
@@ -98,12 +98,13 @@ def obtener_productos_carrito(carrito):
 
 def crear_venta(usuario):
 
+    productos = crear_productos()
     mostrar_linea_divisoria(ancho_standard)
     print('Creacion de nueva venta')
-    mostrar_productos()
+    mostrar_productos(productos)
     carrito, total_final = comprar()
     mostrar_carrito(carrito)
-    productos = obtener_productos_carrito(carrito)
+    productos_venta = obtener_productos_carrito(carrito)
     nombre_cliente = input("Ingrese el nombre del cliente o Enter para saltear: ")
 
     patron_fecha = r"^(0[1-9]|[12]\d|3[01])-(0[1-9]|1[0-2])-\d{4}$"
@@ -114,7 +115,7 @@ def crear_venta(usuario):
         print("Fecha inválida. Asegúrese de usar el formato dd-MM-aaaa (ej: 25-03-2025)")
 
     nombre = obtener_nombre_apellido(usuario)
-    venta = [calcular_id(), nombre, nombre_cliente, total_final, fecha_venta, productos, True]
+    venta = [calcular_id(), nombre, nombre_cliente, total_final, fecha_venta, productos_venta, True]
     elementos.append(venta)
     mostrar_linea_divisoria(ancho_standard)
     print(f"Venta creada con Id: {AMARILLO}{venta[ID]}")
@@ -130,7 +131,6 @@ def obtener_venta():
         return
     mostrar_linea_divisoria(ancho_standard)
     mostrar_venta(venta)
-    mostrar_linea_divisoria(ancho_standard)
 
 
 def obtener_venta_por_id(id):

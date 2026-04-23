@@ -24,11 +24,46 @@ ANCHO_LINEA = 100
 def linea_divisoria():
     print(f"{AZUL}{'-' * ANCHO_LINEA}{RESET}")
 
+def linea_divisoria_con_ancho(ancho):
+    print(f"{AZUL}{'-' * ancho}{RESET}")
+
 
 def crear_productos():
     return list(productos)
 
-def mostrar_productos(lista=None):
+def mostrar_productos_de_venta(lista):
+    encabezados = ["Codigo", "Nombre", "Precio", "Ingredientes", "Cantidad"]
+
+    linea_divisoria_con_ancho(115)
+    print(f"{BOLD}Lista de productos{RESET}")
+    print()
+    print(
+        f"{BOLD}"
+        f"{encabezados[0]:<8} | "
+        f"{encabezados[1]:<26} | "
+        f"{encabezados[2]:<13} | "
+        f"{encabezados[3]:<44} | "
+        f"{encabezados[4]:<8}"
+        f"{RESET}"
+    )
+    linea_divisoria_con_ancho(115)
+
+    cantidad_por_id = {int(item[0]): item[1] for item in lista}
+    ids = cantidad_por_id.keys()
+    prods_a_mostrar = [(prod, cantidad_por_id[prod[0]]) for prod in productos if prod[0] in ids]
+
+    for prod, cantidad in prods_a_mostrar:
+        print(
+            f"{AMARILLO}{str(prod[0]):<8}{RESET} | "
+            f"{(str(prod[1])[:23] + '...') if len(str(prod[1])) > 26 else str(prod[1]):<26} | "
+            f"{('$' + format(float(prod[2]), '.2f')):<13} | "
+            f"{CYAN}{(lambda s: s[:41] + '...' if len(s) > 44 else s)(', '.join(sorted(prod[3]))):<44}{RESET} | "
+            f"{str(cantidad):<8}"
+        )
+    linea_divisoria_con_ancho(115)
+
+
+def mostrar_productos(lista):
     encabezados = ["Codigo", "Nombre", "Precio", "Ingredientes"]
 
     linea_divisoria()
@@ -44,12 +79,12 @@ def mostrar_productos(lista=None):
     )
     linea_divisoria()
 
-    for p in lista if lista is not None else productos:
+    for prod in lista:
         print(
-            f"{AMARILLO}{str(p[0]):<8}{RESET} | "
-            f"{(str(p[1])[:23] + '...') if len(str(p[1])) > 26 else str(p[1]):<26} | "
-            f"{('$' + format(float(p[2]), '.2f')):<13} | "
-            f"{CYAN}{(lambda s: s[:41] + '...' if len(s) > 44 else s)(', '.join(sorted(p[3]))):<44}{RESET}"
+            f"{AMARILLO}{str(prod[0]):<8}{RESET} | "
+            f"{(str(prod[1])[:23] + '...') if len(str(prod[1])) > 26 else str(prod[1]):<26} | "
+            f"{('$' + format(float(prod[2]), '.2f')):<13} | "
+            f"{CYAN}{(lambda s: s[:41] + '...' if len(s) > 44 else s)(', '.join(sorted(prod[3]))):<44}{RESET}"
         )
     linea_divisoria()
 
