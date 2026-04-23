@@ -3,7 +3,7 @@ from ventas.ventas import mostrar_ventas, crear_venta, actualizar_venta, elimina
 from ventas.estadisticas import obtener_ventas_por_cada_vendedor, obtener_articulo_mas_vendido, obtener_cant_total_ventas
 
 ancho_menu = 100
-def mostrar_menu_ventas():
+def mostrar_menu_ventas(empleado_logueado):
 
     while True:
         opciones = 5
@@ -30,7 +30,7 @@ def mostrar_menu_ventas():
         elif opcion == "1":
             mostrar_ventas()
         elif opcion == "2":
-            crear_venta()
+            crear_venta(empleado_logueado)
         elif opcion == "3":
             actualizar_venta()
         elif opcion == "4":
