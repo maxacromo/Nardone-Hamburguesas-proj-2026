@@ -1,14 +1,19 @@
-from productos.productos import crear_productos, mostrar_productos, comprar, mostrar_carrito, eliminar_producto
+from productos.productos import crear_productos, mostrar_productos, comprar, eliminar_producto
 
-def menu():
+ancho_menu = 100
+
+def menu_productos():
     productos = crear_productos()
 
     while True:
-        print("\n--- MENÚ ---")
-        print("1. Mostrar productos")
-        print("2. Comprar")
-        print("3. Eliminar producto")
-        print("0. Salir")
+        print("-"*ancho_menu)
+        print("MENÚ PRINCIPAL > MENÚ DE PRODUCTOS")
+        print("-"*ancho_menu)
+        print("[1] Mostrar productos")
+        print("[2] Eliminar producto")
+        print("-"*ancho_menu)
+        print("[0] Salir")
+        print("-"*ancho_menu)
 
         opcion = input("Elegí una opción: ")
 
@@ -16,22 +21,18 @@ def menu():
             mostrar_productos(productos)
 
         elif opcion == "2":
-            carrito, total_final = comprar()
-            mostrar_carrito(carrito)
-
-        elif opcion == "3":
             eliminar_producto(productos)
 
         elif opcion == "0":
-            print("Saliendo...")
             break
 
         else:
             print("Opción inválida")
 
-productos = crear_productos()
-mostrar_productos(productos)
-carrito, total_final = comprar()
+
+#productos = crear_productos()
+#mostrar_productos(productos)
+#carrito, total_final = comprar()
 
 
 

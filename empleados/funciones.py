@@ -5,6 +5,7 @@ from ventas.menu_ventas import *
 from Clientes.Clientes import mostrar_menu_clientes
 from stock.Main_stock import menu
 from .colores import *
+from productos.menu_productos import menu_productos
 
 ancho_menu = 100
 
@@ -130,6 +131,7 @@ def submenu_admin(empleados, atributo_empleados, usuario_sesion):
         print("[5] Módulo de Estadisticas")
         print("[6] Módulo de Clientes")
         print("[7] Administracion de Stock")
+        print("[8] Administracion de Productos")
         print("-"*ancho_menu)
         print("[0] Salir")
         print("-"*ancho_menu)
@@ -160,6 +162,8 @@ def submenu_admin(empleados, atributo_empleados, usuario_sesion):
             mostrar_menu_clientes()
         elif opcion == "7":
             menu()
+        elif opcion == "8":
+            menu_productos()
         elif opcion=="0":
             print("Salir")
             break
