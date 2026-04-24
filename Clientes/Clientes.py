@@ -120,8 +120,8 @@ def Update_Cliente(Cliente): #Permite cambiar nombres de usuario pero si a algui
             Check,Search,Result=Verificacion_Mod_Usuario(Cliente)
             if Check=="y":
                 print("A que quiere cambiar el nombre?")
-                Gen_FullName(Result)
-                Cliente[Search]=Result
+                Result=Gen_FullName(Result)
+                Cliente[Search][0]=Result
             
             elif Check =="n":
                 Check="1"
