@@ -1,18 +1,4 @@
-import random, os
-
-def Creador_Personas(Mail_List): #Esta funcion toma un nombre y un apellido de las listas para generar a una persona con un nombre aleatorio
-                                 #Además Carga a las personas a una lista q luego es pasada a otra lista en el llamado de función      
-    Persona=[]
-    L_Pila=["María","Ana","Lucia","Martina","Daniela","Julia","Luciana","Sofia", "Jose","Luis","Carlos","Juan","Martin","Julian","Esteban","Roberto"]
-    L_Apellidos=["González","Rodríguez","Gómez","Fernández","López","Díaz","Martínez","Pérez","Sánchez","Romero","García","Sosa","Benítez","Ramírez","Ruiz","Torres"]
-
-    Pila=random.choice(L_Pila) 
-    Apellido=random.choice(L_Apellidos)
-    Nombre=Pila+" "+Apellido
-    Mail=Gen_Mail(Mail_List,Pila,Apellido)
-    Persona.extend([Nombre,Mail,"A"])
-
-    return Persona
+import random, os,json
 
 
 def Num_list(Persona_ID):# Crea ID de Usuario para las personas de relleno
@@ -24,17 +10,41 @@ def Num_list(Persona_ID):# Crea ID de Usuario para las personas de relleno
                     nro=random.randint(100000,999999)
                     Check_ID(nro)
                 else:
+                    nro=str(nro)
                     Persona_ID.append(nro)
                     flag=1
 
-def Gen_FullName (Result):#Se utiliza para el input de nombres de parte de los usuarioss
+def Gen_FullName (Result,yesno):#Se utiliza para el input de nombres de parte de los usuarioss
     Flag=0
     while Flag==0:
-        Pila=input("Inserte el nombre de pila del cliente:")
-        Apellido=input("Inserte el Apellido del cliente:")
-        Nombre= Pila+" "+Apellido
+        try:
+            Pila=input("Inserte el nombre de pila del cliente:")
+            Apellido=input("Inserte el Apellido del cliente:")
+            Nombre= Pila+" "+Apellido
+            if len(Pila)> 12:
+                raise ValueError("Su nombre debe ser menor a 12 caracteres")
+            elif len(Apellido)>12:
+                raise ValueError("Su nombre debe ser menor a 12 caracteres")
+            elif not Nombre.strip():
+                raise ValueError("Su nombre no puede estar vacio")
+            elif not Nombre.replace(" ", "").isalpha():
+                raise ValueError("Su nombre no puede contener numeros")
+        except ValueError as error :
+            print("Error:",error)
+            input("Presione enter para volver al menu previo.")
+            limpiar_pantalla()
+            continue
+
         print("Su nombre es ", Nombre, "? y/n", end=" ")
-        Confirm=input(":").strip().lower()
+        try:
+            Confirm=input(":").strip().lower()
+            if Confirm.isnumeric()or Confirm not in yesno:
+                raise ValueError("Ingreso no valido")
+
+        except ValueError as error:
+            print("Error:",error)
+            input("Presione enter para volver al menu previo.")
+            limpiar_pantalla()
         print()
 
         if Confirm == "yes" or Confirm == "y":
@@ -44,20 +54,38 @@ def Gen_FullName (Result):#Se utiliza para el input de nombres de parte de los u
         elif Confirm == "no" or Confirm == "n":
             Flag=1
 
-        else:
-            limpiar_pantalla()
-            print("Error, realice un ingreso valido")
+
     return Result
 
-def Gen_Nombre (Result):#Se utiliza para el input de nombres de parte de los Cliente
+def Gen_Nombre (Result,yesno):#Se utiliza para el input de nombres de parte de los Cliente
     Flag=0
     while Flag==0:
-        Pila=input("Inserte el nombre de pila del cliente:")
+        try:
+            Pila=input("Inserte el nombre de pila del cliente:")
+            if len(Pila)> 12:
+                raise ValueError("Su nombre debe ser menor a 12 caracteres")
+            elif not Pila.strip():
+                raise ValueError("Su nombre no puede estar vacio")
+            elif not Pila.replace(" ", "").isalpha():
+                raise ValueError("Su nombre no puede contener numeros")
+        except ValueError as error :
+            print("Error:",error)
+            input("Presione enter para volver al menu previo.")
+            limpiar_pantalla()
+            continue            
         Apellido=Result[0].split(" ",1)[1]
         Nombre= Pila + " " + Apellido
         print("Su nombre es ", Nombre, "? y/n", end=" ")
-        Confirm=input(":").strip().lower()
-        print()
+        try:
+            Confirm=input(":").strip().lower()
+            if Confirm.isnumeric()or Confirm not in yesno:
+                raise ValueError("Ingreso no valido")
+
+        except ValueError as error:
+            print("Error:",error)
+            input("Presione enter para volver al menu previo.")
+            limpiar_pantalla()
+
         input("Presione enter para volver al menu previo.")
         limpiar_pantalla()
 
@@ -66,20 +94,41 @@ def Gen_Nombre (Result):#Se utiliza para el input de nombres de parte de los Cli
             Flag=1
 
         elif Confirm == "no" or Confirm == "n":
+            print("Error:",error)
+            input("Presione enter para volver al menu previo.")
             Flag=1
 
-        else:
-            print("Error, realice un ingreso valido")
     return Result
 
-def Gen_Apellido (Result):#Se utiliza para el input de nombres de parte de los Cliente
+def Gen_Apellido (Result,yesno):#Se utiliza para el input de nombres de parte de los Cliente
     Flag=0
     while Flag==0:
         Pila=Result[0].split(" ",1)[0]
-        Apellido=input("Inserte el apellido del cliente:")
+        try:
+            Apellido=input("Inserte el apellido del cliente:")
+            if len(Apellido)>12:
+                raise ValueError("Su nombre debe ser menor a 12 caracteres")
+            elif not Apellido.strip():
+                raise ValueError("Su nombre no puede estar vacio")
+            elif not Apellido.replace(" ", "").isalpha():
+                raise ValueError("Su nombre no puede contener numeros")
+        except ValueError as error :
+            print("Error:",error)
+            input("Presione enter para volver al menu previo.")
+            limpiar_pantalla()
+            continue
+
         Nombre= Pila + " " + Apellido
         print("Su nombre es ", Nombre, "? y/n", end=" ")
-        Confirm=input(":").strip()
+        try:
+            Confirm=input(":").strip().lower()
+            if Confirm.isnumeric()or Confirm not in yesno:
+                raise ValueError("Ingreso no valido")
+
+        except ValueError as error:
+            print("Error:",error)
+            input("Presione enter para volver al menu previo.")
+            limpiar_pantalla()
         print()
 
         if Confirm == "yes" or Confirm == "y":
@@ -89,12 +138,10 @@ def Gen_Apellido (Result):#Se utiliza para el input de nombres de parte de los C
         elif Confirm == "no" or Confirm == "n":
             Flag=1
 
-        else:
-            print("Error, realice un ingreso valido")
     return Result
 
 
-def Search_User(Search,Cliente):#Ubica las posciciones del id de los Cliente
+def Search_Client_ID(Search,Cliente):#Ubica las posciciones del id de los Cliente
     if Search in Cliente:
         Result=Cliente[Search]
         return Result
@@ -103,21 +150,34 @@ def Search_User(Search,Cliente):#Ubica las posciciones del id de los Cliente
         return Result
 
 
-def Verificacion_Mod_Usuario(Cliente):
-    print("Ingrese el ID del cliente que quiere modificar, o Ingrese -1 para salir", end=" ")
-    Search=input(":")
-    if Search =="-1":
-        input("Presione enter para volver al menu previo.")
-        limpiar_pantalla()
-        return "n",0,0
-    elif not Search.isnumeric():
-        print("Error, ingrese un numero")
+def Verificacion_Mod_Usuario(Cliente,yesno):
+    while True:
+        try:
+            Search=input("Ingrese el ID del cliente que quiere modificar, o Ingrese 0 para salir:")
+            if Search=="0":
+                input("Presione enter para volver al menu previo.")
+                limpiar_pantalla()
+                return "n",0,0
+            
+            elif Search.replace(" ","").isalpha():
+                raise ValueError("El ID no puede contener letras")
+
+            elif not Search:
+                raise ValueError("El ID no puede ser vacio")
+            else:
+                break
+            
+
+        except ValueError as error:
+                print("Error:",error)
+                input("Presione enter para volver al menu previo.")
+                limpiar_pantalla()    
+    if Search ==0:
         input("Presione enter para volver al menu previo.")
         limpiar_pantalla()
         return "n",0,0
     else:
-        Search=int(Search)
-        Result=Search_User(Search,Cliente)
+        Result=Search_Client_ID(Search,Cliente)
 
         if Result=="Not Found":
             print("Ese ID no esta en la base de datos")
@@ -125,14 +185,29 @@ def Verificacion_Mod_Usuario(Cliente):
             limpiar_pantalla()
             return "n",0,0
         
-        elif Result[2]=="IN":
+        elif Result[2]==False:
             print("Esta cuenta esta inactiva")
             return "n",0,0
 
         else:
             print("Quiere modificar al cliente",Search,Result,"y/n",end=" ")
-            Check= input(":").strip().lower()
+        try:
+            Check=input(":").strip().lower()
+            if Check.isnumeric()or Check not in yesno:
+                raise ValueError("Ingreso no valido")
+
+        except ValueError as error:
+            print("Error:",error)
+            input("Presione enter para volver al menu previo.")
+            limpiar_pantalla()
+
+        if Check == "yes" or Check== "y":
             return Check, Search, Result
+        
+        elif Check== "no" or Check== "n":
+            input("Presione enter para volver al menu previo.")
+            limpiar_pantalla()
+            return "n",0,0
 
 def limpiar_pantalla():
     if os.name == "nt":  # Windows
@@ -158,5 +233,25 @@ def Gen_Mail(Mail_List,Pila,Apellido):
 
 def Cleanup(Cliente,Persona_ID):
     for i in range(len(Persona_ID)):
-        if "IN" in Cliente[Persona_ID[i]]:
+        if False in Cliente[Persona_ID[i]]:
             Cliente.pop(Persona_ID[i])
+
+def Update_Client_File(Cliente):
+    try:
+        with open("Clientes_Datos.json","w",encoding="UTF-8")as Datos:
+            json.dump(Cliente,Datos,indent=4)
+
+    except(FileNotFoundError,OSError) as error:
+        print("Error:",error)
+
+
+def Search_Client_Name(Search,Cliente,Persona_ID):
+
+    for i in range(len(Persona_ID)):
+        if Search in Cliente[Persona_ID[i]]:
+            Result=Persona_ID[i]
+            return Result
+
+    
+    Result="Not Found"
+    return Result
