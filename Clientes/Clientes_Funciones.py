@@ -150,7 +150,7 @@ def Search_Client_ID(Search,Cliente):#Ubica las posciciones del id de los Client
         return Result
 
 
-def Verificacion_Mod_Usuario(Cliente,yesno):
+def Verificacion_Mod_Usuario(Cliente,yesno,Restore):
     while True:
         try:
             Search=input("Ingrese el ID del cliente que quiere modificar, o Ingrese 0 para salir:")
@@ -185,7 +185,7 @@ def Verificacion_Mod_Usuario(Cliente,yesno):
             limpiar_pantalla()
             return "n",0,0
         
-        elif Result[2]==False:
+        elif Result[2]==False and Restore==0:
             print("Esta cuenta esta inactiva")
             return "n",0,0
 

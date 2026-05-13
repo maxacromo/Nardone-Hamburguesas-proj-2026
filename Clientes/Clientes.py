@@ -96,7 +96,7 @@ def Update_Cliente(Cliente,yesno): #Permite cambiar nombres de usuario pero si a
         
         if Check==1:
             limpiar_pantalla()
-            Check,Search,Result=Verificacion_Mod_Usuario(Cliente,yesno)
+            Check,Search,Result=Verificacion_Mod_Usuario(Cliente,yesno,0)
             if Check=="y":
                 print("A que quiere cambiar el nombre?")
                 Gen_Nombre(Result,yesno)
@@ -111,7 +111,7 @@ def Update_Cliente(Cliente,yesno): #Permite cambiar nombres de usuario pero si a
         
         elif Check==2:
             limpiar_pantalla()
-            Check,Search,Result=Verificacion_Mod_Usuario(Cliente,yesno)
+            Check,Search,Result=Verificacion_Mod_Usuario(Cliente,yesno,0)
             if Check=="y":
                 print("A que quiere cambiar el nombre?")
                 Gen_Apellido(Result,yesno)
@@ -126,7 +126,7 @@ def Update_Cliente(Cliente,yesno): #Permite cambiar nombres de usuario pero si a
             
         elif Check==3:
             limpiar_pantalla()
-            Check,Search,Result=Verificacion_Mod_Usuario(Cliente,yesno)
+            Check,Search,Result=Verificacion_Mod_Usuario(Cliente,yesno,0)
             if Check=="y":
                 print("A que quiere cambiar el nombre?")
                 Result=Gen_FullName(Result,yesno)
@@ -172,7 +172,7 @@ def Destruir_Cliente(Cliente,yesno):# Permite Borrar clientes
 
         if Check==1:
             limpiar_pantalla()
-            Check,Search,Result=Verificacion_Mod_Usuario(Cliente,yesno)
+            Check,Search,Result=Verificacion_Mod_Usuario(Cliente,yesno,0)
             if Check == "y":
                 Cliente[Search][2]=False
                 input("Presione enter para volver al menu previo.")
@@ -188,30 +188,8 @@ def Destruir_Cliente(Cliente,yesno):# Permite Borrar clientes
 
         elif Check==2:
             limpiar_pantalla()
-            print("Ingrese el ID del cliente que quiere modificar, o Ingrese 0 para salir", end=" ")
-            Search=input(":")
-            if Search =="0":
-                input("Presione enter para volver al menu previo.")
-                limpiar_pantalla()
-                
-            elif not Search.isnumeric():
-                print("Error, ingrese un numero")
-                input("Presione enter para volver al menu previo.")
-                limpiar_pantalla()
-                Check="n"
-                
-            else:
-                Result=Search_Client_ID(Search,Cliente)
+            Check,Search,Result=Verificacion_Mod_Usuario(Cliente,yesno,1)
 
-                if Result=="Not Found":
-                    print("Ese ID no esta en la base de datos")
-                    input("Presione enter para volver al menu previo.")
-                    limpiar_pantalla()
-                    Check= "n"
-                else:
-                    print("Quiere modificar al cliente",Search,Result,"y/n",end=" ")
-                    Check= input(":").strip().lower()
-                    
             if Check == "y":
                 Cliente[Search][2]=True
                 input("Presione enter para volver al menu previo.")
@@ -332,4 +310,4 @@ def mostrar_menu_clientes():
             limpiar_pantalla()
             print("Error,ingrese un input valido")
 
-#mostrar_menu_clientes()
+mostrar_menu_clientes()
