@@ -26,23 +26,46 @@ def dibujar_borde(titulo, ancho=60):
 
 
  ###################VALIDACION DE USUARIOS########################
+
+def buscar_usuario_secuencial(empleados, usuario, contra):
+    """
+    Aplica el algoritmo búsqueda secuencial.
+    Recorre la lista elemento por elemento usando un índice y una bandera.
+    """
+    i = 0
+    encontrado = False
+    empleado_encontrado = None
+    
+    while i < len(empleados) and not encontrado:
+        if empleados[i][USUARIO] == usuario and empleados[i][PASSWORD] == contra:
+            encontrado = True
+            empleado_encontrado = empleados[i]
+        else:
+            i += 1
+            
+    return empleado_encontrado
  
 def validar_usuario(empleados, usuario, contra, atributo_empleados):
-    for empleado in empleados:
-        if empleado[USUARIO] == usuario and empleado[PASSWORD] == contra:
-            if empleado[ESTADO] != "Activo":
-                print("El usuario ingresado se encuentra inactivo, debe comunicarse con el administrador.")
-                input("Presione Enter para volver al menú principal")
-                return "INACTIVO"
-            if empleado[ROL] == "admin":
-                submenu_admin(empleados, atributo_empleados, usuario)
-            elif empleado[ROL] == "empleado":
-                submenu_empleado(usuario)
-            else:
-                print("Rol no reconocido.")
-                input("Presione Enter para volver al menú principal")
-                return False
-            return True
+    #Aplicamos el método de búsqueda secuencial
+    empleado = buscar_usuario_secuencial(empleados, usuario, contra)
+    
+    #Evaluamos el resultado de la búsqueda
+    if empleado is not None:
+        if empleado[ESTADO] != "Activo":
+            print("El usuario ingresado se encuentra inactivo, debe comunicarse con el administrador.")
+            input("Presione Enter para volver al menú principal")
+            return "INACTIVO"
+            
+        if empleado[ROL] == "admin":
+            submenu_admin(empleados, atributo_empleados, usuario)
+        elif empleado[ROL] == "empleado":
+            submenu_empleado(usuario)
+        else:
+            print("Rol no verificado.")
+            input("Presione Enter para volver al menú principal")
+            return False
+            
+        return True
 
     return False
 
@@ -322,9 +345,9 @@ def mostrar_empleados(empleados,atributo_empleados):
 def solicitar_id(mensaje):
     id=input(mensaje).strip()
     while id=="" or not id.isdigit():
-        print("El ID no puede encontrarse vacio y debe ser un número entero")
-        id=input(mensaje).strip()
-    return int(id)
+            print("El ID no puede encontrarse vacio y debe ser un número entero")
+    
+            return int(id)
 
 #---------------------------------------------------------------
 # Función para modificar el nombre de usuario de un empleado
