@@ -1,11 +1,11 @@
 from Clientes.Clientes_Funciones import *
-import random, pprint
+import random
 ancho_menu = 100
 
 def Persona_Relleno(): #Genera Personas no reales para que el sistema cargue con Cliente ya existen
     Persona_ID=[]
     Mail_List=[]
-    Cliente={"ID DE CLIENTE":["NOMBRE","CORREO","ACTIVIDAD"]}
+    Cliente={}
     cycle=random.randint(5,10)
     cont=0
     while cont != cycle:
@@ -62,10 +62,16 @@ def Crear_Cliente(Persona_ID,Cliente,Mail_List): #Funcion que permite agregar Cl
 
 def Read_Cliente(Cliente): #Permite leer la matriz de clientes
                             #Para interfaz si quieren sacar el pretty print y poner otra cosa, no se va a romper
+    Title=["ID DE CLIENTE","NOMBRE","CORREO","ACTIVIDAD"]
+    aux=0
+    while aux !=4:
+        print(f"{Title[aux]:<20}", end=" ")
+        aux+=1
+    print()
     for key,value in Cliente.items():
-        print(f"{key:<17}", end=" ")
+        print(f"{key:<20}", end=" ")
         for i in range(len(value)) :
-            print(f"{value[i]:<17}", end=" ")
+            print(f"{value[i]:<20}", end=" ")
         print("\n")
     input("Presione enter para volver al menu previo.")
     limpiar_pantalla()
@@ -114,8 +120,8 @@ def Update_Cliente(Cliente): #Permite cambiar nombres de usuario pero si a algui
             Check,Search,Result=Verificacion_Mod_Usuario(Cliente)
             if Check=="y":
                 print("A que quiere cambiar el nombre?")
-                Gen_FullName(Result)
-                Cliente[Search]=Result
+                Result=Gen_FullName(Result)
+                Cliente[Search][0]=Result
             
             elif Check =="n":
                 Check="1"
