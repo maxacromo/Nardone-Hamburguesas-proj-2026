@@ -236,6 +236,7 @@ def validacion_letras(mensaje, campo):
         
     while not re.match(entrada_permitida, data_usuario):
         print(f"El {campo} solo puede contener letras y espacios.")
+        data_usuario = input(mensaje).strip()
     
     return data_usuario
 
@@ -244,20 +245,23 @@ def validacion_letras(mensaje, campo):
 #---------------------------------------------------------------
 def validacion_usuario(mensaje):
     entrada_permitida= r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,8}$'
+
     usuario = input(mensaje).strip()
+        
     while usuario == "":
         print("El nombre de usuario no puede estar vacío.")
         usuario = input(mensaje).strip()
-            
+                
     while not re.match(entrada_permitida, usuario):
-            print("El nombre de usuario debe contener letras y números.")
+        print("El nombre de usuario debe contener letras y números.")
+        usuario = input(mensaje).strip() 
     return usuario
         
 #---------------------------------------------------------------
 #VALIDA QUE LA CONTRASEÑA CUMPLA CON LOS REQUISITOS DE LONGITUD Y CARACTERES
 #- --------------------------------------------------------------
 def validacion_password(mensaje):
-    entrada_permitida= r'^(?=.*[A-Za-z])(?=.*\d).{5,8}$'
+    entrada_permitida= r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,8}$'
     password = input(mensaje).strip()
     while password == "" or not re.match(entrada_permitida, password):
         print("La contraseña no puede estar vacía.")
@@ -343,11 +347,26 @@ def mostrar_empleados(empleados,atributo_empleados):
 #Funcion para pedir ID 
 #---------------------------------------------------------------
 def solicitar_id(mensaje):
-    id=input(mensaje).strip()
-    while id=="" or not id.isdigit():
-            print("El ID no puede encontrarse vacio y debe ser un número entero")
+    id_valido = False #Nuestra bandera empieza en Falso
+    id_numero = 0 #Preparamos la variable donde guardaremos el resultado
     
-            return int(id)
+    while not id_valido:
+        id_texto = input(mensaje).strip()
+        
+        if id_texto == "":
+            print("El ID no puede encontrarse vacio.")
+        else:
+            try:
+                #Convertimos el texto en número
+                id_numero = int(id_texto)
+                #Si la conversión fue exitosa, cambiamos la bandera para salir del bucle
+                id_valido = True
+            except ValueError:
+                #Si el usuario ingresó letras, int() falla y salta aquí
+                print("El ID debe ser un número entero válido (no se permiten letras).")
+                
+    # Una vez que el bucle termina, devolvemos el número
+    return id_numero
 
 #---------------------------------------------------------------
 # Función para modificar el nombre de usuario de un empleado
