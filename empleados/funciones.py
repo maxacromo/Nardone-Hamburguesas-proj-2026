@@ -118,23 +118,28 @@ def menu_principal(empleados, atributo_empleados):
         print("[0] Salir")
         print()
         
-        opcion = input("→ Elige una opción (1-3): ").strip()
+        try:
+            opcion = int(input("→ Elige una opción (1-3): ").strip())
 
-        #opcion de menu
-        if opcion == "1":
-            login(empleados, atributo_empleados)
-        elif opcion == "2":
-            registro()
-        elif opcion == "3":
-            limpiar_pantalla()
-            dibujar_borde(" CRÉDITOS ", 40)
-            print("Hecho por: Hernan Castro, Gonzales Ezequiel , Zalles Kenaya, Santiago Elcano, Thiago Guarino, Máximo Masi")
-            input("Presiona Enter para volver...")
-        elif opcion == "0":
-            print("Finalizando.")
-            break
-        else:
-            print("Opción inválida... intenta de nuevo")
+            #opcion de menu
+            if opcion == 1:
+                login(empleados, atributo_empleados)
+            elif opcion == 2:
+                registro()
+            elif opcion == 3:
+                limpiar_pantalla()
+                dibujar_borde(" CRÉDITOS ", 40)
+                print("Hecho por:  Gonzales Ezequiel , Zalles Kenaya, Santiago Elcano, Thiago Guarino, Máximo Masi")
+                input("Presiona Enter para volver...")
+            elif opcion == 0:
+                print("Finalizando.")
+                break
+            else:
+                print("Opción inválida... intenta de nuevo")
+                input("Presione Enter para continuar...")
+        except ValueError:
+            print("Error: Ingrese un número válido.")
+            input("Presione Enter para continuar...")
 ## --------------------------------------------------------------
 
 
@@ -159,39 +164,45 @@ def submenu_admin(empleados, atributo_empleados, usuario_sesion):
         print("[0] Salir")
         print("-"*ancho_menu)
         print()
-        opcion=input("Ingrese el numero de opcion : ")
-        limpiar_pantalla()
-        if opcion=="1":
-            print(f"{FONDO_CELESTE}{BLANCO} Listar Usuarios {RESET}")
-            mostrar_empleados(empleados, atributo_empleados)
-            input("Presione enter para volver al menu ")
+
+        try:
+            opcion=int(input("Ingrese el numero de opcion : "))
             limpiar_pantalla()
-        elif opcion=="2":
+            if opcion==1:
+                print(f"{FONDO_CELESTE}{BLANCO} Listar Usuarios {RESET}")
+                mostrar_empleados(empleados, atributo_empleados)
+                input("Presione enter para volver al menu ")
+                limpiar_pantalla()
+            elif opcion==2:
+                limpiar_pantalla()
+                print(f"{FONDO_CELESTE}{BLANCO} Crear usuarios {RESET}")
+                agregar_empleado(empleados)
+                input("Presione enter para volver al menu")
+                limpiar_pantalla()
+            elif opcion==3:
+                print(f"{FONDO_CELESTE}{BLANCO} Modificar usuario {RESET}")
+                modificar_usuario(empleados,atributo_empleados)
+                input("Presione enter para volver al menu.")
+                limpiar_pantalla()
+            elif opcion==4:
+                mostrar_menu_ventas(usuario_sesion)
+            elif opcion==5:
+                mostrar_menu_estadisticas()
+            elif opcion==6:
+                mostrar_menu_clientes()
+            elif opcion == 7:
+                menu()
+            elif opcion == 8:
+                menu_productos()
+            elif opcion==0:
+                print("Salir")
+                break
+            else:
+                print("Opcion no valida")
+        except ValueError:
+            print("Error: Ingrese un número válido.")
+            input("Presione Enter para continuar...")
             limpiar_pantalla()
-            print(f"{FONDO_CELESTE}{BLANCO} Crear usuarios {RESET}")
-            agregar_empleado(empleados)
-            input("Presione enter para volver al menu")
-            limpiar_pantalla()
-        elif opcion=="3":
-            print(f"{FONDO_CELESTE}{BLANCO} Modificar usuario {RESET}")
-            modificar_usuario(empleados,atributo_empleados)
-            input("Presione enter para volver al menu.")
-            limpiar_pantalla()
-        elif opcion=="4":
-            mostrar_menu_ventas(usuario_sesion)
-        elif opcion=="5":
-            mostrar_menu_estadisticas()
-        elif opcion=="6":
-            mostrar_menu_clientes()
-        elif opcion == "7":
-            menu()
-        elif opcion == "8":
-            menu_productos()
-        elif opcion=="0":
-            print("Salir")
-            break
-        else:
-            print("Opcion no valida")
 #---------------------------------------------------------------
 #SUBMENU QUE VISUALIZA EL EMPLEADO
 #---------------------------------------------------------------
@@ -208,18 +219,21 @@ def submenu_empleado(usuario_sesion):
         print("[0] Salir")
         print("-"*ancho_menu)
 
-        opcion=input("Ingrese el número de opción: ").strip()
-        if opcion=="":
-            print("La opción no puede encontrarse vacía")
-        elif opcion =="1":
-            mostrar_creacion_ventas_menu(usuario_sesion)
-        elif opcion=="2":
-            mostrar_menu_estadisticas()
-        elif opcion=="3":
-            mostrar_ventas_menu()    
-        elif opcion=="0":
-            print("Salir")
-            break
+        try:
+            opcion=int(input("Ingrese el número de opción: ").strip())
+            if opcion ==1:
+                mostrar_creacion_ventas_menu(usuario_sesion)
+            elif opcion==2:
+                mostrar_menu_estadisticas()
+            elif opcion==3:
+                mostrar_ventas_menu()    
+            elif opcion==0:
+                print("Salir")
+                break
+        except ValueError:
+            print("Error: Ingrese un número válido.")
+            input("Presione Enter para continuar...")
+            limpiar_pantalla()
 
 
 
@@ -276,14 +290,22 @@ def validacion_password(mensaje):
 #---------------------------------------------------------------
 
 def validacion_rol(mensaje):
-    rol=input(mensaje).strip()
-    while rol=="":
-        print("El rol no puede encontrarse vacio")
-        rol=input(mensaje).strip()
-    while rol not in ["1","2"]:
-        print("Rol no válido. Ingrese 1 para admin o 2 para empleado.")
-        rol=input(mensaje).strip()
-    return "admin" if rol=="1" else "empleado"
+    bandera_estado=False
+    rol_asignado = ""
+    while not bandera_estado:
+        try:
+            rol = int(input(mensaje).strip())
+            if rol == 1:
+                rol_asignado = "admin"
+                bandera_estado=True
+            elif rol == 2:
+                rol_asignado = "empleado"
+                bandera_estado=True
+            else:
+                print("Rol no válido. Ingrese 1 para admin o 2 para empleado.")
+        except ValueError:
+            print("Error: Ingrese un número válido (1 o 2).")
+    return rol_asignado
 
 #---------------------------------------------------------------
 #Funcion para obtener el nuevo ID para un empleado, sumando 1 al ID mas alto existente en la lista de empleados.
@@ -385,29 +407,36 @@ def modificar_usuario(empleados,atributo_empleados):
             print("4.Rol")
             print("5.Contraseña")
             print("6.Estado del usuario")
-            opcion=input("Ingrese el numero de la opción: ")
-            if opcion=="1":
-                nuevo_nombre=validacion_letras("Ingrese el nuevo nombre ", "nombre")
-                empleado[NOMBRE]=nuevo_nombre
 
-            elif opcion=="2":
-                nuevo_apellido=validacion_letras("Ingrese el nuevo apellido ", "apellido")
-                empleado[APELLIDO]=nuevo_apellido
-            elif opcion=="3":
-                nuevo_usuario=validacion_usuario("Ingrese el nuevo usuario: ")
-                empleado[USUARIO]=nuevo_usuario
-            elif opcion=="4":
-                nuevo_rol=validacion_rol("Ingrese el nuevo  rol asignado ,  1 para admin o 2 para empleado: ")
-                empleado[ROL]=nuevo_rol
-            elif opcion=="5":
-                nueva_pass=validacion_password("Ingrese la nueva contraseña: ")
-                empleado[PASSWORD]=nueva_pass
-            elif opcion=="6":
-                estado_actualizado=modificar_estado(empleados)
-                empleado[ESTADO]=estado_actualizado
-            else:
-                print("Opcion invalida")
-            return print("Modificado con exito \n",empleado)
+            try:
+
+                opcion=int(input("Ingrese el numero de la opción: "))
+                if opcion==1:
+                    nuevo_nombre=validacion_letras("Ingrese el nuevo nombre ", "nombre")
+                    empleado[NOMBRE]=nuevo_nombre
+
+                elif opcion==2:
+                    nuevo_apellido=validacion_letras("Ingrese el nuevo apellido ", "apellido")
+                    empleado[APELLIDO]=nuevo_apellido
+                elif opcion==3:
+                    nuevo_usuario=validacion_usuario("Ingrese el nuevo usuario: ")
+                    empleado[USUARIO]=nuevo_usuario
+                elif opcion==4:
+                    nuevo_rol=validacion_rol("Ingrese el nuevo  rol asignado ,  1 para admin o 2 para empleado: ")
+                    empleado[ROL]=nuevo_rol
+                elif opcion==5:
+                    nueva_pass=validacion_password("Ingrese la nueva contraseña: ")
+                    empleado[PASSWORD]=nueva_pass
+                elif opcion==6:
+                    estado_actualizado=modificar_estado(empleados)
+                    empleado[ESTADO]=estado_actualizado
+                else:
+                    print("Opcion invalida")
+                return print("Modificado con exito \n",empleado)
+            except ValueError:
+                print("Error: Ingrese un número válido.")
+                input("Presione Enter para continuar...")
+                limpiar_pantalla()
 
     print("Empleado no encontrado")
 #-----------------------------------------------------------
@@ -419,14 +448,22 @@ se encuentra "activo" podra iniciar sesión
 #-----------------------------------------------------------
     
 def modificar_estado(empleados):
-    nuevo_estado=input(f"Ingrese el nuevo estado. 1 {VERDE}activo{RESET} y 2 para {ROJO}Inactivo{RESET}: ").strip()
-    while nuevo_estado=="":
-        print("El estado no puede encontrarse vacio")
-        nuevo_estado=input(f"Ingrese el nuevo estado. 1 {VERDE}activo{RESET} y 2 para {ROJO}Inactivo{RESET}: ").strip()
-    while nuevo_estado not in ["1","2"]:
-            print("Opcion no valida, ingrese 1 para activo o 2 para inactivo")
-            nuevo_estado=input(f"Ingrese el nuevo estado. 1 {VERDE}activo{RESET} y 2 para {ROJO}Inactivo{RESET}: ").strip()
-    return "Activo" if nuevo_estado=="1" else "Inactivo"
+    estado_valido = False
+    estado_final = ""
+    while not estado_valido:
+        try:
+            nuevo_estado = int(input(f"Ingrese el nuevo estado. 1 {VERDE}activo{RESET} y 2 para {ROJO}Inactivo{RESET}: ").strip())
+            if nuevo_estado == 1:
+                estado_final = "Activo"
+                estado_valido = True
+            elif nuevo_estado == 2:
+                estado_final = "Inactivo"
+                estado_valido = True
+            else:
+                print("Opcion no valida, ingrese 1 para activo o 2 para inactivo")
+        except ValueError:
+            print("Error: Ingrese un número válido (1 o 2).")
+    return estado_final
         
 def mostrar_menu_principal():
     menu_principal(empleados, atributo_empleados)
