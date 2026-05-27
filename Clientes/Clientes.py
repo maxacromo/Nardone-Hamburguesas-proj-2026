@@ -31,8 +31,8 @@ def Crear_Cliente(Persona_ID,Cliente,Mail_List,yesno): #Funcion que permite agre
                 Pila=Hold.split(" ",1)[0]
                 Apellido=Hold.split(" ",1)[1]
 
-                Mail=Gen_Mail(Mail_List,Pila,Apellido)
-                Persona.extend([Hold,Mail,True])
+                Mail,Cliente_Usuario=Gen_Mail(Mail_List,Pila,Apellido)
+                Persona.extend([Hold,Mail,Cliente_Usuario,True])
 
                 Num_list(Persona_ID)
                 contador=len(Persona_ID)
@@ -49,9 +49,9 @@ def Crear_Cliente(Persona_ID,Cliente,Mail_List,yesno): #Funcion que permite agre
             
 def Read_Cliente(Cliente): #Permite leer la matriz de clientes
 
-    Title=["ID DE CLIENTE","NOMBRE","CORREO","ACTIVIDAD"]
+    Title=["ID DE CLIENTE","NOMBRE","CORREO","USUARIO","ACTIVIDAD"]
     aux=0
-    while aux !=4:
+    while aux != len(Title):
         print(f"{Title[aux]:<25}", end=" ")
         aux+=1
     print()
@@ -242,13 +242,19 @@ def Busqueda_Cliente(Cliente,Persona_ID,yesno):
 def mostrar_menu_clientes():
     Persona_ID=[]
     Mail_List=[]
-    with open ("Clientes_Datos.json", "r",encoding="UTF-8") as Datos:
-        
-        Cliente=json.load(Datos)
-        Persona_ID=list(Cliente.keys())
-        for i in range(len(Persona_ID)):
-            Mail_List.append(Cliente[Persona_ID[i]][1])
-    Datos.close
+    try:
+        with open ("Clientes_Datos.json", "r",encoding="UTF-8") as Datos:
+            
+            Cliente=json.load(Datos)
+            Persona_ID=list(Cliente.keys())
+            for i in range(len(Persona_ID)):
+                Mail_List.append(Cliente[Persona_ID[i]][1])
+    except(FileNotFoundError,OSError) as error:
+        print("Error:",error)
+    finally:
+        Datos.close
+
+
     limpiar_pantalla()
     while True:
         Check=-1

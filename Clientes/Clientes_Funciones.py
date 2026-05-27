@@ -229,7 +229,8 @@ def Gen_Mail(Mail_List,Pila,Apellido):
         cont=int(cont)
         cont+=1
     Mail_List.append(Mail)
-    return Mail
+    Cliente_Usuario=Mail_Root+str(cont)
+    return Mail,Cliente_Usuario
 
 def Cleanup(Cliente,Persona_ID):
     for i in range(len(Persona_ID)):
