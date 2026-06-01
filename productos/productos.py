@@ -1,3 +1,5 @@
+from stock.Controlador_stock import cargar_stock_json, guardar_stock_json
+
 RESET = "\033[0m"
 BOLD = "\033[1m"
 AMARILLO = "\033[33m"
@@ -5,17 +7,18 @@ AZUL = "\033[34m"
 CYAN = "\033[36m"
 BOLD_VERDE = "\033[1;32m"
 
-combo1 = {"pan", "carne"}
-combo2 = {"pan", "carne", "queso"}
-combo3 = {"pan", "carne", "queso", "lechuga", "tomate"}
-combo4 = {"pan", "carne", "queso", "bacon"}
+receta_simple = {"Pan": 2, "Carne": 1}
+receta_queso = {"Pan": 2, "Carne": 1, "Queso": 1}
+receta_completa = {"Pan": 2, "Carne": 1, "Queso": 1, "Lechuga": 1, "Tomate": 1, "Cebolla": 1}
+receta_bacon = {"Pan": 2, "Carne": 1, "Queso": 1, "Bacon": 1}
 
 productos = [
-    (1, "Hamburguesa simple", 8000, combo1),
-    (2, "Hamburguesa con queso", 10000, combo2),
-    (3, "Hamburguesa completa", 12000, combo3),
-    (4, "Hamburguesa bacon", 14000, combo4),
+    (1, "Hamburguesa simple", 8000, receta_simple),
+    (2, "Hamburguesa con queso", 10000, receta_queso),
+    (3, "Hamburguesa completa", 12000, receta_completa),
+    (4, "Hamburguesa bacon", 14000, receta_bacon),
 ]
+
 
 
 ANCHO_LINEA = 100
@@ -118,6 +121,18 @@ def mostrar_productos_seleccionados(elementos):
             f"{CYAN}{(lambda s: s[:41] + '...' if len(s) > 44 else s)(', '.join(sorted(producto[3]))):<44}{RESET}"
         )
 
+def actualizar_stock(receta, cantidad, modo):
+    stock = cargar_stock_json()
+    
+    if stock is not None: 
+        for ingrediente_nombre, cant_unitaria in receta.items():
+            if ingrediente_nombre in stock:
+                if modo == "restar":
+                    stock[ingrediente_nombre] -= (cant_unitaria * cantidad)
+                elif modo == "sumar":
+                    stock[ingrediente_nombre] += (cant_unitaria * cantidad)
+        
+        guardar_stock_json(stock)
 
 def comprar():
     carrito = []
@@ -131,16 +146,19 @@ def comprar():
 
         cantidad = int(input("Cantidad: "))
 
-        encontrado = False
-
+        encontrado = None
         for p in productos:
             if p[0] == codigo:
-                total = p[2] * cantidad
-                carrito.append([p[1], p[2], cantidad, total, p[0]])
-                total_final += total
-                encontrado = True
+                encontrado = p
 
-        if not encontrado:
+        if encontrado:
+            actualizar_stock(encontrado[3], cantidad, "restar")
+            total = encontrado[2] * cantidad
+            
+            carrito.append([encontrado[1], encontrado[2], cantidad, total, codigo])
+            total_final += total
+            print(f"{encontrado[1]} agregado al carrito.")
+        else:
             print("Producto no encontrado")
 
     return carrito, total_final
@@ -186,17 +204,28 @@ def mostrar_carrito(carrito):
     linea_divisoria()
 
 
-def eliminar_producto(productos):
+def eliminar_producto(carrito):
     codigo = int(input("Ingrese código de producto a eliminar: "))
 
     producto_a_eliminar = None
-
+    
     for p in productos:
-        if p[0] == codigo:
+        if p[4] == codigo:
             producto_a_eliminar = p
+            break
 
     if producto_a_eliminar:
-        productos.remove(producto_a_eliminar)
+        receta_para_devolver = None
+        for prod in productos:
+            if prod[0] == codigo:
+                receta_para_devolver = prod[3]
+                break
+            
+        if receta_para_devolver:
+            cantidad_comprada = producto_a_eliminar[2]
+            actualizar_stock(receta_para_devolver, cantidad_comprada, "sumar")
+            
+        carrito.remove(producto_a_eliminar)
         print("Producto eliminado")
     else:
         print("Producto no encontrado")
