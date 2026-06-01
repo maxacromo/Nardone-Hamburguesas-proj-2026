@@ -1,4 +1,4 @@
-import os , re
+import os , re 
 from .constantes import ID_EMPLEADO,NOMBRE,APELLIDO,USUARIO,ROL,PASSWORD,ESTADO
 from .usuarios import empleados, atributo_empleados
 from ventas.menu_ventas import *
@@ -333,7 +333,15 @@ def agregar_empleado(empleados):
         rol=validacion_rol("Ingrese el rol del usuario 1-admin o 2-empleado: ")
         nuevo_id=obtener_id(empleados)
         estado="Activo"  
-        empleados.append([nuevo_id,nombre,apellido,user,rol,password,estado])#agrega una nueva fila a la matriz de empleados con los datos ingresados
+        empleados.append({
+            ID_EMPLEADO: nuevo_id,
+            NOMBRE: nombre,
+            APELLIDO: apellido,
+            USUARIO: user,
+            ROL: rol,
+            PASSWORD: password,
+            ESTADO: estado
+        })#agrega un nuevo diccionario a la lista de empleados con los datos ingresados
         salida=str(input("Para finalizar la carga de usuarios presione X o enter para seguir: ")).lower()
         if salida=="x":
             return 
@@ -349,7 +357,7 @@ def mostrar_empleados(empleados,atributo_empleados):
     print("-" * 105) # Linea divisoria del encabezado
     
     for empleado in empleados:
-        for i, dato in enumerate(empleado):
+        for i, dato in enumerate(empleado.values()):
             # Aplicamos colores dependiendo del texto
             if i == 0:
                 print(f"{ROSA}{str(dato):<15}{RESET}", end=" ")

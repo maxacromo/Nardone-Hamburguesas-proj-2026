@@ -1,11 +1,12 @@
-empleados = [
-    [1, "Juan", "Perez", "jperez", "admin","pepe123","Activo"],
-    [2, "Ana", "Gomez", "agomez", "admin","nada123","Inactivo"],
-    [3, "Luis", "Martinez", "lmartinez", "empleado","xd123","Activo"],
-    [4, "Sofia", "Lopez", "slopez", "empleado","xd246","Activo"],
-    [5, "Ezequiel", "Gonzalez", "egonzalez", "admin", "admin", "Activo"],
-    [6, "Kenaya" , "Zalles", "kzalles", "admin", "kz123", "Activo"],
-    [7, "Ezequiel", "Gonzalez", "egonzalez2", "empleado", "admin", "Activo"],
-]
 atributo_empleados=["Id_empleado","Nombre","Apellido","usuario","Rol","Contraseña","Estado"]
+
+empleados = [
+    {"Id_empleado": 1, "Nombre": "Juan", "Apellido": "Perez", "usuario": "jperez", "Rol": "admin", "Contraseña": "pepe123", "Estado": "Activo"},
+    {"Id_empleado": 2, "Nombre": "Ana", "Apellido": "Gomez", "usuario": "agomez", "Rol": "admin", "Contraseña": "nada123", "Estado": "Inactivo"},
+    {"Id_empleado": 3, "Nombre": "Luis", "Apellido": "Martinez", "usuario": "lmartinez", "Rol": "empleado", "Contraseña": "xd123", "Estado": "Activo"},
+    {"Id_empleado": 4, "Nombre": "Sofia", "Apellido": "Lopez", "usuario": "slopez", "Rol": "empleado", "Contraseña": "xd246", "Estado": "Activo"},
+    {"Id_empleado": 5, "Nombre": "Ezequiel", "Apellido": "Gonzalez", "usuario": "egonzalez", "Rol": "admin", "Contraseña": "admin", "Estado": "Activo"},
+    {"Id_empleado": 6, "Nombre": "Kenaya" , "Apellido": "Zalles", "usuario": "kzalles", "Rol": "admin", "Contraseña": "kz123", "Estado": "Activo"},
+    {"Id_empleado": 7, "Nombre": "Ezequiel", "Apellido": "Gonzalez", "usuario": "egonzalez2", "Rol": "empleado", "Contraseña": "admin", "Estado": "Activo"},
+]
 

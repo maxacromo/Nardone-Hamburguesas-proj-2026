@@ -1,7 +1,7 @@
-ID_EMPLEADO= 0
-NOMBRE = 1
-APELLIDO = 2
-USUARIO = 3
-ROL = 4
-PASSWORD = 5
-ESTADO=6    
+ID_EMPLEADO = "Id_empleado"
+NOMBRE = "Nombre"
+APELLIDO = "Apellido"
+USUARIO = "usuario"
+ROL = "Rol"
+PASSWORD = "Contraseña"
+ESTADO = "Estado"    
