@@ -256,3 +256,22 @@ def Search_Client_Name(Search,Cliente,Persona_ID):
     
     Result="Not Found"
     return Result
+
+def Title_Print(lista,i=0):
+    with open("Titulo_Clientes.csv","r",encoding="UTF-8" )as titlearch:
+        data = [line.strip().split(",") for line in titlearch]
+        for line in data:
+            if i==len(lista):
+                i=0
+                continue
+            else:
+                print(f"{line[i]:<25}", end=" ")
+                return Title_Print(lista,i+1)
+            
+
+def Transformar_booleano(Cliente,key):
+    if Cliente[key][3]==True:
+        print("True")
+    elif Cliente[key][3]==False:
+        print("False")
+
