@@ -353,6 +353,7 @@ def buscar_o_crear_cliente(Persona_ID, Cliente, Mail_List, yesno):
         contador = len(Persona_ID)
         Aux = {Persona_ID[contador - 1]: Persona}
         Cliente.update(Aux)
+        Update_Client_File(Cliente)
         print("Cliente creado exitosamente.")
         return Persona_ID[contador - 1]
 

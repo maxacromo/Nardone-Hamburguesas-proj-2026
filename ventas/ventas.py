@@ -199,10 +199,16 @@ def eliminar_venta():
     print(f"Venta eliminada con Id: {ROJO}{venta[ID]}")
     mostrar_linea_divisoria(ancho_standard)
 
+def resolver_nombre_cliente(id_cliente, clientes):
+    if id_cliente in clientes:
+        return clientes[id_cliente][0]
+    return str(id_cliente)
+
 def mostrar_ventas():
     """
     Metodo para mostrar las ventas utilizando ANSI
     """
+    _, clientes, _ = cargar_clientes()
     while True:
         mostrar_linea_divisoria(ancho_standard)
         print("Visualizacion de Ventas")
@@ -223,10 +229,11 @@ def mostrar_ventas():
 
         for venta in ventas:
             articulos_str = ", ".join([f"{cod}({cant})" for cod, cant in venta[ARTICULOS]])
+            nombre_cliente = resolver_nombre_cliente(venta[CLIENTE], clientes)
             print(
                 f'{AMARILLO}{venta[ID]:<4}{RESET} | '
                 f'{venta[VENDEDOR]:<25.25} | '
-                f'{venta[CLIENTE]:<20.20} | '
+                f'{nombre_cliente:<20.20} | '
                 f'${venta[TOTAL_VENTA]:<10.2f} | '
                 f'{venta[FECHA]:<12} | '
                 f'{CYAN}{articulos_str:<30.30}{RESET}'
