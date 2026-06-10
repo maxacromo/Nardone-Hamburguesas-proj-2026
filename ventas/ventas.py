@@ -1,6 +1,7 @@
 from .constantes import *
 from productos.productos import comprar, mostrar_productos, mostrar_carrito, mostrar_productos, mostrar_productos_de_venta, crear_productos
 from empleados.utils import obtener_nombre_apellido
+from Clientes.Clientes import buscar_o_crear_cliente, cargar_clientes
 import re
 
 # Programa principal
@@ -105,7 +106,9 @@ def crear_venta(usuario):
     carrito, total_final = comprar()
     mostrar_carrito(carrito)
     productos_venta = obtener_productos_carrito(carrito)
-    nombre_cliente = input("Ingrese el nombre del cliente o Enter para saltear: ")
+
+    personas_id, clientes, mail_list = cargar_clientes()
+    id_cliente = buscar_o_crear_cliente(personas_id, clientes, mail_list, ["yes","y","no","n"])
 
     patron_fecha = r"^(0[1-9]|[12]\d|3[01])-(0[1-9]|1[0-2])-\d{4}$"
     while True:
@@ -115,7 +118,7 @@ def crear_venta(usuario):
         print("Fecha inválida. Asegúrese de usar el formato dd-MM-aaaa (ej: 25-03-2025)")
 
     nombre = obtener_nombre_apellido(usuario)
-    venta = [calcular_id(), nombre, nombre_cliente, total_final, fecha_venta, productos_venta, True]
+    venta = [calcular_id(), nombre, id_cliente, total_final, fecha_venta, productos_venta, True]
     elementos.append(venta)
     mostrar_linea_divisoria(ancho_standard)
     print(f"Venta creada con Id: {AMARILLO}{venta[ID]}")

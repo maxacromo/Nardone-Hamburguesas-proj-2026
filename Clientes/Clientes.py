@@ -1,5 +1,5 @@
-#from Clientes.Clientes_Funciones import *
-from Clientes_Funciones import *
+from Clientes.Clientes_Funciones import *
+#from Clientes_Funciones import *
 import random,json,pprint
 ancho_menu = 100
 yesno=["yes","y","no","n"]
@@ -316,4 +316,60 @@ def mostrar_menu_clientes():
             limpiar_pantalla()
             print("Error,ingrese un input valido")
 
-mostrar_menu_clientes()
+
+def buscar_cliente_by_user(user):
+    try:
+        with open("Clientes_Datos.json", "r", encoding="UTF-8") as Datos:
+            Clientes_list = json.load(Datos)
+            for cliente in Clientes_list:
+                if user == Clientes_list[cliente][2]:
+                    return cliente
+            raise ValueError(f"Cliente '{user}' no encontrado")
+
+    except (FileNotFoundError, OSError) as error:
+        print("Error:", error)
+    finally:
+        Datos.close()
+
+
+def buscar_o_crear_cliente(Persona_ID, Cliente, Mail_List, yesno):
+    try:
+        usuario_cliente = input("Ingrese el Usuario del cliente: ").strip()
+        resultado = buscar_cliente_by_user(usuario_cliente)
+        print(f"Cliente encontrado: {resultado}")
+        return resultado
+
+    except ValueError:
+        print(f"El usuario '{usuario_cliente}' no existe. Creando cliente...")
+        Hold = "1"
+        while Hold == "1":
+            Hold = Gen_FullName("1", yesno)
+
+        Pila = Hold.split(" ", 1)[0]
+        Apellido = Hold.split(" ", 1)[1]
+        Mail, Cliente_Usuario = Gen_Mail(Mail_List, Pila, Apellido)
+        Persona = [Hold, Mail, Cliente_Usuario, True]
+        Num_list(Persona_ID)
+        contador = len(Persona_ID)
+        Aux = {Persona_ID[contador - 1]: Persona}
+        Cliente.update(Aux)
+        print("Cliente creado exitosamente.")
+        return Persona_ID[contador - 1]
+
+    except (FileNotFoundError, OSError) as error:
+        print("Error al leer el archivo:", error)
+        return None
+
+def cargar_clientes():
+    Persona_ID = []
+    Mail_List = []
+    Cliente = {}
+    try:
+        with open("Clientes_Datos.json", "r", encoding="UTF-8") as Datos:
+            Cliente = json.load(Datos)
+            Persona_ID = list(Cliente.keys())
+            for i in range(len(Persona_ID)):
+                Mail_List.append(Cliente[Persona_ID[i]][1])
+    except (FileNotFoundError, OSError) as error:
+        print("Error:", error)
+    return Persona_ID, Cliente, Mail_List
