@@ -340,7 +340,12 @@ def buscar_o_crear_cliente(Persona_ID, Cliente, Mail_List, yesno):
         return resultado
 
     except ValueError:
-        print(f"El usuario '{usuario_cliente}' no existe. Creando cliente...")
+        print(f"El usuario '{usuario_cliente}' no existe.")
+        confirmar = input("¿Desea crear el cliente? (y/n): ").strip().lower()
+        while confirmar not in yesno:
+            confirmar = input("Opción inválida. Ingrese y/n: ").strip().lower()
+        if confirmar in ("no", "n"):
+            return 0
         Hold = "1"
         while Hold == "1":
             Hold = Gen_FullName("1", yesno)

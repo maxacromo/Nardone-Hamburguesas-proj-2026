@@ -200,8 +200,9 @@ def eliminar_venta():
     mostrar_linea_divisoria(ancho_standard)
 
 def resolver_nombre_cliente(id_cliente, clientes):
-    if id_cliente in clientes:
-        return clientes[id_cliente][0]
+    key = str(id_cliente)
+    if key in clientes:
+        return clientes[key][0]
     return str(id_cliente)
 
 def mostrar_ventas():

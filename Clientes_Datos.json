@@ -1,4 +1,10 @@
 {
+    "0": [
+        "Cliente Generico",
+        "n/a",
+        "n/a",
+        true
+    ],
     "137377": [
         "Lucia Romero",
         "lromero@gmail.com",
@@ -159,6 +165,12 @@
         "Ezequiel Gonzalez",
         "egonzalez@gmail.com",
         "egonzalez",
+        true
+    ],
+    "481238": [
+        "asd asd",
+        "aasd@gmail.com",
+        "aasd1",
         true
     ]
 }
