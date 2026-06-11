@@ -3,6 +3,8 @@ from productos.productos import comprar, mostrar_productos, mostrar_carrito, mos
 from empleados.utils import obtener_nombre_apellido
 from Clientes.Clientes import buscar_o_crear_cliente, cargar_clientes
 import re
+import csv
+import os
 
 # Programa principal
 RESET = "\033[0m"
@@ -24,28 +26,45 @@ BOLD_AMARILLO = "\033[1;33m"
 ancho_standard = 100
 
 encabezados = ['Id', 'Empleado', 'Cliente', 'Total', 'Fecha' ,'Articulos y Cantidad']
-elementos = [
-    ['1', 'Ezequiel Gonzalez', 'Juan Perez', 100, '31-01-2026', [[3, 1], [1, 2]], True],
-    ['2', 'Ezequiel Gonzalez', 'Pepe Alvarez', 130, '02-02-2026', [[4, 1], [2, 1]], True],
-    ['3', 'Ezequiel Gonzalez', 'Pedro Lopez', 105, '06-02-2026', [[1, 1], [3, 1]], True],
-    ['4', 'Juan Perez', 'Pedro Lopez', 1052, '01-03-2026', [[2, 2], [4, 3]], True],
-    ['5', 'Juan Perez', 'Pedro Lopez', 2050, '01-03-2026', [[1, 1], [3, 5]], True],
-    ['6', 'Juan Perez', 'Pedro Lopez', 500, '01-03-2026', [[4, 4], [2, 1]], True],
-    ['7', 'Maria Lopez', 'Carlos Diaz', 890, '05-03-2026', [[3, 2], [1, 3]], True],
-    ['8', 'Maria Lopez', 'Ana Torres', 450, '05-03-2026', [[2, 1], [4, 2]], True],
-    ['9', 'Lucas Fernandez', 'Juan Perez', 1200, '10-03-2026', [[1, 2], [3, 1]], True],
-    ['10', 'Lucas Fernandez', 'Sofia Gomez', 750, '10-03-2026', [[4, 1], [2, 2]], True],
-    ['11', 'Kenaya Zalles', 'Lucia Martinez', 320, '12-03-2026', [[3, 2], [1, 1]], True],
-    ['12', 'Juan Perez', 'Diego Suarez', 980, '15-03-2026', [[2, 2], [4, 3]], True],
-    ['13', 'Maria Lopez', 'Valentina Ruiz', 1500, '16-03-2026', [[1, 1], [3, 2]], True],
-    ['14', 'Lucas Fernandez', 'Martin Acosta', 670, '18-03-2026', [[4, 2], [2, 1]], True],
-    ['15', 'Ezequiel Gonzalez', 'Camila Benitez', 430, '20-03-2026', [[3, 1], [1, 2]], True],
-    ['16', 'Juan Perez', 'Fernando Silva', 2500, '22-03-2026', [[2, 4], [4, 2]], True],
-    ['17', 'Maria Lopez', 'Pedro Lopez', 300, '22-03-2026', [[1, 1], [3, 1]], True],
-    ['18', 'Lucas Fernandez', 'Juan Perez', 1100, '25-03-2026', [[4, 2], [2, 2]], True],
-    ['19', 'Ezequiel Gonzalez', 'Pepe Alvarez', 870, '27-03-2026', [[3, 3], [1, 1]], True],
-    ['20', 'Juan Perez', 'Carlos Diaz', 1990, '28-03-2026', [[2, 2], [4, 3], [1, 5]], True]
-]
+
+CSV_PATH = os.path.join(os.path.dirname(__file__), 'ventas_historico.csv')
+
+def articulos_a_str(articulos):
+    return ";".join(f"{cod}:{cant}" for cod, cant in articulos)
+
+def str_a_articulos(texto):
+    return [[p.split(":")[0], int(p.split(":")[1])] for p in texto.split(";") if p]
+
+def cargar_ventas():
+    ventas = []
+    try:
+        with open(CSV_PATH, newline='', encoding='UTF-8') as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                ventas.append([
+                    row['id'],
+                    row['empleado'],
+                    row['cliente'],
+                    float(row['total']),
+                    row['fecha'],
+                    str_a_articulos(row['articulos']),
+                    row['activo'] == 'True'
+                ])
+    except (FileNotFoundError, OSError) as error:
+        print("Error al cargar ventas:", error)
+    return ventas
+
+def guardar_ventas(ventas):
+    try:
+        with open(CSV_PATH, 'w', newline='', encoding='UTF-8') as f:
+            writer = csv.writer(f)
+            writer.writerow(['id', 'empleado', 'cliente', 'total', 'fecha', 'articulos', 'activo'])
+            for v in ventas:
+                writer.writerow([v[ID], v[VENDEDOR], v[CLIENTE], v[TOTAL_VENTA], v[FECHA], articulos_a_str(v[ARTICULOS]), v[ACTIVO]])
+    except (FileNotFoundError, OSError) as error:
+        print("Error al guardar ventas:", error)
+
+elementos = cargar_ventas()
 
 def mostrar_linea_divisoria(ancho_total):
     print(f"{AZUL}{'-'*ancho_total}{RESET}")
@@ -120,6 +139,7 @@ def crear_venta(usuario):
     nombre = obtener_nombre_apellido(usuario)
     venta = [calcular_id(), nombre, id_cliente, total_final, fecha_venta, productos_venta, True]
     elementos.append(venta)
+    guardar_ventas(elementos)
     mostrar_linea_divisoria(ancho_standard)
     print(f"Venta creada con Id: {AMARILLO}{venta[ID]}")
     mostrar_linea_divisoria(ancho_standard)
@@ -180,6 +200,7 @@ def actualizar_venta():
         print("Fecha inválida. Asegúrese de usar el formato dd-MM-aaaa (ej: 25-03-2025)")
 
     venta[ARTICULOS] = ingresar_productos_venta()
+    guardar_ventas(elementos)
     mostrar_linea_divisoria(ancho_standard)
     print('Venta actualizada:')
     mostrar_venta(venta)
@@ -195,6 +216,7 @@ def eliminar_venta():
         return
     
     venta[ACTIVO] = False
+    guardar_ventas(elementos)
     mostrar_linea_divisoria(ancho_standard)
     print(f"Venta eliminada con Id: {ROJO}{venta[ID]}")
     mostrar_linea_divisoria(ancho_standard)
