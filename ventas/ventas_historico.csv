@@ -1,23 +1,23 @@
 id,empleado,cliente,total,fecha,articulos,activo
-1,Ezequiel Gonzalez,Juan Perez,100.0,31-01-2026,3:1;1:2,True
-2,Ezequiel Gonzalez,Pepe Alvarez,130.0,02-02-2026,4:1;2:1,True
-3,Ezequiel Gonzalez,Pedro Lopez,105.0,06-02-2026,1:1;3:1,True
-4,Juan Perez,Pedro Lopez,1052.0,01-03-2026,2:2;4:3,True
-5,Juan Perez,Pedro Lopez,2050.0,01-03-2026,1:1;3:5,True
-6,Juan Perez,Pedro Lopez,500.0,01-03-2026,4:4;2:1,True
-7,Maria Lopez,Carlos Diaz,890.0,05-03-2026,3:2;1:3,True
-8,Maria Lopez,Ana Torres,450.0,05-03-2026,2:1;4:2,True
-9,Lucas Fernandez,Juan Perez,1200.0,10-03-2026,1:2;3:1,True
-10,Lucas Fernandez,Sofia Gomez,750.0,10-03-2026,4:1;2:2,True
-11,Kenaya Zalles,Lucia Martinez,320.0,12-03-2026,3:2;1:1,True
-12,Juan Perez,Diego Suarez,980.0,15-03-2026,2:2;4:3,True
-13,Maria Lopez,Valentina Ruiz,1500.0,16-03-2026,1:1;3:2,True
-14,Lucas Fernandez,Martin Acosta,670.0,18-03-2026,4:2;2:1,True
-15,Ezequiel Gonzalez,Camila Benitez,430.0,20-03-2026,3:1;1:2,True
-16,Juan Perez,Fernando Silva,2500.0,22-03-2026,2:4;4:2,True
-17,Maria Lopez,Pedro Lopez,300.0,22-03-2026,1:1;3:1,True
-18,Lucas Fernandez,Juan Perez,1100.0,25-03-2026,4:2;2:2,True
-19,Ezequiel Gonzalez,Pepe Alvarez,870.0,27-03-2026,3:3;1:1,True
-20,Juan Perez,Carlos Diaz,1990.0,28-03-2026,2:2;4:3;1:5,True
+1,Ezequiel Gonzalez,200001,100.0,31-01-2026,3:1;1:2,True
+2,Ezequiel Gonzalez,200002,130.0,02-02-2026,4:1;2:1,True
+3,Ezequiel Gonzalez,200003,105.0,06-02-2026,1:1;3:1,True
+4,Juan Perez,200003,1052.0,01-03-2026,2:2;4:3,True
+5,Juan Perez,200003,2050.0,01-03-2026,1:1;3:5,True
+6,Juan Perez,200003,500.0,01-03-2026,4:4;2:1,True
+7,Maria Lopez,200004,890.0,05-03-2026,3:2;1:3,True
+8,Maria Lopez,488385,450.0,05-03-2026,2:1;4:2,True
+9,Lucas Fernandez,200001,1200.0,10-03-2026,1:2;3:1,True
+10,Lucas Fernandez,200005,750.0,10-03-2026,4:1;2:2,True
+11,Kenaya Zalles,200006,320.0,12-03-2026,3:2;1:1,True
+12,Juan Perez,200007,980.0,15-03-2026,2:2;4:3,True
+13,Maria Lopez,200008,1500.0,16-03-2026,1:1;3:2,True
+14,Lucas Fernandez,200009,670.0,18-03-2026,4:2;2:1,True
+15,Ezequiel Gonzalez,200010,430.0,20-03-2026,3:1;1:2,True
+16,Juan Perez,200011,2500.0,22-03-2026,2:4;4:2,True
+17,Maria Lopez,200003,300.0,22-03-2026,1:1;3:1,True
+18,Lucas Fernandez,200001,1100.0,25-03-2026,4:2;2:2,True
+19,Ezequiel Gonzalez,200002,870.0,27-03-2026,3:3;1:1,True
+20,Juan Perez,200004,1990.0,28-03-2026,2:2;4:3;1:5,True
 21,Ezequiel Gonzalez,111111,50000.0,10-06-2026,4:3;1:1,True
 22,Ezequiel Gonzalez,111111,18000.0,10-06-2026,1:1;2:1,True
