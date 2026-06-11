@@ -278,3 +278,57 @@ def mostrar_ventas():
             input("Opción inválida. Presione ENTER para continuar.")
 
 
+def buscar_ventas_por_cliente():
+    from Clientes.Clientes import buscar_cliente_by_user
+    mostrar_linea_divisoria(ancho_standard)
+    print("Historial de compras por cliente")
+    mostrar_linea_divisoria(ancho_standard)
+
+    usuario = input("Ingrese el usuario del cliente: ").strip()
+    try:
+        id_cliente = buscar_cliente_by_user(usuario)
+    except (ValueError, TypeError):
+        print(f"No existe ningún cliente con usuario '{usuario}'.")
+        mostrar_linea_divisoria(ancho_standard)
+        return
+
+    _, clientes, _ = cargar_clientes()
+    nombre_cliente = resolver_nombre_cliente(id_cliente, clientes)
+
+    ventas_cliente = [v for v in elementos if str(v[CLIENTE]) == str(id_cliente) and v[ACTIVO]]
+
+    mostrar_linea_divisoria(ancho_standard)
+    if not ventas_cliente:
+        print(f"No se encontraron ventas para el cliente '{nombre_cliente}'.")
+        mostrar_linea_divisoria(ancho_standard)
+        return
+
+    print(f"Ventas de: {AMARILLO}{nombre_cliente}{RESET}")
+    mostrar_linea_divisoria(ancho_standard)
+    print(
+        f"{BOLD}"
+        f"{encabezados[ID]:<4} | "
+        f"{encabezados[VENDEDOR]:<25} | "
+        f"{encabezados[TOTAL_VENTA]:<11} | "
+        f"{encabezados[FECHA]:<12} | "
+        f"{encabezados[ARTICULOS]:<30}"
+        f"{RESET}"
+    )
+    mostrar_linea_divisoria(ancho_standard)
+
+    total_gastado = 0
+    for venta in ventas_cliente:
+        articulos_str = ", ".join([f"{cod}({cant})" for cod, cant in venta[ARTICULOS]])
+        print(
+            f'{AMARILLO}{venta[ID]:<4}{RESET} | '
+            f'{venta[VENDEDOR]:<25.25} | '
+            f'${venta[TOTAL_VENTA]:<10.2f} | '
+            f'{venta[FECHA]:<12} | '
+            f'{CYAN}{articulos_str:<30.30}{RESET}'
+        )
+        total_gastado += venta[TOTAL_VENTA]
+
+    mostrar_linea_divisoria(ancho_standard)
+    print(f"Total de compras: {BOLD_VERDE}{len(ventas_cliente)}{RESET}  |  Total gastado: {BOLD_VERDE}${total_gastado:.2f}{RESET}")
+    mostrar_linea_divisoria(ancho_standard)
+
