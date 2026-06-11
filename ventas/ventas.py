@@ -95,7 +95,7 @@ def ingresar_productos_venta():
         print("¿Desea cargar mas productos?")
         ingreso = input("1 para continuar, 0 para finalizar: ")
         while ingreso not in ("0", "1"):
-            ingreso = input("Opción inválida. Ingrese 1 para continuar o 0 para finalizar: ")
+            ingreso = input("Opcion invalida. Ingrese 1 para continuar o 0 para finalizar: ")
     
     return productos
 
@@ -134,7 +134,7 @@ def crear_venta(usuario):
         fecha_venta = input("Ingrese la fecha en formato dd-MM-aaaa: ")
         if re.match(patron_fecha, fecha_venta):
             break
-        print("Fecha inválida. Asegúrese de usar el formato dd-MM-aaaa (ej: 25-03-2025)")
+        print("Fecha invalida. Asegurese de usar el formato dd-MM-aaaa (ej: 25-03-2025)")
 
     nombre = obtener_nombre_apellido(usuario)
     venta = [calcular_id(), nombre, id_cliente, total_final, fecha_venta, productos_venta, True]
@@ -197,7 +197,7 @@ def actualizar_venta():
         fecha_venta = input("Ingrese la fecha en formato dd-MM-aaaa: ")
         if re.match(patron_fecha, fecha_venta):
             break
-        print("Fecha inválida. Asegúrese de usar el formato dd-MM-aaaa (ej: 25-03-2025)")
+        print("Fecha invalida. Asegurese de usar el formato dd-MM-aaaa (ej: 25-03-2025)")
 
     venta[ARTICULOS] = ingresar_productos_venta()
     guardar_ventas(elementos)
@@ -275,7 +275,66 @@ def mostrar_ventas():
         elif sort == "3":
             elementos.sort(key=lambda x: x[VENDEDOR])
         else:
-            input("Opción inválida. Presione ENTER para continuar.")
+            input("Opcion invalida. Presione ENTER para continuar.")
+
+
+def buscar_ventas_por_producto():
+    from productos.productos import crear_productos
+    productos = crear_productos()
+
+    mostrar_linea_divisoria(ancho_standard)
+    print("Busqueda de ventas por producto")
+    mostrar_productos(productos)
+    mostrar_linea_divisoria(ancho_standard)
+
+    codigo = input("Ingrese el codigo del producto: ").strip()
+    producto_encontrado = next((p for p in productos if str(p[0]) == codigo), None)
+    if producto_encontrado is None:
+        print(f"No existe un producto con codigo '{codigo}'.")
+        mostrar_linea_divisoria(ancho_standard)
+        return
+
+    ventas_con_producto = [
+        v for v in elementos
+        if v[ACTIVO] and any(str(art[0]) == codigo for art in v[ARTICULOS])
+    ]
+
+    _, clientes, _ = cargar_clientes()
+    mostrar_linea_divisoria(ancho_standard)
+    if not ventas_con_producto:
+        print(f"No se encontraron ventas con el producto '{producto_encontrado[1]}'.")
+        mostrar_linea_divisoria(ancho_standard)
+        return
+
+    print(f"Ventas que contienen: {AMARILLO}{producto_encontrado[1]}{RESET}")
+    mostrar_linea_divisoria(ancho_standard)
+    print(
+        f"{BOLD}"
+        f"{encabezados[ID]:<4} | "
+        f"{encabezados[VENDEDOR]:<25} | "
+        f"{encabezados[CLIENTE]:<20} | "
+        f"{'Cant':<6} | "
+        f"{'Total Vta':<11} | "
+        f"{encabezados[FECHA]:<12}"
+        f"{RESET}"
+    )
+    mostrar_linea_divisoria(ancho_standard)
+
+    for venta in ventas_con_producto:
+        cantidad = next(art[1] for art in venta[ARTICULOS] if str(art[0]) == codigo)
+        nombre_cliente = resolver_nombre_cliente(venta[CLIENTE], clientes)
+        print(
+            f'{AMARILLO}{venta[ID]:<4}{RESET} | '
+            f'{venta[VENDEDOR]:<25.25} | '
+            f'{nombre_cliente:<20.20} | '
+            f'{cantidad:<6} | '
+            f'${venta[TOTAL_VENTA]:<10.2f} | '
+            f'{venta[FECHA]:<12}'
+        )
+
+    mostrar_linea_divisoria(ancho_standard)
+    print(f"Total de ventas encontradas: {BOLD_VERDE}{len(ventas_con_producto)}{RESET}")
+    mostrar_linea_divisoria(ancho_standard)
 
 
 def buscar_ventas_por_cliente():
@@ -288,7 +347,7 @@ def buscar_ventas_por_cliente():
     try:
         id_cliente = buscar_cliente_by_user(usuario)
     except (ValueError, TypeError):
-        print(f"No existe ningún cliente con usuario '{usuario}'.")
+        print(f"No existe ningun cliente con usuario '{usuario}'.")
         mostrar_linea_divisoria(ancho_standard)
         return
 

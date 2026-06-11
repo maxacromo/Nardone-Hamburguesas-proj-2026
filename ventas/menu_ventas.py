@@ -1,12 +1,12 @@
 
-from ventas.ventas import mostrar_ventas, crear_venta, actualizar_venta, eliminar_venta, obtener_venta, buscar_ventas_por_cliente, elementos
+from ventas.ventas import mostrar_ventas, crear_venta, actualizar_venta, eliminar_venta, obtener_venta, buscar_ventas_por_cliente, buscar_ventas_por_producto, elementos
 from ventas.estadisticas import obtener_ventas_por_cada_vendedor, obtener_articulo_mas_vendido, obtener_cant_total_ventas
 
 ancho_menu = 100
 def mostrar_menu_ventas(empleado_logueado):
 
     while True:
-        opciones = 6
+        opciones = 7
         print("-"*ancho_menu)
         print("MENÚ PRINCIPAL > MENÚ DE VENTAS")
         print("-"*ancho_menu)
@@ -16,6 +16,7 @@ def mostrar_menu_ventas(empleado_logueado):
         print("[4] Eliminar Venta")
         print("[5] Buscar Venta por ID")
         print("[6] Historial de compras por cliente")
+        print("[7] Buscar ventas por producto")
         print("-"*ancho_menu)
         print("[0] Volver al menú anterior")
         print("-"*ancho_menu)
@@ -40,6 +41,8 @@ def mostrar_menu_ventas(empleado_logueado):
             obtener_venta()
         elif opcion == "6":
             buscar_ventas_por_cliente()
+        elif opcion == "7":
+            buscar_ventas_por_producto()
 
 def mostrar_menu_estadisticas():
 
