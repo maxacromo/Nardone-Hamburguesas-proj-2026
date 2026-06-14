@@ -1,10 +1,11 @@
 from .constantes import *
-from productos.productos import comprar, mostrar_productos, mostrar_carrito, mostrar_productos, mostrar_productos_de_venta, crear_productos
+from productos.productos import comprar, mostrar_productos, mostrar_carrito, mostrar_productos, mostrar_productos_de_venta, crear_productos, productos as catalogo_productos
 from empleados.utils import obtener_nombre_apellido
 from Clientes.Clientes import buscar_o_crear_cliente, cargar_clientes
 import re
 import csv
 import os
+from functools import reduce
 
 # Programa principal
 RESET = "\033[0m"
@@ -28,6 +29,14 @@ ancho_standard = 100
 encabezados = ['Id', 'Empleado', 'Cliente', 'Total', 'Fecha' ,'Articulos y Cantidad']
 
 CSV_PATH = os.path.join(os.path.dirname(__file__), 'ventas_historico.csv')
+
+def calcular_total(articulos):
+    total = 0.0
+    for codigo, cantidad in articulos:
+        producto = next((p for p in catalogo_productos if str(p[0]) == str(codigo)), None)
+        if producto:
+            total += producto[2] * cantidad
+    return total
 
 def articulos_a_str(articulos):
     return ";".join(f"{cod}:{cant}" for cod, cant in articulos)
@@ -70,7 +79,7 @@ def mostrar_linea_divisoria(ancho_total):
     print(f"{AZUL}{'-'*ancho_total}{RESET}")
     
 def formatear_articulos(articulos):
-    return ", ".join([f"{cod}({cant})" for cod, cant in articulos])
+    return ", ".join(map(lambda a: f"{a[0]}({a[1]})", articulos))
 
 def mostrar_venta(venta):
     print(f"ID: {AMARILLO}{venta[ID]}{RESET}")
@@ -185,21 +194,33 @@ def actualizar_venta():
     if venta is None:
         return
 
-    print("Ingrese los nuevos valores para:")
+    print("Ingrese los nuevos valores o Enter para conservar el valor actual:")
     mostrar_venta(venta)
     print()
-    venta[VENDEDOR] = input("Ingrese el nombre del empleado: ")
-    venta[CLIENTE] = input("Ingrese el nombre del cliente: ")
-    venta[TOTAL_VENTA] = float(input("Ingrese el total de la venta: "))
+
+    nuevo_vendedor = input(f"Empleado [{venta[VENDEDOR]}]: ").strip()
+    if nuevo_vendedor:
+        venta[VENDEDOR] = nuevo_vendedor
+
+    nuevo_cliente = input(f"Cliente [{venta[CLIENTE]}]: ").strip()
+    if nuevo_cliente:
+        venta[CLIENTE] = nuevo_cliente
 
     patron_fecha = r"^(0[1-9]|[12]\d|3[01])-(0[1-9]|1[0-2])-\d{4}$"
     while True:
-        fecha_venta = input("Ingrese la fecha en formato dd-MM-aaaa: ")
-        if re.match(patron_fecha, fecha_venta):
+        nueva_fecha = input(f"Fecha [{venta[FECHA]}] (dd-MM-aaaa): ").strip()
+        if not nueva_fecha:
+            break
+        if re.match(patron_fecha, nueva_fecha):
+            venta[FECHA] = nueva_fecha
             break
         print("Fecha invalida. Asegurese de usar el formato dd-MM-aaaa (ej: 25-03-2025)")
 
-    venta[ARTICULOS] = ingresar_productos_venta()
+    print("¿Desea modificar los articulos? (Enter para conservar los actuales)")
+    modificar_articulos = input("1 para modificar, Enter para conservar: ").strip()
+    if modificar_articulos == "1":
+        venta[ARTICULOS] = ingresar_productos_venta()
+        venta[TOTAL_VENTA] = calcular_total(venta[ARTICULOS])
     guardar_ventas(elementos)
     mostrar_linea_divisoria(ancho_standard)
     print('Venta actualizada:')
@@ -375,7 +396,6 @@ def buscar_ventas_por_cliente():
     )
     mostrar_linea_divisoria(ancho_standard)
 
-    total_gastado = 0
     for venta in ventas_cliente:
         articulos_str = ", ".join([f"{cod}({cant})" for cod, cant in venta[ARTICULOS]])
         print(
@@ -385,7 +405,8 @@ def buscar_ventas_por_cliente():
             f'{venta[FECHA]:<12} | '
             f'{CYAN}{articulos_str:<30.30}{RESET}'
         )
-        total_gastado += venta[TOTAL_VENTA]
+
+    total_gastado = reduce(lambda acc, v: acc + v[TOTAL_VENTA], ventas_cliente, 0)
 
     mostrar_linea_divisoria(ancho_standard)
     print(f"Total de compras: {BOLD_VERDE}{len(ventas_cliente)}{RESET}  |  Total gastado: {BOLD_VERDE}${total_gastado:.2f}{RESET}")
