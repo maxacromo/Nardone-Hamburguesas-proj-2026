@@ -1,3 +1,4 @@
+from stock.Vista_stock import inicio_stock
 from stock.modelo_stock import stock
 
 def anadir_ingrediente(stock):
