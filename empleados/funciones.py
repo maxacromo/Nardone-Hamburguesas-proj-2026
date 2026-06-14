@@ -1,6 +1,7 @@
-import os , re
+import re
 from .constantes import ID_EMPLEADO,NOMBRE,APELLIDO,USUARIO,ROL,PASSWORD,ESTADO
 from .usuarios import empleados, atributo_empleados
+from .utils import limpiar_pantalla
 from ventas.menu_ventas import *
 from Clientes.Clientes import mostrar_menu_clientes
 from stock.Main_stock import menu
@@ -9,12 +10,6 @@ from productos.menu_productos import menu_productos
 
 ancho_menu = 100
 
-def limpiar_pantalla():
-    if os.name == "nt":  # Windows
-        #Es una funcion de python que ejecuta comandos del sistema operativo.
-        os.system("cls")#Le pasamos el comando y lo ejectua en la shell
-    else: #Liempia la pantalla Linux y Mac
-        os.system("clear")
 #---------------------------------------------------------------
 #Interfaz de usuario
 #---------------------------------------------------------------

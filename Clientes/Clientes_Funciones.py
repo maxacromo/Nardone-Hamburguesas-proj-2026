@@ -1,4 +1,5 @@
-import random, os,json
+import random, os, json
+from empleados.utils import limpiar_pantalla
 
 
 def Num_list(Persona_ID):# Crea ID de Usuario para las personas de relleno
@@ -208,13 +209,6 @@ def Verificacion_Mod_Usuario(Cliente,yesno,Restore):
             input("Presione enter para volver al menu previo.")
             limpiar_pantalla()
             return "n",0,0
-
-def limpiar_pantalla():
-    if os.name == "nt":  # Windows
-        #Es una funcion de python que ejecuta comandos del sistema operativo.
-        os.system("cls")#Le pasamos el comando y lo ejectua en la shell
-    else: #Liempia la pantalla Linux y Mac
-        os.system("clear")
 
 Lowercase= lambda x: x.lower()
 
