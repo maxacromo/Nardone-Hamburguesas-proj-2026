@@ -1,6 +1,6 @@
-import os , re 
+import os , re , json
 from .constantes import ID_EMPLEADO,NOMBRE,APELLIDO,USUARIO,ROL,PASSWORD,ESTADO
-from .usuarios import empleados, atributo_empleados
+from .usuarios import cargar_empleados, guardar_empleados, atributo_empleados
 from ventas.menu_ventas import *
 from Clientes.Clientes import mostrar_menu_clientes
 from stock.Main_stock import menu
@@ -45,8 +45,9 @@ def buscar_usuario_secuencial(empleados, usuario, contra):
             
     return empleado_encontrado
  
-def validar_usuario(empleados, usuario, contra, atributo_empleados):
+def validar_usuario(usuario, contra, atributo_empleados):
     #Aplicamos el método de búsqueda secuencial
+    empleados = cargar_empleados()
     empleado = buscar_usuario_secuencial(empleados, usuario, contra)
     
     #Evaluamos el resultado de la búsqueda
@@ -57,7 +58,7 @@ def validar_usuario(empleados, usuario, contra, atributo_empleados):
             return "INACTIVO"
             
         if empleado[ROL] == "admin":
-            submenu_admin(empleados, atributo_empleados, usuario)
+            submenu_admin(atributo_empleados, usuario)
         elif empleado[ROL] == "empleado":
             submenu_empleado(usuario)
         else:
@@ -69,7 +70,7 @@ def validar_usuario(empleados, usuario, contra, atributo_empleados):
 
     return False
 
-def login(empleados, atributo_empleados):
+def login(atributo_empleados):
     sesion = 0
 
     while sesion < 3:
@@ -78,7 +79,7 @@ def login(empleados, atributo_empleados):
         usuario = input("  Usuario: ").strip()
         contra = input("  Contraseña: ").strip()
 
-        resultado_validacion = validar_usuario(empleados, usuario, contra, atributo_empleados)
+        resultado_validacion = validar_usuario(usuario, contra, atributo_empleados)
         if resultado_validacion == "INACTIVO":
             return
         elif resultado_validacion == True:
@@ -108,7 +109,7 @@ def registro():
 ##---------------------------------------------------------------
 #MENU PRINCIPAL 
 ##---------------------------------------------------------------
-def menu_principal(empleados, atributo_empleados):
+def menu_principal(atributo_empleados):
     while True:
         limpiar_pantalla()
         dibujar_borde("HAMBURGUESERIA", 40)
@@ -123,7 +124,7 @@ def menu_principal(empleados, atributo_empleados):
 
             #opcion de menu
             if opcion == 1:
-                login(empleados, atributo_empleados)
+                login(atributo_empleados)
             elif opcion == 2:
                 registro()
             elif opcion == 3:
@@ -146,7 +147,7 @@ def menu_principal(empleados, atributo_empleados):
 #---------------------------------------------------------------
 #MENU QUE VISUALIZA EL ADMINISTRADOR 
 #---------------------------------------------------------------
-def submenu_admin(empleados, atributo_empleados, usuario_sesion):
+def submenu_admin(atributo_empleados, usuario_sesion):
     while True:
         limpiar_pantalla()
         print("-"*ancho_menu)
@@ -164,24 +165,24 @@ def submenu_admin(empleados, atributo_empleados, usuario_sesion):
         print("[0] Salir")
         print("-"*ancho_menu)
         print()
-
+ 
         try:
             opcion=int(input("Ingrese el numero de opcion : "))
             limpiar_pantalla()
             if opcion==1:
                 print(f"{FONDO_CELESTE}{BLANCO} Listar Usuarios {RESET}")
-                mostrar_empleados(empleados, atributo_empleados)
+                mostrar_empleados(atributo_empleados)
                 input("Presione enter para volver al menu ")
                 limpiar_pantalla()
             elif opcion==2:
                 limpiar_pantalla()
                 print(f"{FONDO_CELESTE}{BLANCO} Crear usuarios {RESET}")
-                agregar_empleado(empleados)
+                agregar_empleado()
                 input("Presione enter para volver al menu")
                 limpiar_pantalla()
             elif opcion==3:
                 print(f"{FONDO_CELESTE}{BLANCO} Modificar usuario {RESET}")
-                modificar_usuario(empleados,atributo_empleados)
+                modificar_usuario(atributo_empleados)
                 input("Presione enter para volver al menu.")
                 limpiar_pantalla()
             elif opcion==4:
@@ -324,7 +325,8 @@ def obtener_id(empleados):
 #----------------------------------------------------------------
 #Llamo todas las funciones para generar al nuevo empleado. 
 #---------------------------------------------------------------
-def agregar_empleado(empleados):
+def agregar_empleado():
+    empleados = cargar_empleados()
     while True:
         nombre=validacion_letras("Ingrese el nombre del empleado: ","nombre")
         apellido=validacion_letras("Ingrese el apellido del empleado: ","apellido")
@@ -342,6 +344,7 @@ def agregar_empleado(empleados):
             PASSWORD: password,
             ESTADO: estado
         })#agrega un nuevo diccionario a la lista de empleados con los datos ingresados
+        guardar_empleados(empleados)
         salida=str(input("Para finalizar la carga de usuarios presione X o enter para seguir: ")).lower()
         if salida=="x":
             return 
@@ -349,7 +352,8 @@ def agregar_empleado(empleados):
 #---------------------------------------------------------------
 # Función para mostrar la lista de empleados
 #---------------------------------------------------------------
-def mostrar_empleados(empleados,atributo_empleados):
+def mostrar_empleados(atributo_empleados):
+    empleados = cargar_empleados()
     # Imprimir encabezados en color CYAN
     for atributo in atributo_empleados:
         print(f"{CYAN}{NEGRITA}{atributo:<15}{RESET}", end=" ")
@@ -402,9 +406,10 @@ def solicitar_id(mensaje):
 # Función para modificar el nombre de usuario de un empleado
 #---------------------------------------------------------------
 
-def modificar_usuario(empleados,atributo_empleados):
-    mostrar_empleados(empleados,atributo_empleados)
+def modificar_usuario(atributo_empleados):
+    mostrar_empleados(atributo_empleados)
     id_buscado = solicitar_id("Ingrese el ID del empleado a modificar: ")
+    empleados = cargar_empleados()
     for empleado in empleados:
         if empleado[ID_EMPLEADO] == id_buscado:
             print(empleado)
@@ -436,15 +441,19 @@ def modificar_usuario(empleados,atributo_empleados):
                     nueva_pass=validacion_password("Ingrese la nueva contraseña: ")
                     empleado[PASSWORD]=nueva_pass
                 elif opcion==6:
-                    estado_actualizado=modificar_estado(empleados)
+                    estado_actualizado=modificar_estado()
                     empleado[ESTADO]=estado_actualizado
                 else:
                     print("Opcion invalida")
+                    return
+                
+                guardar_empleados(empleados)
                 return print("Modificado con exito \n",empleado)
             except ValueError:
                 print("Error: Ingrese un número válido.")
                 input("Presione Enter para continuar...")
                 limpiar_pantalla()
+                return
 
     print("Empleado no encontrado")
 #-----------------------------------------------------------
@@ -455,7 +464,7 @@ se encuentra "activo" podra iniciar sesión
 """
 #-----------------------------------------------------------
     
-def modificar_estado(empleados):
+def modificar_estado():
     estado_valido = False
     estado_final = ""
     while not estado_valido:
@@ -474,7 +483,7 @@ def modificar_estado(empleados):
     return estado_final
         
 def mostrar_menu_principal():
-    menu_principal(empleados, atributo_empleados)
+    menu_principal(atributo_empleados)
 
 
 
