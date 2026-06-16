@@ -200,3 +200,97 @@ def eliminar_producto(productos):
         print("Producto eliminado")
     else:
         print("Producto no encontrado")
+
+
+
+
+def agregar_producto(productos):
+
+    print(f"{BOLD}Agregar producto{RESET}")
+
+    codigo = int(input("Ingrese código: "))
+    nombre = input("Ingrese nombre: ")
+    precio = float(input("Ingrese precio: "))
+
+    ingredientes_input = input(
+        "Ingrese ingredientes separados por coma: "
+    )
+
+    ingredientes = set(
+        ing.strip().lower()
+        for ing in ingredientes_input.split(",")
+    )
+
+    nuevo_producto = (
+        codigo,
+        nombre,
+        precio,
+        ingredientes
+    )
+
+    productos.append(nuevo_producto)
+
+    print(f"{BOLD_VERDE}Producto agregado correctamente{RESET}")
+
+
+
+
+
+def modificar_producto(productos):
+
+    print(f"{BOLD}Modificar producto{RESET}")
+
+    codigo = int(input("Ingrese código del producto: "))
+
+    producto_encontrado = None
+
+    for p in productos:
+        if p[0] == codigo:
+            producto_encontrado = p
+            break
+
+    if producto_encontrado is None:
+        print("Producto no encontrado")
+        return
+
+    nuevo_nombre = input(
+        f"Nuevo nombre ({producto_encontrado[1]}): "
+    )
+
+    nuevo_precio = input(
+        f"Nuevo precio ({producto_encontrado[2]}): "
+    )
+
+    nuevos_ingredientes = input(
+        "Nuevos ingredientes separados por coma: "
+    )
+
+    if nuevo_nombre == "":
+        nuevo_nombre = producto_encontrado[1]
+
+    if nuevo_precio == "":
+        nuevo_precio = producto_encontrado[2]
+    else:
+        nuevo_precio = float(nuevo_precio)
+
+    if nuevos_ingredientes == "":
+        ingredientes = producto_encontrado[3]
+    else:
+        ingredientes = set(
+            ing.strip().lower()
+            for ing in nuevos_ingredientes.split(",")
+        )
+
+    producto_modificado = (
+        codigo,
+        nuevo_nombre,
+        nuevo_precio,
+        ingredientes
+    )
+
+    indice = productos.index(producto_encontrado)
+
+    productos[indice] = producto_modificado
+
+    print(f"{BOLD_VERDE}Producto modificado correctamente{RESET}")
+    
