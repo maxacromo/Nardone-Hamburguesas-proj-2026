@@ -70,5 +70,41 @@
         "Rol": "admin",
         "Contraseña": "jose123",
         "Estado": "Inactivo"
+    },
+    {
+        "Id_empleado": 9,
+        "Nombre": "kzalles",
+        "Apellido": "zalles",
+        "usuario": "kz123",
+        "Rol": "admin",
+        "Contraseña": "klesks12",
+        "Estado": "Activo"
+    },
+    {
+        "Id_empleado": 10,
+        "Nombre": "kjerbg",
+        "Apellido": "lenkg",
+        "usuario": "eknrg2",
+        "Rol": "admin",
+        "Contraseña": "kjdbrf3",
+        "Estado": "Activo"
+    },
+    {
+        "Id_empleado": 11,
+        "Nombre": "camila",
+        "Apellido": "zalles",
+        "usuario": "czalles2",
+        "Rol": "admin",
+        "Contraseña": "czalles1",
+        "Estado": "Activo"
+    },
+    {
+        "Id_empleado": 12,
+        "Nombre": "prueba",
+        "Apellido": "pruebe",
+        "usuario": "prueba1",
+        "Rol": "empleado",
+        "Contraseña": "kjsdb3",
+        "Estado": "Activo"
     }
 ]

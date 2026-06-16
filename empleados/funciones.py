@@ -1,4 +1,5 @@
 import os , re , json
+from functools import reduce
 from .constantes import ID_EMPLEADO,NOMBRE,APELLIDO,USUARIO,ROL,PASSWORD,ESTADO
 from .usuarios import cargar_empleados, guardar_empleados, atributo_empleados
 from ventas.menu_ventas import *
@@ -323,6 +324,19 @@ def obtener_id(empleados):
 
 
 #----------------------------------------------------------------
+# Función para verificar si un usuario ya existe en la lista de empleados usando reduce
+"""
+valor_actual: valor acumulado en la operación reduce, comienza con False.
+empleado: elemento actual toma dela lista de empleados.
+empleado[USUARIO].lower() == usuario_buscado.lower(): compara el usuario actual con el usuario buscado.
+valor_actual: devuelve True si el usuario actual coincide con el usuario buscado, o si el valor actual ya es True.
+False: valor inicial del acumulador, indica que al principio no se ha encontrado ningún usuario.
+"""
+#----------------------------------------------------------------
+def existe_usuario(empleados, usuario_buscado):
+    return reduce(lambda acc, emp: acc or (emp[USUARIO].lower() == usuario_buscado.lower()), empleados, False)
+
+#----------------------------------------------------------------
 #Llamo todas las funciones para generar al nuevo empleado. 
 #---------------------------------------------------------------
 def agregar_empleado():
@@ -330,7 +344,15 @@ def agregar_empleado():
     while True:
         nombre=validacion_letras("Ingrese el nombre del empleado: ","nombre")
         apellido=validacion_letras("Ingrese el apellido del empleado: ","apellido")
-        user=validacion_usuario("Ingrese el nombre de usuario: ")
+        
+        usuario_valido = False
+        while not usuario_valido:
+            usuario =validacion_usuario("Ingrese el nombre de usuario: ")
+            if existe_usuario(empleados, usuario):
+                print(f"\n{ROJO}El nombre de usuario '{usuario}' ya se encuentra creado en el sistema. Intente con otro.{RESET}\n")
+            else:
+                usuario_valido = True
+                
         password=validacion_password("Ingrese la contraseña: ")     
         rol=validacion_rol("Ingrese el rol del usuario 1-admin o 2-empleado: ")
         nuevo_id=obtener_id(empleados)
@@ -339,7 +361,7 @@ def agregar_empleado():
             ID_EMPLEADO: nuevo_id,
             NOMBRE: nombre,
             APELLIDO: apellido,
-            USUARIO: user,
+            USUARIO: usuario,
             ROL: rol,
             PASSWORD: password,
             ESTADO: estado
