@@ -1,7 +1,6 @@
 import json
 import os
 from stock.Vista_stock import inicio_stock
-from stock.modelo_stock import stock
 
 RUTA_JSON = os.path.join(os.path.dirname(__file__), "modelo_stock.json")
 
@@ -93,13 +92,17 @@ def modificar_ingrediente(stock):
         print("No se encontro el ingrediente")
         
 def listar_stock(stock):
-    print("\n---Stock Actual ---")
+    print("\n--- Stock Actual ---")
     if not stock:
         print("(No hay ingredientes cargados en el sistema porque el archivo no se encontró)")
         return
-        
+
+    print(f"+{'-' * 22}+{'-' * 12}+")
+    print(f"| {'Ingrediente':<20} | {'Cantidad':>10} |")
+    print(f"+{'-' * 22}+{'-' * 12}+")
     for ingrediente, cantidad in stock.items():
-        print(f"{ingrediente}: {cantidad}")
+        print(f"| {ingrediente:<20} | {cantidad:>10} |")
+    print(f"+{'-' * 22}+{'-' * 12}+")
         
 def buscar_por_nombre(stock):
     nombre = input("Ingrese el nombre del ingrediente que desea buscar: ").strip()

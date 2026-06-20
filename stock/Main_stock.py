@@ -1,9 +1,9 @@
-from stock.modelo_stock import stock
 from stock.Vista_stock import inicio_stock
 from stock.Controlador_stock import *
 
 def menu():
     opcion = ""
+    stock = cargar_stock_json()
 
     while opcion != "0":
         inicio_stock()

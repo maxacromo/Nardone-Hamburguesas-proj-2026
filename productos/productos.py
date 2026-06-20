@@ -237,18 +237,52 @@ def agregar_producto(productos):
 
     print(f"{BOLD}Agregar producto{RESET}")
 
-    codigo = int(input("Ingrese código: "))
+    while True:
+        codigo_input = input("Ingrese código: ").strip()
+        if not codigo_input.isdigit():
+            print("Código inválido. Ingrese un número entero.")
+            continue
+        codigo = int(codigo_input)
+        if any(p[0] == codigo for p in productos):
+            print(f"Ya existe un producto con el código {codigo}. Ingrese otro.")
+            continue
+        break
+
     nombre = input("Ingrese nombre: ")
-    precio = float(input("Ingrese precio: "))
 
-    ingredientes_input = input(
-        "Ingrese ingredientes separados por coma: "
-    )
+    while True:
+        precio_input = input("Ingrese precio: ").strip()
+        try:
+            precio = float(precio_input)
+            break
+        except ValueError:
+            print("Precio inválido. Ingrese un número.")
 
-    ingredientes = set(
-        ing.strip().lower()
-        for ing in ingredientes_input.split(",")
-    )
+    stock = cargar_stock_json() or {}
+    if stock:
+        print(f"{BOLD}Ingredientes disponibles:{RESET}")
+        print(CYAN + ", ".join(stock.keys()) + RESET)
+
+    permitidos = {nombre.lower() for nombre in stock.keys()}
+
+    while True:
+        ingredientes_input = input(
+            "Ingrese ingredientes separados por coma: "
+        )
+        ingredientes = {
+            ing.strip().lower()
+            for ing in ingredientes_input.split(",")
+            if ing.strip()
+        }
+
+        no_permitidos = ingredientes - permitidos
+        if not ingredientes:
+            print("Debe ingresar al menos un ingrediente.")
+        elif no_permitidos:
+            print(f"Ingrediente(s) no permitido(s): {', '.join(sorted(no_permitidos))}")
+            print("Solo se permiten ingredientes que existan en el stock.")
+        else:
+            break
 
     nuevo_producto = (
         codigo,
