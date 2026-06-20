@@ -233,6 +233,46 @@ def eliminar_producto(carrito):
 
 
 
+def pedir_receta():
+    """
+    Pide ingredientes (validados contra el stock) y la cantidad de cada uno.
+    """
+    stock = cargar_stock_json() or {}
+    if stock:
+        print(f"{BOLD}Ingredientes disponibles:{RESET}")
+        print(CYAN + ", ".join(stock.keys()) + RESET)
+
+    # Mapa de nombre en minuscula -> clave real del stock
+    permitidos = {nombre.lower(): nombre for nombre in stock.keys()}
+
+    while True:
+        ingredientes_input = input("Ingrese ingredientes separados por coma: ")
+        elegidos = [ing.strip().lower() for ing in ingredientes_input.split(",") if ing.strip()]
+
+        if not elegidos:
+            print("Debe ingresar al menos un ingrediente.")
+            continue
+
+        no_permitidos = [ing for ing in elegidos if ing not in permitidos]
+        if no_permitidos:
+            print(f"Ingrediente(s) no permitido(s): {', '.join(sorted(set(no_permitidos)))}")
+            print("Solo se permiten ingredientes que existan en el stock.")
+            continue
+        break
+
+    receta = {}
+    for ing in elegidos:
+        clave_real = permitidos[ing]
+        while True:
+            cant_input = input(f"Cantidad de {clave_real}: ").strip()
+            if cant_input.isdigit() and int(cant_input) > 0:
+                receta[clave_real] = int(cant_input)
+                break
+            print("Cantidad inválida. Ingrese un número entero mayor a 0.")
+
+    return receta
+
+
 def agregar_producto(productos):
 
     print(f"{BOLD}Agregar producto{RESET}")
@@ -258,37 +298,13 @@ def agregar_producto(productos):
         except ValueError:
             print("Precio inválido. Ingrese un número.")
 
-    stock = cargar_stock_json() or {}
-    if stock:
-        print(f"{BOLD}Ingredientes disponibles:{RESET}")
-        print(CYAN + ", ".join(stock.keys()) + RESET)
-
-    permitidos = {nombre.lower() for nombre in stock.keys()}
-
-    while True:
-        ingredientes_input = input(
-            "Ingrese ingredientes separados por coma: "
-        )
-        ingredientes = {
-            ing.strip().lower()
-            for ing in ingredientes_input.split(",")
-            if ing.strip()
-        }
-
-        no_permitidos = ingredientes - permitidos
-        if not ingredientes:
-            print("Debe ingresar al menos un ingrediente.")
-        elif no_permitidos:
-            print(f"Ingrediente(s) no permitido(s): {', '.join(sorted(no_permitidos))}")
-            print("Solo se permiten ingredientes que existan en el stock.")
-        else:
-            break
+    receta = pedir_receta()
 
     nuevo_producto = (
         codigo,
         nombre,
         precio,
-        ingredientes
+        receta
     )
 
     productos.append(nuevo_producto)
@@ -324,10 +340,6 @@ def modificar_producto(productos):
         f"Nuevo precio ({producto_encontrado[2]}): "
     )
 
-    nuevos_ingredientes = input(
-        "Nuevos ingredientes separados por coma: "
-    )
-
     if nuevo_nombre == "":
         nuevo_nombre = producto_encontrado[1]
 
@@ -336,19 +348,17 @@ def modificar_producto(productos):
     else:
         nuevo_precio = float(nuevo_precio)
 
-    if nuevos_ingredientes == "":
-        ingredientes = producto_encontrado[3]
+    print("¿Desea modificar los ingredientes? (Enter para conservar los actuales)")
+    if input("1 para modificar, Enter para conservar: ").strip() == "1":
+        receta = pedir_receta()
     else:
-        ingredientes = set(
-            ing.strip().lower()
-            for ing in nuevos_ingredientes.split(",")
-        )
+        receta = producto_encontrado[3]
 
     producto_modificado = (
         codigo,
         nuevo_nombre,
         nuevo_precio,
-        ingredientes
+        receta
     )
 
     indice = productos.index(producto_encontrado)
