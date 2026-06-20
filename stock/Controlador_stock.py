@@ -1,5 +1,6 @@
 import json
 import os
+from stock.Vista_stock import inicio_stock
 from stock.modelo_stock import stock
 
 RUTA_JSON = os.path.join(os.path.dirname(__file__), "modelo_stock.json")

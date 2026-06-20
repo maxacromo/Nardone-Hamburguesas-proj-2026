@@ -139,7 +139,7 @@ def comprar():
     total_final = 0.0
 
     while True:
-        codigo = int(input("\nIngrese código (0 para terminar): "))
+        codigo = int(input("\nIngrese el código (0 para terminar): "))
 
         if codigo == 0:
             break
