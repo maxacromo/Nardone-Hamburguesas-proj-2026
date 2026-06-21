@@ -6,6 +6,7 @@ AMARILLO = "\033[33m"
 AZUL = "\033[34m"
 CYAN = "\033[36m"
 BOLD_VERDE = "\033[1;32m"
+BOLD_ROJO = "\033[1;31m"
 
 receta_simple = {"Pan": 2, "Carne": 1}
 receta_queso = {"Pan": 2, "Carne": 1, "Queso": 1}
@@ -139,7 +140,15 @@ def comprar():
     total_final = 0.0
 
     while True:
-        codigo = int(input("\nIngrese código (0 para terminar): "))
+        from empleados.funciones import limpiar_pantalla
+        limpiar_pantalla()
+        mostrar_productos(productos)
+        
+        if carrito:
+            print(f"{BOLD_VERDE}Ítems en el carrito actual:{RESET} {len(carrito)}")
+            print()
+
+        codigo = int(input("Ingrese el código (0 para terminar): "))
 
         if codigo == 0:
             break
@@ -152,17 +161,40 @@ def comprar():
                 encontrado = p
 
         if encontrado:
-            actualizar_stock(encontrado[3], cantidad, "restar")
-            total = encontrado[2] * cantidad
+            receta = encontrado[3]
+            stock_actual = cargar_stock_json()
             
-            carrito.append([encontrado[1], encontrado[2], cantidad, total, codigo])
-            total_final += total
-            print(f"{encontrado[1]} agregado al carrito.")
+            if stock_actual is not None:
+                faltantes = []
+
+                for ingrediente_nombre, cant_unitaria in receta.items():
+                    total_necesario = cant_unitaria * cantidad
+                    
+                    if ingrediente_nombre in stock_actual:
+                        if stock_actual[ingrediente_nombre] < total_necesario:
+                            faltantes.append(ingrediente_nombre)
+                    else:
+                        faltantes.append(ingrediente_nombre)
+
+                if len(faltantes) == 0:
+                    actualizar_stock(encontrado[3], cantidad, "restar")
+                    total = encontrado[2] * cantidad
+                    
+                    carrito.append([encontrado[1], encontrado[2], cantidad, total, codigo])
+                    total_final += total
+                    print(f"\n {encontrado[1]} agregado al carrito.")
+                else:
+                    print(f"\n No hay stock suficiente, Faltan los ingredientes: {BOLD_ROJO}{', '.join(faltantes)}{RESET}.")
+                    print(" Reduzca la cantidad o elija otro producto.")
+            else:
+                print("\n Error: No se pudo verificar el stock.")
+            
+            input("\nPresione ENTER para continuar...")
         else:
-            print("Producto no encontrado")
+            print("\n Producto no encontrado")
+            input("\nPresione ENTER para continuar...")
 
     return carrito, total_final
-
 
 def mostrar_carrito(carrito):
     linea_divisoria()
