@@ -1,8 +1,8 @@
 from Clientes.Clientes_Funciones import *
-#from Clientes_Funciones import *
 import random,json,pprint
-ancho_menu = 100
+ancho_menu = 121
 yesno=["yes","y","no","n"]
+ruta_json = os.path.join(os.path.dirname(__file__), "Clientes_Datos.json")
 
 def Crear_Cliente(Persona_ID,Cliente,Mail_List,yesno): #Funcion que permite agregar Cliente
     Hold="1"
@@ -50,16 +50,18 @@ def Crear_Cliente(Persona_ID,Cliente,Mail_List,yesno): #Funcion que permite agre
 def Read_Cliente(Cliente): #Permite leer la matriz de clientes
 
     Title=["ID DE CLIENTE","NOMBRE","CORREO","USUARIO","ACTIVIDAD"]
-    aux=0
-    while aux != len(Title):
-        print(f"{Title[aux]:<25}", end=" ")
-        aux+=1
-    print()
+    mostrar_linea_divisoria(ancho_menu)
+    Title_Print(Title)
+    mostrar_linea_divisoria(ancho_menu)
     for key,value in Cliente.items():
-        print(f"{key:<25}", end=" ")
-        for i in range(len(value)) :
-            print(f"{value[i]:<25}", end=" ")
-        print("\n")
+        print(f"{AMARILLO}{key:<24}{RESET}", end="")
+        print(f"|",end=" ")
+        for i in range(len(value)-1) :
+            print(f"{value[i]:<25}", end="")
+            print(f"|",end="")
+        Transformar_booleano(Cliente,key)
+        
+    mostrar_linea_divisoria(ancho_menu)
     input("Presione enter para volver al menu previo.")
     limpiar_pantalla()
 
@@ -243,7 +245,7 @@ def mostrar_menu_clientes():
     Persona_ID=[]
     Mail_List=[]
     try:
-        with open ("Clientes_Datos.json", "r",encoding="UTF-8") as Datos:
+        with open (ruta_json, "r",encoding="UTF-8") as Datos:
             
             Cliente=json.load(Datos)
             Persona_ID=list(Cliente.keys())
@@ -251,8 +253,6 @@ def mostrar_menu_clientes():
                 Mail_List.append(Cliente[Persona_ID[i]][1])
     except(FileNotFoundError,OSError) as error:
         print("Error:",error)
-    finally:
-        Datos.close
 
 
     limpiar_pantalla()
@@ -319,7 +319,7 @@ def mostrar_menu_clientes():
 
 def buscar_cliente_by_user(user):
     try:
-        with open("Clientes_Datos.json", "r", encoding="UTF-8") as Datos:
+        with open(ruta_json, "r", encoding="UTF-8") as Datos:
             Clientes_list = json.load(Datos)
             for cliente in Clientes_list:
                 if user == Clientes_list[cliente][2]:
@@ -371,7 +371,7 @@ def cargar_clientes():
     Mail_List = []
     Cliente = {}
     try:
-        with open("Clientes_Datos.json", "r", encoding="UTF-8") as Datos:
+        with open(ruta_json, "r", encoding="UTF-8") as Datos:
             Cliente = json.load(Datos)
             Persona_ID = list(Cliente.keys())
             for i in range(len(Persona_ID)):
@@ -379,3 +379,5 @@ def cargar_clientes():
     except (FileNotFoundError, OSError) as error:
         print("Error:", error)
     return Persona_ID, Cliente, Mail_List
+
+mostrar_menu_clientes()
