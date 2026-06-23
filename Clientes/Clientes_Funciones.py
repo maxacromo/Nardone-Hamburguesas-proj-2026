@@ -1,5 +1,16 @@
 import random, os,json
 
+BOLD  = "\033[1m"
+RESET = "\033[0m"
+
+ROJO     = "\033[31m"
+VERDE    = "\033[32m"
+AMARILLO = "\033[33m"
+AZUL     = "\033[34m"
+CYAN     = "\033[36m"
+BLANCO   = "\033[37m"
+
+
 
 def Num_list(Persona_ID):# Crea ID de Usuario para las personas de relleno
             nro=-1
@@ -260,18 +271,24 @@ def Search_Client_Name(Search,Cliente,Persona_ID):
 def Title_Print(lista,i=0):
     with open("Titulo_Clientes.csv","r",encoding="UTF-8" )as titlearch:
         data = [line.strip().split(",") for line in titlearch]
+        aux="|"
         for line in data:
             if i==len(lista):
                 i=0
+                print()
                 continue
             else:
-                print(f"{line[i]:<25}", end=" ")
+                print(f"{BOLD}{line[i]:<25}{RESET}", end="")
+                if i!= len(lista)-1:
+                    print(f"{aux}{RESET}",end="") 
                 return Title_Print(lista,i+1)
             
 
 def Transformar_booleano(Cliente,key):
     if Cliente[key][3]==True:
-        print("True")
+        print(f"{VERDE}{True}{RESET}")
     elif Cliente[key][3]==False:
-        print("False")
+        print(f"{ROJO}{False}{RESET}")
 
+def mostrar_linea_divisoria(ancho_total):
+    print(f"{AZUL}{'-'*ancho_total}{RESET}")

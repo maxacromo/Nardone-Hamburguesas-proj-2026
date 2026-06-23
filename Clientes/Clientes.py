@@ -1,7 +1,7 @@
-#from Clientes.Clientes_Funciones import *
-from Clientes_Funciones import *
+from Clientes.Clientes_Funciones import *
+#from Clientes_Funciones import *
 import random,json,pprint,csv
-ancho_menu = 100
+ancho_menu =121
 yesno=["yes","y","no","n"]
 
 def Crear_Cliente(Persona_ID,Cliente,Mail_List,yesno): #Funcion que permite agregar Cliente
@@ -50,14 +50,18 @@ def Crear_Cliente(Persona_ID,Cliente,Mail_List,yesno): #Funcion que permite agre
 def Read_Cliente(Cliente): #Permite leer la matriz de clientes
 
     Title=["ID DE CLIENTE","NOMBRE","CORREO","USUARIO","ACTIVIDAD"]
+    mostrar_linea_divisoria(ancho_menu)
     Title_Print(Title)
-    print()
+    mostrar_linea_divisoria(ancho_menu)
     for key,value in Cliente.items():
-        print(f"{key:<25}", end=" ")
+        print(f"{AMARILLO}{key:<24}{RESET}", end="")
+        print(f"|",end=" ")
         for i in range(len(value)-1) :
-            print(f"{value[i]:<25}", end=" ")
+            print(f"{value[i]:<25}", end="")
+            print(f"|",end="")
         Transformar_booleano(Cliente,key)
-        print("\n")
+        
+    mostrar_linea_divisoria(ancho_menu)
     input("Presione enter para volver al menu previo.")
     limpiar_pantalla()
 
