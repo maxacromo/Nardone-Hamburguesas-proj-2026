@@ -1,4 +1,4 @@
-from productos.productos import crear_productos, mostrar_productos, comprar, eliminar_producto
+from productos.productos import crear_productos, mostrar_productos, comprar, eliminar_producto, agregar_producto, modificar_producto
 
 ancho_menu = 100
 
@@ -11,6 +11,8 @@ def menu_productos():
         print("-"*ancho_menu)
         print("[1] Mostrar productos")
         print("[2] Eliminar producto")
+        print("[3] Agregar producto")
+        print("[4] Modificar producto")
         print("-"*ancho_menu)
         print("[0] Salir")
         print("-"*ancho_menu)
@@ -22,7 +24,13 @@ def menu_productos():
 
         elif opcion == "2":
             eliminar_producto(productos)
+        
+        elif opcion == "3":
+            agregar_producto
 
+        elif opcion == "4":
+            modificar_producto
+            
         elif opcion == "0":
             break
 
