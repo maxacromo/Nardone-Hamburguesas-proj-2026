@@ -380,4 +380,3 @@ def cargar_clientes():
         print("Error:", error)
     return Persona_ID, Cliente, Mail_List
 
-mostrar_menu_clientes()
