@@ -21,3 +21,4 @@ id,empleado,cliente,total,fecha,articulos,activo
 20,Juan Perez,200004,50000.0,28-03-2026,2:5,True
 21,Ezequiel J Gonzalez,111111,50000.0,01-02-2026,1:2,True
 22,Ezequiel Gonzalez,111111,18000.0,10-06-2026,1:1;2:1,True
+23,Ezequiel Gonzalez,851156,16000.0,23-06-2026,1:2,False

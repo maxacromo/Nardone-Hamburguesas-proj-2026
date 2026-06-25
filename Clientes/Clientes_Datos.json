@@ -154,5 +154,89 @@
         "jfernandez1@gmail.com",
         "jfernandez2",
         true
+    ],
+    "851156": [
+        "ezequiel gonzalez",
+        "egonzalez@gmail.com",
+        "egonzalez1",
+        true
+    ],
+    "0": [
+        "Cliente Generico",
+        "n/a",
+        "n/a",
+        true
+    ],
+    "111111": [
+        "Ezequiel Gonzalez",
+        "egonzalez@gmail.com",
+        "egonzalez",
+        true
+    ],
+    "200001": [
+        "Juan Perez",
+        "jperez@gmail.com",
+        "jperez1",
+        true
+    ],
+    "200002": [
+        "Pepe Alvarez",
+        "palvarez@gmail.com",
+        "palvarez1",
+        true
+    ],
+    "200003": [
+        "Pedro Lopez",
+        "plopez@gmail.com",
+        "plopez1",
+        true
+    ],
+    "200004": [
+        "Carlos Diaz",
+        "cdiaz@gmail.com",
+        "cdiaz1",
+        true
+    ],
+    "200005": [
+        "Sofia Gomez",
+        "sgomez@gmail.com",
+        "sgomez1",
+        true
+    ],
+    "200006": [
+        "Lucia Martinez",
+        "lmartinez@gmail.com",
+        "lmartinez1",
+        true
+    ],
+    "200007": [
+        "Diego Suarez",
+        "dsuarez@gmail.com",
+        "dsuarez1",
+        true
+    ],
+    "200008": [
+        "Valentina Ruiz",
+        "vruiz@gmail.com",
+        "vruiz1",
+        true
+    ],
+    "200009": [
+        "Martin Acosta",
+        "macosta@gmail.com",
+        "macosta1",
+        true
+    ],
+    "200010": [
+        "Camila Benitez",
+        "cbenitez@gmail.com",
+        "cbenitez1",
+        true
+    ],
+    "200011": [
+        "Fernando Silva",
+        "fsilva@gmail.com",
+        "fsilva1",
+        true
     ]
 }

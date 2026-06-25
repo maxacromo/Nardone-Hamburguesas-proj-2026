@@ -218,3 +218,54 @@ def obtener_promedio_por_dia(ventas):
     mostrar_linea_divisoria(ancho_standard)
     print(f"Promedio diario general: {BOLD_VERDE}${promedio_global:.2f}{RESET}")
     mostrar_linea_divisoria(ancho_standard)
+
+
+def reporte_completo(ventas):
+    from productos.productos import crear_productos
+    productos = crear_productos()
+    ventas_activas = list(filter(lambda x: x[ACTIVO] is True, ventas))
+    total_general = sum(v[TOTAL_VENTA] for v in ventas_activas)
+    promedio = total_general / len(ventas_activas) if ventas_activas else 0
+
+    mostrar_linea_divisoria(ancho_standard)
+    print(f"{BOLD}REPORTE ESTADÍSTICO COMPLETO{RESET}")
+
+    # Totales generales
+    mostrar_linea_divisoria(ancho_standard)
+    print(f"{BOLD}RESUMEN GENERAL{RESET}")
+    mostrar_linea_divisoria(ancho_standard)
+    print(f"  Cantidad de ventas : {AMARILLO}{len(ventas_activas)}{RESET}")
+    print(f"  Total recaudado    : {AMARILLO}${total_general:.2f}{RESET}")
+    print(f"  Promedio por venta : {AMARILLO}${promedio:.2f}{RESET}")
+
+    # Articulo mas y menos vendido
+    cantidades = {}
+    for v in ventas_activas:
+        for art in v[ARTICULOS]:
+            codigo = int(art[0])
+            cantidades[codigo] = cantidades.get(codigo, 0) + art[1]
+
+    if cantidades:
+        cod_max = max(cantidades, key=cantidades.get)
+        cod_min = min(cantidades, key=cantidades.get)
+        nombre_max = next((p[1] for p in productos if p[0] == cod_max), str(cod_max))
+        nombre_min = next((p[1] for p in productos if p[0] == cod_min), str(cod_min))
+        mostrar_linea_divisoria(ancho_standard)
+        print(f"{BOLD}PRODUCTOS{RESET}")
+        mostrar_linea_divisoria(ancho_standard)
+        print(f"  Más vendido  : {AMARILLO}{nombre_max}{RESET} ({cantidades[cod_max]} unidades)")
+        print(f"  Menos vendido: {AMARILLO}{nombre_min}{RESET} ({cantidades[cod_min]} unidades)")
+
+    # Top vendedores
+    totales_vendedor = {}
+    for v in ventas_activas:
+        totales_vendedor[v[VENDEDOR]] = totales_vendedor.get(v[VENDEDOR], 0) + v[TOTAL_VENTA]
+
+    mostrar_linea_divisoria(ancho_standard)
+    print(f"{BOLD}VENDEDORES{RESET}")
+    mostrar_linea_divisoria(ancho_standard)
+    for vendedor, total in sorted(totales_vendedor.items(), key=lambda x: x[1], reverse=True):
+        porcentaje = (total / total_general * 100) if total_general else 0
+        print(f"  {vendedor:<26} ${total:<12.2f} {BOLD_VERDE}{porcentaje:.1f}%{RESET}")
+
+    mostrar_linea_divisoria(ancho_standard)

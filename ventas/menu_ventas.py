@@ -1,6 +1,6 @@
 
 from ventas.ventas import mostrar_ventas, crear_venta, actualizar_venta, eliminar_venta, obtener_venta, buscar_ventas_por_cliente, buscar_ventas_por_producto, elementos
-from ventas.estadisticas import obtener_ventas_por_cada_vendedor, obtener_articulo_mas_vendido, obtener_articulo_menos_vendido, obtener_cant_total_ventas, obtener_promedio_por_dia, obtener_porcentajes_relativos
+from ventas.estadisticas import obtener_ventas_por_cada_vendedor, obtener_articulo_mas_vendido, obtener_articulo_menos_vendido, obtener_cant_total_ventas, obtener_promedio_por_dia, obtener_porcentajes_relativos, reporte_completo
 
 ancho_menu = 100
 def mostrar_menu_ventas(empleado_logueado):
@@ -47,7 +47,7 @@ def mostrar_menu_ventas(empleado_logueado):
 def mostrar_menu_estadisticas():
 
     while True:
-        opciones = 6
+        opciones = 7
         print("-"*ancho_menu)
         print("MENÚ PRINCIPAL > MENÚ DE ESTADISTICAS")
         print("-"*ancho_menu)
@@ -57,6 +57,7 @@ def mostrar_menu_estadisticas():
         print("[4] Ver resumen total de ventas (cantidad, recaudado y promedio)")
         print("[5] Promedio de ventas por dia")
         print("[6] Porcentajes relativos por vendedor o producto")
+        print("[7] Reporte estadistico completo")
         print("-"*ancho_menu)
         print("[0] Volver al menú anterior")
         print("-"*ancho_menu)
@@ -81,6 +82,8 @@ def mostrar_menu_estadisticas():
             obtener_promedio_por_dia(elementos)
         elif opcion == "6":
             obtener_porcentajes_relativos(elementos)
+        elif opcion == "7":
+            reporte_completo(elementos)
 
 def mostrar_ventas_menu():
     mostrar_ventas()
