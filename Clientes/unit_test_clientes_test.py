@@ -1,5 +1,5 @@
 import pytest
-import Clientes as c
+from Clientes import Clientes as c
 
 def test_busqueda_cliente_exit(monkeypatch):
     entradas = iter(["0", ""])

@@ -208,15 +208,15 @@ def eliminar_producto(carrito):
     codigo = int(input("Ingrese código de producto a eliminar: "))
 
     producto_a_eliminar = None
-    
-    for p in productos:
+
+    for p in carrito:
         if p[0] == codigo:
             producto_a_eliminar = p
             break
 
     if producto_a_eliminar:
         receta_para_devolver = None
-        for prod in productos:
+        for prod in carrito:
             if prod[0] == codigo:
                 receta_para_devolver = prod[3]
                 break

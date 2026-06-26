@@ -1,5 +1,5 @@
 import pytest
-import Clientes_Funciones as f
+from Clientes import Clientes_Funciones as f
 
 def test_search_client_id_found():
     clientes = {"123": ["Juan Perez", "jp@gmail.com", True]}
