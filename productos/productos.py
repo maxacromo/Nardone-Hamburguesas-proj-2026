@@ -210,7 +210,7 @@ def eliminar_producto(carrito):
     producto_a_eliminar = None
     
     for p in productos:
-        if p[4] == codigo:
+        if p[0] == codigo:
             producto_a_eliminar = p
             break
 
@@ -222,8 +222,7 @@ def eliminar_producto(carrito):
                 break
             
         if receta_para_devolver:
-            cantidad_comprada = producto_a_eliminar[2]
-            actualizar_stock(receta_para_devolver, cantidad_comprada, "sumar")
+            actualizar_stock(receta_para_devolver, 1, "sumar")
             
         carrito.remove(producto_a_eliminar)
         print("Producto eliminado")
